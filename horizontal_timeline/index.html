@@ -4,38 +4,39 @@
     <meta charset="utf-8">
     <link rel="icon" href="/images/favicon.png" type="image/png" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
-
+    <script src="js/Timeline.js"></script>
     <title>Horizontal Timeline</title>
   </head>
   <body>
+    <!-- NOTE: id=layout-timeline-0
+    Questa è una timeline orizzontale con due elementi al suo interno   -->
 
-    <div class="line"></div>
-    <div class="content">
+    <div class="timelineContent" id="layout-timeline-0">
 
-      <div class="container">
+      <div class="timelineContainer">
         <template id="circle-timeline">
           <span id=""></span>
         </template>
         <div class="timeline"></div>
 
-        <div class="overflow" data-cards="1" active="1">
-          <template id="card">
-            <div class="card" data-id="">
-              <div class="table"></div>
+        <div class="timelineOverflow" data-elements="1" active="1">
+          <template id="template-element">
+            <div class="element" data-id="">
+              <div class="subElement"></div>
             </div>
           </template>
-          <div class="translate" data-x="0">
-            <div class="card" data-id="1"><div class="table">table 1</div></div>
+          <div class="timelineTranslate" data-x="0">
+            <div class="element" data-id="1"><div class="subElement">element 1</div></div>
           </div>
 
         </div>
 
       </div>
       <div class="button">
-        <button id="addCard" type="button" name="button">add card</button>
+        <button id="add" type="button" name="button">add card</button>
       </div>
 
     </div>
-  <script src="js/init.js"></script>
+    <script src="js/init.js"></script>
   </body>
 </html>
