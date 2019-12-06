@@ -29,7 +29,7 @@ class Timeline {
       }
       // console.log(document.querySelector(".timeline span[id='"+total+"']"));
       document.querySelector(".timeline span[id='"+total+"']").setAttribute('active', true);
-      let offsetCard = document.querySelector(".element[data-id='"+total+"']").offsetLeft;
+      let offsetCard = document.querySelector("div[element][data-id='"+total+"']").offsetLeft;
       this.translateRef.style.transform = "translateX(-"+offsetCard+"px)"
       this.translateRef.setAttribute('data-x', -offsetCard);
     }
@@ -37,7 +37,7 @@ class Timeline {
     this.overflowRef.setAttribute('data-elements', this.totalElements);
     // TODO: recupero le dimensioni delle cards ed imposto .timelineOverflow sulla width risultante
     let widthOverflow = 0;
-    document.querySelectorAll('.element').forEach((element) => {
+    document.querySelectorAll('div[element]').forEach((element) => {
       // recupero la timeline attiva
       let step = +document.querySelector('.timeline span[active]').getAttribute('id');
       console.log(step); // es.: step attivo 4, recupero la larghezza delle element 4 e 5
@@ -63,7 +63,7 @@ class Timeline {
     }
     e.target.setAttribute('active', true);
     // left dello step this.id
-    let offsetCard = document.querySelector(".element[data-id='"+e.target.id+"']").offsetLeft;
+    let offsetCard = document.querySelector("div[element][data-id='"+e.target.id+"']").offsetLeft;
     this.translateRef.style.transform = "translateX(-"+offsetCard+"px)"
     this.translateRef.setAttribute('data-x', -offsetCard);
 
@@ -75,9 +75,9 @@ class Timeline {
     console.log(this);
     let tmplElement = document.getElementById('template-element');
     let tmplContent = tmplElement.content.cloneNode(true);
-    let element = tmplContent.querySelector('.element');
+    let element = tmplContent.querySelector('div[element]');
     element.setAttribute('data-id', ++this.totalElements);
-    element.querySelector('.subElement').innerText = "element "+this.totalElements;
+    // element.querySelector('div[subElement]').innerText = "element "+this.totalElements;
     this.translateRef.appendChild(element);
     // aggiungo lo step nella timeline
     let tmplCircleTimeline = document.getElementById('circle-timeline');
