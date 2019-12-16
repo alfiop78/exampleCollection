@@ -37,7 +37,7 @@
     // ---test 1 OK ---
     // var data = e.dataTransfer.getData("text/plain");
     // // console.log(e.target.parentNode);
-    // // let parent = e.target.parentElement;
+    // let parent = e.target.parentElement;
     e.target.style.background = "initial";
     e.target.style.borderLeft = "initial";
     // // console.log(e.target.id);
@@ -46,17 +46,25 @@
 
     // test 2
     e.target.before( app.dragged );
+    // imposto le posizioni
+
+
     let colSelected = +app.dragged.getAttribute('col');
     let targetColumns = +e.target.getAttribute('col');
+    console.log(e.target);
     console.log(targetColumns);
-    // console.log(app.table.rows);
+
     // TODO: prendo tutti gli elementi td della colonna x
     for (let i = 1; i < app.table.rows.length; i++) {
-      console.log(app.table.rows[i].cells[colSelected]);
-      console.log(app.table.rows[i].cells[targetColumns]);
+
+      // console.log(app.table.rows[i].cells[colSelected]);
+      // console.log(app.table.rows[i].cells[targetColumns]);
+      // console.log(i);
       let t = app.table.rows[i].cells[targetColumns];
       t.before(app.table.rows[i].cells[colSelected]);
     }
+
+
     // test 2
 
   };
