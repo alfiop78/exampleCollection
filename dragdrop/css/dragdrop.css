@@ -1,0 +1,4 @@
+body{display: flex;width: 100%;justify-content: center;}
+table{border: none;border-collapse: collapse;width: 60%;}
+table > thead{background: greenyellow;padding: 8px;}
+table th, table td{padding: 8px;}
