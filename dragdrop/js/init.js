@@ -1,6 +1,7 @@
 (() => {
   var app = {
-    table : document.getElementById('table-01')
+    table : document.getElementById('table-01'),
+    dragDirection : 0 // drag da sinistra->destra effettuo  il after altrimenti il before
   };
 
   app.dragstart = function(e) {
@@ -10,6 +11,7 @@
     console.log(e.target.id);
     e.dataTransfer.setData("text/plain", e.target.id);
     console.log(e.dataTransfer);
+    app.dragDirection = +e.target.getAttribute('col');
     // -- test 1 OK ---
 
 
@@ -22,6 +24,8 @@
 
   app.handlerDragOver = function(e) {
     e.preventDefault();
+    // TODO: se si passa dal target 1->2 inserisco l'elemento after altrimenti before
+
     // e.target.style.opacity = ".2";
   };
 
@@ -44,26 +48,33 @@
     let colTarget = +e.target.getAttribute('col');
     console.log(colSelected);
     console.log(colTarget);
-    e.target.before(draggedEl);
+    (colSelected > colTarget) ? e.target.before(draggedEl) : e.target.after(draggedEl);
+
     // ho la colonna da spostare e la colonna target, con queste posso spostare tutte le righe appartenenti alla colonna
     // recupero le righe della tabella
     for (let i = 1; i < app.table.rows.length; i++) {
       // console.log(app.table.rows[i]);
       // recupero tutta la colonna da spostare
-      console.log(app.table.rows[i].cells[colSelected]);
+      // console.log(colSelected);
+      // console.log(colTarget);
       let elementSelected = app.table.rows[i].cells[colSelected];
       // colonna dove fare il before, colTarget
       let colTargetElement = app.table.rows[i].cells[colTarget];
-      colTargetElement.before(elementSelected);
+      (colSelected > colTarget) ? colTargetElement.before(elementSelected) : colTargetElement.after(elementSelected);
+      
     }
     // ---test 1 OK ---
 
   };
 
   app.handlerDragEnter = function(e) {
+    console.log('dragEnter');
     e.preventDefault();
+    // console.log(e.target.getAttribute('col'));
+
+
     e.target.style.background = "rgba(10,10,10,0.2)";
-    e.target.style.borderLeft = "solid thick brown";
+    // e.target.style.borderLeft = "solid thick brown";
   };
 
   app.handlerDragLeave = function(e) {
@@ -78,7 +89,7 @@
     // ristabilisco le position tramite l'attributo col (header) e data-id (body)
     for (let i = 0; i < app.table.rows.length; i++) {
       for (let c = 0; c < app.table.rows[i].cells.length; c++) {
-        console.log(app.table.rows[i].cells[c]);
+        // console.log(app.table.rows[i].cells[c]);
         app.table.rows[i].cells[c].setAttribute('col', c);
       }
     }
