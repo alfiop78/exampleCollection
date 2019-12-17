@@ -1,6 +1,5 @@
 (() => {
   var app = {
-    dragged : null,
     table : document.getElementById('table-01')
   };
 
@@ -8,15 +7,11 @@
     console.log('start');
     // Set the drag's format and data. Use the event target's id for the data
     // -- test 1 OK ---
-    // console.log(e.target.id);
-    // e.dataTransfer.setData("text/plain", e.target.id);
-    // console.log(e.dataTransfer);
+    console.log(e.target.id);
+    e.dataTransfer.setData("text/plain", e.target.id);
+    console.log(e.dataTransfer);
     // -- test 1 OK ---
-    // --tesst 2
-    app.dragged = e.target;
 
-    console.log(app.dragged);
-    // --tesst 2
 
   };
 
@@ -35,37 +30,33 @@
     console.log('drop');
 
     // ---test 1 OK ---
-    // var data = e.dataTransfer.getData("text/plain");
-    // // console.log(e.target.parentNode);
-    // let parent = e.target.parentElement;
+    var data = e.dataTransfer.getData("text/plain");
+    console.log(e.dataTransfer);
+    let parent = e.target.parentElement;
     e.target.style.background = "initial";
     e.target.style.borderLeft = "initial";
-    // // console.log(e.target.id);
-    // e.target.before(document.getElementById(data));
-    // ---test 1 OK ---
-
-    // test 2
-    e.target.before( app.dragged );
-    // imposto le posizioni
-
-
-    let colSelected = +app.dragged.getAttribute('col');
-    let targetColumns = +e.target.getAttribute('col');
+    // console.log(e.target.id);
+    let draggedEl = document.getElementById(data);
+    console.log(draggedEl);
+    // recupero l'id colonna dell'elemento spostato, per poter spostare tutta la colonna (righe relative alla colonna)
+    let colSelected = +draggedEl.getAttribute('col');
     console.log(e.target);
-    console.log(targetColumns);
-
-    // TODO: prendo tutti gli elementi td della colonna x
+    let colTarget = +e.target.getAttribute('col');
+    console.log(colSelected);
+    console.log(colTarget);
+    e.target.before(draggedEl);
+    // ho la colonna da spostare e la colonna target, con queste posso spostare tutte le righe appartenenti alla colonna
+    // recupero le righe della tabella
     for (let i = 1; i < app.table.rows.length; i++) {
-
-      // console.log(app.table.rows[i].cells[colSelected]);
-      // console.log(app.table.rows[i].cells[targetColumns]);
-      // console.log(i);
-      let t = app.table.rows[i].cells[targetColumns];
-      t.before(app.table.rows[i].cells[colSelected]);
+      // console.log(app.table.rows[i]);
+      // recupero tutta la colonna da spostare
+      console.log(app.table.rows[i].cells[colSelected]);
+      let elementSelected = app.table.rows[i].cells[colSelected];
+      // colonna dove fare il before, colTarget
+      let colTargetElement = app.table.rows[i].cells[colTarget];
+      colTargetElement.before(elementSelected);
     }
-
-
-    // test 2
+    // ---test 1 OK ---
 
   };
 
@@ -84,6 +75,13 @@
   app.handlerDragEnd = function(e) {
     e.preventDefault();
     console.log('end');
+    // ristabilisco le position tramite l'attributo col (header) e data-id (body)
+    for (let i = 0; i < app.table.rows.length; i++) {
+      for (let c = 0; c < app.table.rows[i].cells.length; c++) {
+        console.log(app.table.rows[i].cells[c]);
+        app.table.rows[i].cells[c].setAttribute('col', c);
+      }
+    }
     e.target.style.background = "initial";
   };
 
