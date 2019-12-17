@@ -1,7 +1,8 @@
 (() => {
   var app = {
     table : document.getElementById('table-01'),
-    dragDirection : 0 // drag da sinistra->destra effettuo  il after altrimenti il before
+    dragStart : 0, // drag da sinistra->destra effettuo  il after altrimenti il before
+    dragTarget : 0
   };
 
   app.dragstart = function(e) {
@@ -11,7 +12,10 @@
     console.log(e.target.id);
     e.dataTransfer.setData("text/plain", e.target.id);
     console.log(e.dataTransfer);
-    app.dragDirection = +e.target.getAttribute('col');
+    app.dragStart = +e.target.getAttribute('col');
+    // elimino la class dropzone dalla colonna selezionata
+    // e.target.classList.remove('dropzone');
+    // e.target.style.width = "15px";
     // -- test 1 OK ---
 
 
@@ -19,11 +23,16 @@
 
   app.drag = function(e) {
     console.log('drag');
+    e.target.classList.add('move');
     // this.style.background = 'red';
   };
 
   app.handlerDragOver = function(e) {
     e.preventDefault();
+    // console.log(e.target);
+    // app.dragTarget = +e.target.getAttribute('col');
+
+    // (app.dragStart > app.dragTarget) ? e.target.classList.add('move-before') : e.target.classList.add('move-after');
     // TODO: se si passa dal target 1->2 inserisco l'elemento after altrimenti before
 
     // e.target.style.opacity = ".2";
@@ -61,7 +70,7 @@
       // colonna dove fare il before, colTarget
       let colTargetElement = app.table.rows[i].cells[colTarget];
       (colSelected > colTarget) ? colTargetElement.before(elementSelected) : colTargetElement.after(elementSelected);
-      
+
     }
     // ---test 1 OK ---
 
@@ -70,17 +79,19 @@
   app.handlerDragEnter = function(e) {
     console.log('dragEnter');
     e.preventDefault();
-    // console.log(e.target.getAttribute('col'));
-
-
-    e.target.style.background = "rgba(10,10,10,0.2)";
-    // e.target.style.borderLeft = "solid thick brown";
+    app.dragTarget = +e.target.getAttribute('col');
+    if (e.target.className === "dropzone") {
+      e.target.classList.add('drag');
+      (app.dragStart > app.dragTarget) ? e.target.classList.add('move-before') : e.target.classList.add('move-after');
+    }
   };
 
   app.handlerDragLeave = function(e) {
     e.preventDefault();
-    e.target.style.background = "initial";
-    e.target.style.borderLeft = "initial";
+    e.target.classList.remove('drag');
+
+    app.dragTarget = +e.target.getAttribute('col');
+    (app.dragStart > app.dragTarget) ? e.target.classList.remove('move-before') : e.target.classList.remove('move-after');
   };
 
   app.handlerDragEnd = function(e) {
@@ -93,8 +104,9 @@
         app.table.rows[i].cells[c].setAttribute('col', c);
       }
     }
-    e.target.style.background = "initial";
+
   };
+
 
   document.querySelectorAll('th').forEach((th) => {
     th.ondrag = app.drag;
@@ -105,12 +117,5 @@
     th.ondragleave = app.handlerDragLeave;
     th.ondragend = app.handlerDragEnd;
   });
-
-  document.querySelectorAll('tbody td').forEach((td) => {
-    // console.log(td);
-    // td.ondragover = app.handlerDragOver;
-    // td.ondrop = app.handlerDrop;
-  });
-
 
 })();

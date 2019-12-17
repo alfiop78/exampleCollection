@@ -1,4 +1,10 @@
 body{display: flex;width: 100%;justify-content: center;}
 table{border: none;border-collapse: collapse;width: 60%;}
-table > thead{background: greenyellow;padding: 8px;}
-table th, table td{padding: 8px;}
+table > thead{background: brown; color: white;padding: 8px;}
+table > thead th:hover{}
+table th, table td{transition: all 50ms;padding: 8px;}
+
+table th.drag{background: yellow;}
+table th.move-before{border-left: solid thick blue;}
+table th.move-after{border-right: solid thick green;}
+/* table th.move{opacity: .5;} */
