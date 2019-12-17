@@ -13,9 +13,7 @@
     e.dataTransfer.setData("text/plain", e.target.id);
     console.log(e.dataTransfer);
     app.dragStart = +e.target.getAttribute('col');
-    // elimino la class dropzone dalla colonna selezionata
-    // e.target.classList.remove('dropzone');
-    // e.target.style.width = "15px";
+
     // -- test 1 OK ---
 
 
@@ -23,7 +21,7 @@
 
   app.drag = function(e) {
     console.log('drag');
-    e.target.classList.add('move');
+    // e.target.classList.add('move');
     // this.style.background = 'red';
   };
 
@@ -46,8 +44,6 @@
     var data = e.dataTransfer.getData("text/plain");
     console.log(e.dataTransfer);
     let parent = e.target.parentElement;
-    e.target.style.background = "initial";
-    e.target.style.borderLeft = "initial";
     // console.log(e.target.id);
     let draggedEl = document.getElementById(data);
     console.log(draggedEl);
@@ -58,6 +54,7 @@
     console.log(colSelected);
     console.log(colTarget);
     (colSelected > colTarget) ? e.target.before(draggedEl) : e.target.after(draggedEl);
+    e.target.classList.remove('move-before', 'move-after');
 
     // ho la colonna da spostare e la colonna target, con queste posso spostare tutte le righe appartenenti alla colonna
     // recupero le righe della tabella
@@ -79,18 +76,17 @@
   app.handlerDragEnter = function(e) {
     console.log('dragEnter');
     e.preventDefault();
+
     app.dragTarget = +e.target.getAttribute('col');
     if (e.target.className === "dropzone") {
-      e.target.classList.add('drag');
       (app.dragStart > app.dragTarget) ? e.target.classList.add('move-before') : e.target.classList.add('move-after');
     }
   };
 
   app.handlerDragLeave = function(e) {
     e.preventDefault();
-    e.target.classList.remove('drag');
-
     app.dragTarget = +e.target.getAttribute('col');
+
     (app.dragStart > app.dragTarget) ? e.target.classList.remove('move-before') : e.target.classList.remove('move-after');
   };
 
