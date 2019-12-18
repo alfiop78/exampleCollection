@@ -103,6 +103,17 @@
 
   };
 
+  // app.mouseMove = function(e) {
+  //   // se viene superata la metà del th faccio la translateX
+  //   console.log(e.offsetX);
+  //   if (e.offsetX < (e.target.offsetWidth/2)) {
+  //     e.target.style.transform = "translateX("+e.target.offsetWidth+"px)";
+  //   } else {
+  //     e.target.style.transform = "translateX(0)";
+  //   }
+  //
+  // };
+
 
   document.querySelectorAll('th').forEach((th) => {
     th.ondrag = app.drag;
@@ -112,6 +123,7 @@
     th.ondragenter = app.handlerDragEnter;
     th.ondragleave = app.handlerDragLeave;
     th.ondragend = app.handlerDragEnd;
+    // th.onmousemove = app.mouseMove;
   });
 
 })();
