@@ -1,7 +1,7 @@
 (() => {
   var app = {
     card : document.querySelector('.card'),
-    cardTitle : document.querySelector('.card .cardTable > h5'),
+    cardTitle : document.querySelector('.card .cardTable > h6'),
     page : document.getElementById('page'),
     currentX : 0,
     currentY : 0,
@@ -12,6 +12,7 @@
     yOffset : 0
   };
 
+
   app.dragStart = function(e) {
     if (e.type === 'touchstart') {
         app.initialX = e.touches[0].clientX - app.xOffset;
@@ -21,11 +22,10 @@
         app.initialY = e.clientY - app.yOffset;
       }
 
-      // console.log(e.target);
-      // console.log(app.cardTitle);
-      if (e.target === app.cardTitle) {
-        app.active = true;
-      }
+      // if (e.target === app.cardTitle) {
+      //   app.active = true;
+      // }
+      if (e.target.hasAttribute('move')) {app.active = true;}
   };
 
   app.dragEnd = function(e) {
