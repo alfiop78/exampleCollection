@@ -1,7 +1,7 @@
 (() => {
   var app = {
-    card : document.querySelector('.card.table'),
-    cardTitle : document.querySelector('.card.table .title > h6'),
+    card : null,
+    cardTitle : null,
     content : document.getElementById('content'),
     body : document.getElementById('body'),
     currentX : 0,
@@ -11,11 +11,20 @@
     active : false,
     xOffset : 0,
     yOffset : 0,
-    dragElement : null
+    dragElement : null,
+    elementMenu : null
   };
 
 
   app.dragStart = function(e) {
+    if (e.target.localName === 'h6') {
+      app.cardTitle = e.target;
+      app.card = e.path[4];
+      // recupero la posizione attuale della card tramite l'attributo x-y impostato su .cardTable
+      app.xOffset = e.path[4].getAttribute('x');
+      app.yOffset = e.path[4].getAttribute('y');
+    }
+    // cardTitle = document.querySelector('.card.table .title > h6');
     if (e.type === 'touchstart') {
         app.initialX = e.touches[0].clientX - app.xOffset;
         app.initialY = e.touches[0].clientY - app.yOffset;
@@ -23,8 +32,6 @@
         app.initialX = e.clientX - app.xOffset;
         app.initialY = e.clientY - app.yOffset;
       }
-      console.log(e.target);
-      console.log(app.cardTitle);
 
       if (e.target === app.cardTitle) {
         app.active = true;
@@ -39,7 +46,7 @@
   };
 
   app.drag = function(e) {
-    console.log(e.target);
+    // console.log(e.target);
 
     if (app.active) {
       e.preventDefault();
@@ -54,6 +61,10 @@
 
         app.xOffset = app.currentX;
         app.yOffset = app.currentY;
+        // imposto sulla .cardTable le posizioni dove è 'stato lasciato'  dopo il drag in modo da "riprendere" lo
+        // spostamento da dove era rimasto
+        app.card.setAttribute('x', app.xOffset);
+        app.card.setAttribute('y', app.yOffset);
 
         app.card.style.transform = 'translate3d(' + app.currentX + 'px, ' + app.currentY + 'px, 0)';
       }
@@ -72,6 +83,8 @@
     console.log(e.target.id);
     e.dataTransfer.setData('text/plain', e.target.id);
     app.dragElement = document.getElementById(e.target.id);
+    console.log(e.path);
+    app.elementMenu = e.path[1]; // elemento da eliminare al termine drl drag&drop
     // console.log(e.dataTransfer);
   };
 
@@ -123,8 +136,10 @@
     app.dragElement.classList.remove('menu');
     app.dragElement.classList.add('table');
     app.dragElement.removeAttribute('draggable');
-    app.cardTitle = app.dragElement.querySelector('.title > h6');
-    console.log(app.cardTitle);
+    // recupero l'id dell'elemento che sto spostando, l'id mi ervirà per eliminare .elementMenu dall'elenco di sinista
+    // TODO: terminato il drop elimino l'elemento .elementMenu dall'elenco di sinistra
+    app.elementMenu.remove();
+
   };
 
   Array.from(document.querySelectorAll('div[draggable]')).forEach((item) => {

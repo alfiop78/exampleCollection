@@ -19,4 +19,4 @@
 .card.menu{position: absolute;}
 .card.menu .cardTable > .title{}
 .card.menu .cardTable > .title > h6{margin: 0;font-size: .85rem;padding: 1em;}
-.card.menu .cardTable > .title > h6:hover{margin: 0;font-size: .85rem;padding: 1em;background: gainsboro;cursor: move;}
+.card.menu .cardTable > .title > h6:hover{margin: 0;font-size: .85rem;padding: 1em;background: gainsboro;cursor: grab;}
