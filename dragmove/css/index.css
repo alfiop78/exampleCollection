@@ -1,13 +1,18 @@
-.card{width: 300px;height: 350px;background: wheat;position: absolute;font-size: .8rem;
+.card.table{width: 300px;height: 350px;background: wheat;position: absolute;font-size: .8rem;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);}
 
-.card > .cardLayout{display: grid;grid-template-columns: 100%;position: relative;height: 100%}
-.card > .cardLayout > .cardTable{position: relative;height: fit-content;display: grid;grid-template-areas: "title" "input" "body";}
+.card.table > .cardLayout{display: grid;grid-template-columns: 100%;position: relative;height: 100%}
+.card.table > .cardLayout > .cardTable{position: relative;height: fit-content;display: grid;grid-template-areas: "title" "input" "body";}
 
-.cardTable > .title{grid-area: title;height: fit-content;background: tan;border-top-left-radius: 4px;border-top-right-radius: 4px;}
-.cardTable > .title > h6{padding: 8px 8px 16px 8px; margin: 0;font-size: .75rem;}
-.cardTable > .title > h6:hover{padding: 8px 8px 16px 8px;margin: 0;cursor: move;}
+.card.table .cardTable > .title{grid-area: title;height: fit-content;background: tan;border-top-left-radius: 4px;border-top-right-radius: 4px;}
+.card.table .cardTable > .title > h6{padding: 8px 8px 16px 8px; margin: 0;font-size: .75rem;}
+.card.table .cardTable > .title > h6:hover{padding: 8px 8px 16px 8px;margin: 0;cursor: move;}
 
-.cardTable > .input{grid-area: input;}
+.card.table .cardTable > .input{grid-area: input;}
 
-.cardTable > .body{grid-area: : body;}
+.card.table .cardTable > .body{grid-area: : body;}
+
+.card.menu{}
+.card.menu .cardTable > .title{}
+.card.menu .cardTable > .title > h6{margin: 0;font-size: .85rem;padding: 1em;}
+.card.menu .cardTable > .title > h6:hover{margin: 0;font-size: .85rem;padding: 1em;background: gainsboro;cursor: move;}

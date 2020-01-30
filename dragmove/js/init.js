@@ -1,7 +1,7 @@
 (() => {
   var app = {
-    card : document.querySelector('.card'),
-    cardTitle : document.querySelector('.cardTable > .title > h6'),
+    card : document.querySelector('.card.table'),
+    cardTitle : document.querySelector('.card.table .title > h6'),
     content : document.getElementById('content'),
     body : document.getElementById('body'),
     currentX : 0,
@@ -68,7 +68,7 @@
     // -- test 1 OK ---
     console.log(e.target.id);
     e.dataTransfer.setData('text/plain', e.target.id);
-    console.log(e.dataTransfer);
+    // console.log(e.dataTransfer);
   };
 
   app.handlerDragOver = function(e) {
@@ -98,10 +98,10 @@
     console.log('drop');
     let data = e.dataTransfer.getData('text/plain');
     console.log(e.dataTransfer);
-    app.content.appendChild(document.getElementById(data));
+    app.body.appendChild(document.getElementById(data));
   };
 
-  Array.from(document.querySelectorAll('a[draggable]')).forEach((item, i) => {
+  Array.from(document.querySelectorAll('div[draggable]')).forEach((item, i) => {
     console.log(item);
     item.ondragstart = app.handlerDragStart;
     app.content.ondragover = app.handlerDragOver;
