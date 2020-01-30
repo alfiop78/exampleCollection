@@ -92,7 +92,6 @@
     console.log('dragOver');
     e.preventDefault();
     console.log(e.target);
-    // console.log(app.dragElement);
   };
 
   app.handlerDragEnter = function(e) {
