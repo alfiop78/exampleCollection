@@ -1,39 +1,13 @@
-/* .page{height: 100%;padding: 16px;display: grid;grid-template-columns: 20% 80%;} */
+.card{width: 300px;height: 350px;background: wheat;position: absolute;font-size: .8rem;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);}
 
-.card{width: 300px;height: 350px;background: wheat;position: absolute;}
+.card > .cardLayout{display: grid;grid-template-columns: 100%;position: relative;height: 100%}
+.card > .cardLayout > .cardTable{position: relative;height: fit-content;display: grid;grid-template-areas: "title" "input" "body";}
 
-.cardTable > h6{padding: 16px; background: teal;}
-.cardTable > h6:hover{padding: 16px; background: teal;cursor: move;}
+.cardTable > .title{grid-area: title;height: fit-content;background: tan;border-top-left-radius: 4px;border-top-right-radius: 4px;}
+.cardTable > .title > h6{padding: 8px 8px 16px 8px; margin: 0;font-size: .75rem;}
+.cardTable > .title > h6:hover{padding: 8px 8px 16px 8px;margin: 0;cursor: move;}
 
+.cardTable > .input{grid-area: input;}
 
-
-#page {
-  display: grid;
-  width: 100%;
-  height: 250px;
-  grid-template-areas: "head head"
-                       "nav  main";
-                       /*"nav  foot";*/
-  grid-template-rows: 50px 1fr;
-  grid-template-columns: 200px auto;
-}
-
-#page > .head {
-  grid-area: head;
-  background-color: #8ca0ff;
-}
-
-#page > nav {
-  grid-area: nav;
-  background-color: #ffa08c;
-}
-
-#page > .main {
-  grid-area: main;
-  background-color: #ffff64;
-}
-
-/* #page > footer {
-  grid-area: foot;
-  background-color: #8cffa0;
-} */
+.cardTable > .body{grid-area: : body;}

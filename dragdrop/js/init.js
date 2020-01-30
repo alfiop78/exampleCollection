@@ -10,7 +10,7 @@
     // Set the drag's format and data. Use the event target's id for the data
     // -- test 1 OK ---
     console.log(e.target.id);
-    e.dataTransfer.setData("text/plain", e.target.id);
+    e.dataTransfer.setData('text/plain', e.target.id);
     console.log(e.dataTransfer);
     app.dragStart = +e.target.getAttribute('col');
 
@@ -41,7 +41,7 @@
     console.log('drop');
 
     // ---test 1 OK ---
-    var data = e.dataTransfer.getData("text/plain");
+    var data = e.dataTransfer.getData('text/plain');
     console.log(e.dataTransfer);
     let parent = e.target.parentElement;
     // console.log(e.target.id);
@@ -78,7 +78,7 @@
     e.preventDefault();
 
     app.dragTarget = +e.target.getAttribute('col');
-    if (e.target.className === "dropzone") {
+    if (e.target.className === 'dropzone') {
       (app.dragStart > app.dragTarget) ? e.target.classList.add('move-before') : e.target.classList.add('move-after');
     }
   };

@@ -6,12 +6,26 @@
     <meta name="theme-color" content="#70b1bb">
     <meta name="author" content="Pietrantuono Alfio">
     <link rel="stylesheet" type="text/css" href="css/md-layout.css" />
+    <link rel="stylesheet" type="text/css" href="css/md-drawer.css" />
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>Drag Move</title>
   </head>
   <body>
     <main>
+
+      <div id="drawer">
+
+        <section class="account"><h5>user</h5><i class="material-icons md-light">person</i></section>
+
+        <nav>
+          <a href="#" draggable="true" id="el-0"><i class="material-icons md-18">info</i><span>element 1</span></a>
+
+          <a href="#" draggable="true" id="el-1"><i class="material-icons md-18">info</i><span>element 2</span></a>
+
+        </nav>
+
+      </div>
 
       <header>
         <div class="nav-button"> <!-- codelab-nav-button-->
@@ -20,64 +34,37 @@
 
         </div>
 
-        <h1 class="title"></h1>
+        <h1 class="title">Drag move</h1>
       </header>
 
       <div id="container">
 
-        <div id="content">
+        <div id="content" class="dropzone">
           <div id="body">
 
-            <section id="page">
-              <section class="head">Header</section>
-              <nav>Navigation</nav>
-              <section class="main">
-                <div class="lay">
-                  <div class="posrel">
-                    <div class="card">
-                      <div class="cardLayout">
-                        <section class="cardTable">
-                          <h6 move="true">titolo card 1</h6>
-                        </section>
+            <div class="card">
+              <div class="cardLayout">
+                <section class="cardTable">
+                  <div class="title"><h6>Titolo tabella</h6></div>
+                  <div class="inputSearch"></div>
+                  <div id="columns">
+                    <template id="template-list-columns">
+                      <div class="element">
+                        <li></li>
+                        <i id="hierarchy-icon" class="material-icons md-18">insert_link</i>
+                        <i id="columns-icon" class="material-icons md-18">view_list</i>
+                        <!-- <i id="filters-icon" class="material-icons md-18">filter_list</i> -->
+                        <i id="groupby-icon" class="material-icons md-18">dynamic_feed</i>
+                        <i id="metrics-icon" class="material-icons md-18">show_chart</i>
                       </div>
-                    </div>
+                    </template>
                   </div>
 
-                </div>
-
-              </section>
-              <!-- <footer>Footer</footer> -->
-            </section>
-
-            <!-- <section class="page">
-
-
-              <aside class="leftSide">
-                <nav>
-                  <span>element</span>
-                </nav>
-              </aside>
-
-
-              <div class="area">
-                <div class="card">
-                  <div class="cardLayout">
-                    <section class="cardTable">
-                      <h6 move="true">titolo card 1</h6>
-                    </section>
-                  </div>
-                </div>
-
-                <div class="card" style='left: 10px;'>
-                  <div class="cardLayout">
-                    <section class="cardTable">
-                      <h6 move="true">titolo card 2</h6>
-                    </section>
-                  </div>
-                </div>
+                </section>
               </div>
+            </div>
 
-            </section> -->
+
 
           </div>
 
