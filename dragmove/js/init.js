@@ -10,7 +10,8 @@
     initialY : 0,
     active : false,
     xOffset : 0,
-    yOffset : 0
+    yOffset : 0,
+    dragElement : null
   };
 
 
@@ -22,8 +23,8 @@
         app.initialX = e.clientX - app.xOffset;
         app.initialY = e.clientY - app.yOffset;
       }
-      // console.log(e.target);
-      // console.log(app.cardTitle);
+      console.log(e.target);
+      console.log(app.cardTitle);
 
       if (e.target === app.cardTitle) {
         app.active = true;
@@ -38,7 +39,8 @@
   };
 
   app.drag = function(e) {
-    // console.log(e.target);
+    console.log(e.target);
+
     if (app.active) {
       e.preventDefault();
 
@@ -60,6 +62,7 @@
   app.body.onmousedown = app.dragStart;
   app.body.onmouseup = app.dragEnd;
   app.body.onmousemove = app.drag;
+
   // TODO: aggiungere anhce eventi touch...
 
   app.handlerDragStart = function(e) {
@@ -68,29 +71,47 @@
     // -- test 1 OK ---
     console.log(e.target.id);
     e.dataTransfer.setData('text/plain', e.target.id);
+    app.dragElement = document.getElementById(e.target.id);
     // console.log(e.dataTransfer);
   };
 
   app.handlerDragOver = function(e) {
     console.log('dragOver');
     e.preventDefault();
+    console.log(e.target);
+    // console.log(app.dragElement);
   };
 
   app.handlerDragEnter = function(e) {
-    e.preventDefault();
     console.log('dragEnter');
+    e.preventDefault();
+    // elimino .menu per trasformarla in .card.table
+    // app.dragElement.classList.remove('menu');
+    // app.dragElement.classList.add('table');
+
     console.log(e.target);
     if (e.target.className === 'dropzone') {
       console.log('dropzone');
+      e.target.classList.add('dragging');
+      // app.dragElement.classList.remove('menu');
+      // app.dragElement.classList.add('table');
+      // TODO: inserire un effetto css sulla dropzone
+
     }
   };
 
   app.handlerDragLeave = function(e) {
     e.preventDefault();
+    console.log('dragLeave');
+    // console.log(e.target);
+    app.content.classList.remove('dragging');
   };
 
   app.handlerDragEnd = function(e) {
     e.preventDefault();
+    console.log('dragEnd');
+    console.log(e.target);
+    app.content.classList.remove('dragging');
   };
 
   app.handlerDrop = function(e) {
@@ -99,17 +120,23 @@
     let data = e.dataTransfer.getData('text/plain');
     console.log(e.dataTransfer);
     app.body.appendChild(document.getElementById(data));
+    app.dragElement.classList.remove('menu');
+    app.dragElement.classList.add('table');
+    app.dragElement.removeAttribute('draggable');
+    app.cardTitle = app.dragElement.querySelector('.title > h6');
+    console.log(app.cardTitle);
   };
 
-  Array.from(document.querySelectorAll('div[draggable]')).forEach((item, i) => {
+  Array.from(document.querySelectorAll('div[draggable]')).forEach((item) => {
     console.log(item);
     item.ondragstart = app.handlerDragStart;
-    app.content.ondragover = app.handlerDragOver;
-    app.content.ondragenter = app.handlerDragEnter;
-    app.content.ondragleave = app.handlerDragLeave;
-    app.content.ondrop = app.handlerDrop;
-    app.content.ondragend = app.handlerDragEnd;
   });
+
+  app.content.ondragover = app.handlerDragOver;
+  app.content.ondragenter = app.handlerDragEnter;
+  app.content.ondragleave = app.handlerDragLeave;
+  app.content.ondrop = app.handlerDrop;
+  app.content.ondragend = app.handlerDragEnd;
 
 
 })();

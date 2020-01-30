@@ -1,3 +1,5 @@
+#content.dragging{opacity: .6;}
+
 .card.table{width: 300px;height: 350px;background: wheat;position: absolute;font-size: .8rem;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);}
 
@@ -12,7 +14,9 @@
 
 .card.table .cardTable > .body{grid-area: : body;}
 
-.card.menu{}
+.elementMenu{background: tan;margin: 8px 0;position: relative;height: 50px;display: flex;align-items: center;width: 100%;}
+.elementMenu > .card.menu{position: absolute;width: inherit;}
+.card.menu{position: absolute;}
 .card.menu .cardTable > .title{}
 .card.menu .cardTable > .title > h6{margin: 0;font-size: .85rem;padding: 1em;}
 .card.menu .cardTable > .title > h6:hover{margin: 0;font-size: .85rem;padding: 1em;background: gainsboro;cursor: move;}
