@@ -47,7 +47,7 @@
 
   app.drag = function(e) {
     // console.log(e.target);
-
+    // console.log(e);
     if (app.active) {
       e.preventDefault();
 
@@ -91,7 +91,10 @@
   app.handlerDragOver = function(e) {
     console.log('dragOver');
     e.preventDefault();
-    console.log(e.target);
+    // console.log(e.clientX);
+    // console.log(e.clientY);
+
+    // console.log(e.target);
   };
 
   app.handlerDragEnter = function(e) {
@@ -129,6 +132,7 @@
   app.handlerDrop = function(e) {
     e.preventDefault();
     console.log('drop');
+    console.log(e);
     let data = e.dataTransfer.getData('text/plain');
     console.log(e.dataTransfer);
     app.body.appendChild(document.getElementById(data));
@@ -138,6 +142,11 @@
     // recupero l'id dell'elemento che sto spostando, l'id mi ervirà per eliminare .elementMenu dall'elenco di sinista
     // TODO: terminato il drop elimino l'elemento .elementMenu dall'elenco di sinistra
     app.elementMenu.remove();
+    // TODO: imposto la card draggata nella posizione dove si trova il mouse
+    console.log(app.dragElement);
+    app.dragElement.style.transform = 'translate3d(' + e.offsetX + 'px, ' + e.offsetY + 'px, 0)';
+    app.dragElement.setAttribute('x', e.offsetX);
+    app.dragElement.setAttribute('y', e.offsetY);
 
   };
 
