@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="it" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="/images/favicon.png" type="image/png" />
+    <link rel="stylesheet" type="text/css" href="css/timeline.css" />
+    <script src="js/Timeline.js"></script>
+    <title>Horizontal Timeline</title>
+  </head>
+  <body>
+    <!-- NOTE: id=layout-timeline-0
+    Questa è una timeline orizzontale con due elementi al suo interno   -->
+
+    <div class="timelineContent" id="layout-timeline-0">
+
+      <div class="timelineContainer">
+        <template id="circle-timeline">
+          <span data-id=""></span>
+        </template>
+        <div class="timeline"><span data-id="1" active></span></div>
+
+        <div class="timelineOverflow" data-elements="1" active="1">
+          <template id="template-element">
+            <div class="" data-id="" element>
+              <div class="" sub-element></div>
+            </div>
+          </template>
+          <div class="timelineTranslate" data-x="0">
+            <div class="" data-id="1" element><div class="" sub-element>element 1</div></div>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="button">
+        <button id="add" type="button" name="button">add card</button>
+      </div>
+
+    </div>
+    <script src="js/init.js"></script>
+  </body>
+</html>
