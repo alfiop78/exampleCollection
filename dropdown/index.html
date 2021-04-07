@@ -13,12 +13,25 @@
       <label for="test">label</label>
       <div class="elements" options="filters">
         <ul class="filters" id="">
-          <li>2018</li>
-          <li>2019</li>
-          <li>2020</li>
+          <li class="item" value="2018">2018</li>
+          <li class="item" value="2019">2019</li>
+          <li class="item" value="2020">2020</li>
         </ul>
-        <section>
-          <button class="button dense raised">ok</button>
+      </div>
+
+    </div>
+    <!-- multi select filter -->
+    <div class="md-field" data-param-id="" options='filters'>
+      <input type="search" id="year" readonly value="" onclick="this.select()"/>
+      <label for="test">label</label>
+      <div class="elements" options="filters">
+        <ul class="filters" id="" multi>
+          <li class="item" value="1">January<span><input type="checkbox"></span></li>
+          <li class="item" value="2">Febrary<span><input type="checkbox"></span></li>
+          <li class="item" value="3">March<span><input type="checkbox"></span></li>
+        </ul>
+        <section class="filterButton">
+          <button class="button dense raised" done>ok</button>
         </section>
       </div>
 
