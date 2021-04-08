@@ -8,49 +8,74 @@
   </head>
   <body>
 
-    <div class="md-field" data-param-id="" options='filters'>
-      <input type="search" id="test" value="" onclick="this.select()"/>
-      <label for="test">label</label>
-      <div class="elements" options="filters">
-        <ul class="filters" id="" single>
-          <div class="item" data-search="2018"><div class="element"><li value="2018">2018</li></div></div>
-          <div class="item" data-search="2019"><div class="element"><li value="2019">2019</li></div></div>
-          <div class="item" data-search="2020"><div class="element"><li value="2020">2020</li></div></div>
-        </ul>
+    <section class="filters">
+      <div class="md-field" data-param-id="" options='filters'>
+        <input type="search" id="test" value="" onclick="this.select()"/>
+        <label for="test">label</label>
+        <div class="elements" filter>
+          <ul class="filters" id="" single>
+            <div class="item" data-search="2018"><div class="element"><li value="2018">2018</li></div></div>
+            <div class="item" data-search="2019"><div class="element"><li value="2019">2019</li></div></div>
+            <div class="item" data-search="2020"><div class="element"><li value="2020">2020</li></div></div>
+          </ul>
+        </div>
       </div>
-    </div>
-
-    <!-- multi select filter -->
-    <div class="md-field" data-param-id="" options='filters'>
-      <input type="search" id="year" value="" onclick="this.select()"/>
-      <label for="test">label</label>
-      <div class="elements" options="filters">
-        <ul class="filters" id="" multi>
-          <div class="item" data-search="january">
-            <div class="element">
-              <li value="1">January</li>
-              <span><input type="checkbox"></span>
-            </div>
-          </div>
-          <div class="item" data-search="february">
-            <div class="element">
-              <li value="2">February</li>
-              <span><input type="checkbox"></span>
-            </div>
-          </div>
-          <div class="item" data-search="march">
-            <div class="element">
-              <li value="3">March</li>
-              <span><input type="checkbox"></span>
-            </div>
-          </div>
-        </ul>
-        <section class="filterButton">
-          <button class="button dense raised" done>ok</button>
-        </section>
+      <div class="md-field" data-param-id="" options='filters'>
+        <input type="search" id="test2" value="" onclick="this.select()"/>
+        <label for="test">label</label>
+        <div class="elements" filter>
+          <ul class="filters" id="" single>
+            <div class="item" data-search="2018"><div class="element"><li value="2018">2018</li></div></div>
+            <div class="item" data-search="2019"><div class="element"><li value="2019">2019</li></div></div>
+            <div class="item" data-search="2020"><div class="element"><li value="2020">2020</li></div></div>
+          </ul>
+        </div>
+      </div>
+      <div class="md-field" data-param-id="" options='filters'>
+        <input type="search" id="test3" value=""/>
+        <label for="test">label</label>
+        <div class="elements" filter>
+          <ul class="filters" id="" single>
+            <div class="item" data-search="2018"><div class="element"><li value="2018">2018</li></div></div>
+            <div class="item" data-search="2019"><div class="element"><li value="2019">2019</li></div></div>
+            <div class="item" data-search="2020"><div class="element"><li value="2020">2020</li></div></div>
+          </ul>
+        </div>
       </div>
 
-    </div>
+      <!-- multi select filter -->
+      <div class="md-field" data-param-id="" options='filters'>
+        <input type="search" id="year" value="" onclick="this.select()"/>
+        <label for="test">label</label>
+        <div class="elements" filter>
+          <ul class="filters" id="" multi>
+            <div class="item" data-search="january">
+              <div class="element">
+                <li value="1">January</li>
+                <span><input type="checkbox"></span>
+              </div>
+            </div>
+            <div class="item" data-search="february">
+              <div class="element">
+                <li value="2">February</li>
+                <span><input type="checkbox"></span>
+              </div>
+            </div>
+            <div class="item" data-search="march">
+              <div class="element">
+                <li value="3">March</li>
+                <span><input type="checkbox"></span>
+              </div>
+            </div>
+          </ul>
+          <section class="filterButton">
+            <button class="button dense raised" done>ok</button>
+          </section>
+        </div>
+
+      </div>
+    </section>
+
     <script src="js/init.js"></script>
     <script src="js/Dropdown.js"></script>
   </body>

@@ -3,6 +3,7 @@
     dropDown: null
   };
 
+  // attivazione della dropdown dalla input search
   document.querySelectorAll('input[type="search"]').forEach((item, i) => {
     item.onclick = (e) => {
       // console.log(e.target);
@@ -19,7 +20,6 @@
     item.onclick = (e) => {
       // console.log(e.target, e.path);
       // metto nella input il valore selezionato e chiudo la select
-      debugger;
       app.dropDown.input.value = e.currentTarget.querySelector('li').getAttribute('value');
       app.dropDown.label.classList.add('has-content');
       app.dropDown.toggle();
@@ -35,6 +35,7 @@
     };
   });
 
+  // tasto ok nella dropdown multi-select
   document.querySelectorAll('.filterButton > button[done]').forEach((item, i) => {
     item.onclick = (e) => {
       app.dropDown.toggle();
@@ -45,6 +46,7 @@
     };
   });
 
+  // input di ricerca delle dropdown
   app.inputSearch = (e) => {
     console.log(e.target.value);
     if (e.target.value.length === 0) {app.dropDown.label.classList.remove("has-content");}

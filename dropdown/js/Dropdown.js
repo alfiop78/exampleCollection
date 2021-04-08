@@ -17,7 +17,15 @@ class Dropdown {
     }
   }
 
-  toggle() {this.elements.toggleAttribute('show');}
+  toggle() {
+    // prima di mostrare/nascondere una dropdown chiude qualsiasi altra dropdown aperta nella pagina
+    console.log(document.querySelectorAll('.elements[filter][show]'));
+    document.querySelectorAll('.elements[filter]').forEach((item, i) => {
+      // ciclo tutte le dropdown presenti nella pagina...
+      // apro/chiudo la dropdown che è stata attivata e chiude tutte le altre attualmente aperte.
+      (item === this.elements) ? this.elements.toggleAttribute('show') : item.removeAttribute('show');
+    });
+  }
 
   search(value) {
     /*
