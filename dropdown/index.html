@@ -9,26 +9,41 @@
   <body>
 
     <div class="md-field" data-param-id="" options='filters'>
-      <input type="search" id="test" readonly value="" onclick="this.select()"/>
+      <input type="search" id="test" value="" onclick="this.select()"/>
       <label for="test">label</label>
       <div class="elements" options="filters">
         <ul class="filters" id="" single>
-          <li class="item" value="2018">2018</li>
-          <li class="item" value="2019">2019</li>
-          <li class="item" value="2020">2020</li>
+          <div class="item" data-search="2018"><div class="element"><li value="2018">2018</li></div></div>
+          <div class="item" data-search="2019"><div class="element"><li value="2019">2019</li></div></div>
+          <div class="item" data-search="2020"><div class="element"><li value="2020">2020</li></div></div>
         </ul>
       </div>
     </div>
 
     <!-- multi select filter -->
     <div class="md-field" data-param-id="" options='filters'>
-      <input type="search" id="year" readonly value="" onclick="this.select()"/>
+      <input type="search" id="year" value="" onclick="this.select()"/>
       <label for="test">label</label>
       <div class="elements" options="filters">
         <ul class="filters" id="" multi>
-          <li class="item" value="1">January<span><input type="checkbox"></span></li>
-          <li class="item" value="2">Febrary<span><input type="checkbox"></span></li>
-          <li class="item" value="3">March<span><input type="checkbox"></span></li>
+          <div class="item" data-search="january">
+            <div class="element">
+              <li value="1">January</li>
+              <span><input type="checkbox"></span>
+            </div>
+          </div>
+          <div class="item" data-search="february">
+            <div class="element">
+              <li value="2">February</li>
+              <span><input type="checkbox"></span>
+            </div>
+          </div>
+          <div class="item" data-search="march">
+            <div class="element">
+              <li value="3">March</li>
+              <span><input type="checkbox"></span>
+            </div>
+          </div>
         </ul>
         <section class="filterButton">
           <button class="button dense raised" done>ok</button>
