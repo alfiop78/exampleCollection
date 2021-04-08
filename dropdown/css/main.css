@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap'); /*font-family: 'Open Sans', sans-serif;*/
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=swap");
+
 * {box-sizing: border-box;font-family: 'Open Sans';}
 .md-field{position: relative;max-width: 250px;}
 input:not([type="checkbox"]){border-top-left-radius: 5px;border-top-right-radius: 5px; max-width: inherit;min-width: 120px;
@@ -13,8 +14,8 @@ input:focus ~ label:not(has-content),input:valid ~ label.has-content,input:read-
 label[for]{color:#999; left: 4px; margin:0;font-weight:normal;position:absolute;pointer-events:none;font-size: .85rem;
   padding: 0 8px;transition: all .2s ease-in-out; text-overflow: ellipsis; white-space: nowrap;top: 32px;}
 
-input ~ .elements[options="filters"]{visibility: hidden;background-color: #F8F8F8;border-radius: 5px;margin: 4px; box-shadow: 0 1px 4px -2px black;}
-input ~ .elements[options="filters"][show]{visibility: visible;}
+input ~ .elements[options="filters"]{display: none;background-color: #F8F8F8;border-radius: 5px;margin: 4px; box-shadow: 0 1px 4px -2px black;}
+input ~ .elements[options="filters"][show]{display: block;}
 input ~ .elements[options="filters"] > ul {list-style: none;padding: .5em 0px .5em 0px;margin:0px;}
 .filters[multi] > .item{display: flex;justify-content: space-between;}
 .elements > ul > .item {margin: 5px; padding: 12px;font-size: .9rem;}

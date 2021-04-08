@@ -1,25 +1,29 @@
 (() => {
   var app = {
+    dropDown: null
   };
 
   document.querySelectorAll('input[type="search"]').forEach((item, i) => {
     item.onclick = (e) => {
       // console.log(e.target);
-      e.target.parentElement.querySelector('.elements').toggleAttribute('show');
+      // e.target.parentElement.querySelector('.elements').toggleAttribute('show');
+      app.dropDown = new Dropdown(e.currentTarget.parentElement);
+      // applico il toggleAttribute su .elements
+      app.dropDown.toggle();
     };
   });
   // single selection
-  document.querySelectorAll('ul.filters > .item').forEach((item, i) => {
+  document.querySelectorAll('ul.filters[single] > .item').forEach((item, i) => {
     item.onclick = (e) => {
       console.log(e.target, e.path);
-      // metto nella input il valore selezionato
-      e.path[3].querySelector('input[type="search"]').value = e.target.getAttribute('value');
-      e.path[3].querySelector('label').classList.add("has-content");
-      e.path[2].removeAttribute('show');
+      // metto nella input il valore selezionato e chiudo la select
+      app.dropDown.input.value = e.target.getAttribute('value');
+      app.dropDown.label.classList.toggle('has-content');
+      app.dropDown.toggle();
     };
   });
   // multi-selection
-  document.querySelectorAll('ul.filters[year] > .item').forEach((item, i) => {
+  document.querySelectorAll('ul.filters[multi] > .item').forEach((item, i) => {
     item.onclick = (e) => {
       console.log('multi', e.target, e.path);
       console.log(e.currentTarget);
@@ -28,12 +32,10 @@
     };
   });
 
-  document.querySelectorAll('.filterButton > button[done]').forEach((item, i) => {
-    item.onclick = (e) => {
-      
-    };
-  });
-
-
+  // document.querySelectorAll('.filterButton > button[done]').forEach((item, i) => {
+  //   item.onclick = (e) => {
+  //
+  //   };
+  // });
 
 })();
