@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&display=swap'); /*font-family: 'Open Sans', sans-serif;*/
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=swap");
+
+* {box-sizing: border-box;font-family: 'Open Sans';}
+
 .svg-item {
     width: 100%;
     font-size: 16px;
@@ -131,13 +136,75 @@
     animation: donutfadelong 1s;
 }
 
-
-
-
 /* ---------- */
 /* just for this presentation */
 html { text-align:center; }
 .svg-item {
   max-width:30%;
   display:inline-block;
+}
+
+
+/* metric chart */
+.metricChart{
+  width: 350px;
+  background: #e2e2e2;
+  border-radius: 5px;
+  box-shadow: 0px 1px 5px -2px black;
+  height: 140px;
+  position: relative;
+  display: grid;grid-template-rows: 70% 30%;
+}
+.metricChart > section{
+  display: grid;
+  grid-template-columns: 40% 60%;
+  height: 100%;
+}
+.metricIcon{
+  width: 95px;
+  height: inherit;
+}
+
+.metricIcon > .icon{
+  position: absolute;
+  width: inherit;
+  height: 70%;
+  background: #ebd8b7;
+  top: -30px;
+  left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  box-shadow: 0px 1px 3px -2px black;
+}
+
+.metricChart > section > .data{
+  height: inherit;
+  display: grid;
+  grid-template-rows: 40% 60%;
+}
+
+.metricChart > section .data > .metricLabel{
+  color: #c6a9a3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.metricChart > section > .data > .metricValue{
+  color: #9a8194;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 2rem;
+  padding: 0 .5em;
+}
+
+.metricChart > .metricAlert{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 1em;
+  color: #865858;
 }
