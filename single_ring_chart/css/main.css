@@ -148,6 +148,7 @@ html { text-align:center; }
 /* metric chart */
 .metricChart{
   width: 350px;
+  top: 30px;
   background: #e2e2e2;
   border-radius: 5px;
   box-shadow: 0px 1px 5px -2px black;
