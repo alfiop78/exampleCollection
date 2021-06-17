@@ -6,6 +6,7 @@
   const circle = document.querySelector('.donut-segment-2');
   const label = document.querySelector('.donut-percent');
   const circumference = circle.getTotalLength();
+  console.log(circle.getTotalLength());
 
   const value = 50; // valore restituito da una chiamata
   label.innerHTML = value+"&percnt;"; // valore all'interno del cerchio
