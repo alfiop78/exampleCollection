@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+@property --num {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+
+@property --dec {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+
+span.val {
+  transition: --num 1s;
+  counter-set: num var(--num) dec var(--dec);
+}
+span.val::before {
+	content: counter(num) "." counter(dec) " €";
+}
+
+/*span.val::after{
+	content: counter(dec) " €";
+}*/
+span.val {
+  /*--num: 100;*/
+  animation: cou 1s forwards;
+}
+
+@keyframes cou {
+    from {
+        --num: 0;
+        --dec: 0;
+    }
+    to {
+        --num: 1000;
+        --dec: 5;
+    }
+}
