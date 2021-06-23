@@ -34,7 +34,7 @@ span.val {
         --dec: 0;
     }
     to {
-        --num: 1000;
+        --num: 500;
         --dec: 5;
     }
 }
