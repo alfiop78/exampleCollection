@@ -22,7 +22,11 @@ class Steps {
 
   next() {
     // this._pageWidth = this._page.offsetWidth + 32;
-    this._translate.style.transform = "translateX(-"+this._pageWidth+"px)";
+    this.dataTranslateX = (this._pageWidth - this._translate.getAttribute('data-translate-x'));
+    console.log('this.dataTranslateX : ', this.dataTranslateX);
+    this._translate.style.transform = "translateX(-"+this.dataTranslateX+"px)";
+    // this._translate.style.transform = "translateX(-"+this._pageWidth+"px)";
+    this._translate.setAttribute('data-translate-x', -this.dataTranslateX);
   }
 
   goStep(e) {
