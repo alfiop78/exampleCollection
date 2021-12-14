@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+	<meta charset="utf-8">
+	<title>Bootstrap dataTable</title>
+	<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
+	<!-- group by extensione -->
+	<link href="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/group-by-v2/bootstrap-table-group-by.css" rel="stylesheet">
+	<!-- bootstrap 4.3.1 -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+  </head>
+  <body>
+
+  	<div class="container">
+  		<div class="row">
+			<div class="col-sm">
+				One of three columns
+				<div class="dropdown">
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						<button class="dropdown-item" type="button">Action</button>
+						<button class="dropdown-item active" type="button">Another action</button>
+						<button class="dropdown-item" type="button">Something else here</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm">
+			  One of three columns
+			</div>
+			<div class="col-sm">
+			  One of three columns
+			</div>
+			<div class="col-sm">
+			  One of three columns
+			</div>
+			<div class="col-sm">
+			  One of three columns
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-9">
+				<div class="chart">Chart</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="card text-center bg-light">
+					<div class="card-body">
+						<h5 class="card-title">Card title</h5>
+						<p class="card-text">This card has a regular title and short paragraphy of text below it.</p>
+						<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
+		<table id="table" data-toggle="table" class="table table-sm" data-search="true">
+			<thead>
+				<tr>
+					<th data-field="id">dlr</th>
+					<th data-field="item">sede</th>
+					<th data-field="price">value</th>
+				</tr>
+			</thead>
+		  	<tbody>
+				<tr>
+					<td>dealer 1</td>
+					<td>sede 1</td>
+					<td>41</td>
+				</tr>
+				<tr>
+					<td>dealer 1</td>
+					<td>sede 2</td>
+					<td>32</td>
+				</tr>
+		  	</tbody>
+		</table>		
+	</div>
+
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/group-by-v2/bootstrap-table-group-by.min.js"></script>
+	<script src="js/init.js"></script>
+  </body>
+</html>
