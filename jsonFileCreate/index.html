@@ -5,12 +5,41 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>JSON Template</title>
 </head>
-<body>
-	<form action="test.php" method="GET">
-		<input type="text" placeholder="primo elemento del json">
-		<input type="text" placeholder="secondo elemento">
-		<button type="submit">scrivi file</button>
-	</form>
-	
+<body>	
+	<input type="text" placeholder="primo elemento del json">
+	<input type="text" placeholder="secondo elemento">
+	<button>scrivi file</button>
+
+	<script type="text/javascript">
+		const button = document.getElementsByTagName('button')[0];
+		console.log('button : ', button);
+		button.addEventListener('click', go);
+
+		async function go() {
+			console.log('creazione file json : ');
+			// TODO: recupero tutte le input da inserire nel file
+			const params = "filters=input";
+			const url = "test.php";
+		    // console.log(params);
+		    const init = {headers: {'Content-Type': 'application/x-www-form-urlencoded'}, method: 'POST', body: params};
+		    const req = new Request(url, init);
+		    // console.log('load data for template');
+		    await fetch(req)
+		      .then( (response) => {
+		        if (!response.ok) {throw Error(response.statusText);}
+		        return response;
+		      })
+		      .then( (response) => response.json())
+		      .then( (data) => {
+		        // console.log(data);
+		        if (data) {
+		        	console.log(data);
+		        } else {
+		          // TODO: no data per questa metrica
+		        }
+		      })
+		      .catch( (err) => console.error(err));
+		}
+	</script>
 </body>
 </html>
