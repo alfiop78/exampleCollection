@@ -23,14 +23,21 @@
 			<label for="input-filename">.json</label>
 		</fieldset>
 	</section>
+	<template id="filter-template-inputs">
+		<div data-id>
+			<input type="text" data-filter-name placeholder="Nome filtro (es.: year)">
+			<input type="text" data-filter-id placeholder="Elemento id nel DOM">
+			<input type="text" data-filter-type placeholder="Tipo filtro (es.: select, date)">
+		</div>
+	</template>
 
 	<section>
 		<fieldset data-section-name="filters">
 			<legend>filters</legend>
 			<p>Crea la struttura dei filtri con le proprietà per ogni filtro</p>
-			<input type="text" data-filter-name placeholder="Nome filtro (es.: year)">
-			<input type="text" data-filter-id placeholder="Elemento id nel DOM">
-			<input type="text" data-filter-type placeholder="Tipo filtro (es.: select, date)">
+			<div id="input-filters">
+				
+			</div>
 			<div class="buttons">
 				<button id="btn-add-field">Aggiungi filtro</button> <!-- aggiungi filtro -->
 			</div>
