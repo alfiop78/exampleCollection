@@ -1,11 +1,13 @@
 <?php
-	$fp = fopen("file.json", "w");
+	$file = filter_input(INPUT_POST, 'filename');
+	$filterName = filter_input(INPUT_POST, 'filterName');
+	$fp = fopen($file.".json", "w");
 	$json = [
-		["testjson" => "provajson2"]
+		["filters" => [$filterName, "month", "date", "site", "brand", "vehicle_brand", "accettatore"]]
 	];
 
 	if (fwrite($fp, json_encode($json)) === FALSE) {
-        echo "Cannot write to file ($filename)";
+        echo "Cannot write to file ($file)";
         exit;
     }
 

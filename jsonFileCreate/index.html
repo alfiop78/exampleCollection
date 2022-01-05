@@ -5,41 +5,40 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>JSON Template</title>
 </head>
-<body>	
-	<input type="text" placeholder="primo elemento del json">
-	<input type="text" placeholder="secondo elemento">
-	<button>scrivi file</button>
+<style>
+	fieldset{
+		border: solid thin gainsboro;
+		border-radius: 4px;
+	}
 
-	<script type="text/javascript">
-		const button = document.getElementsByTagName('button')[0];
-		console.log('button : ', button);
-		button.addEventListener('click', go);
+	.buttons{margin: 1em;}
 
-		async function go() {
-			console.log('creazione file json : ');
-			// TODO: recupero tutte le input da inserire nel file
-			const params = "filters=input";
-			const url = "test.php";
-		    // console.log(params);
-		    const init = {headers: {'Content-Type': 'application/x-www-form-urlencoded'}, method: 'POST', body: params};
-		    const req = new Request(url, init);
-		    // console.log('load data for template');
-		    await fetch(req)
-		      .then( (response) => {
-		        if (!response.ok) {throw Error(response.statusText);}
-		        return response;
-		      })
-		      .then( (response) => response.json())
-		      .then( (data) => {
-		        // console.log(data);
-		        if (data) {
-		        	console.log(data);
-		        } else {
-		          // TODO: no data per questa metrica
-		        }
-		      })
-		      .catch( (err) => console.error(err));
-		}
-	</script>
+	section{margin: 1em;}
+</style>
+<body>
+	<section>
+		<fieldset>
+			<legend>File name</legend>
+			<input id="input-filename" type="text" placeholder="File name">
+			<label for="input-filename">.json</label>
+		</fieldset>
+	</section>
+
+	<section>
+		<fieldset data-section-name="filters">
+			<legend>filters</legend>
+			<p>Crea la struttura dei filtri con le proprietà per ogni filtro</p>
+			<input type="text" data-filter-name placeholder="Nome filtro (es.: year)">
+			<input type="text" data-filter-id placeholder="Elemento id nel DOM">
+			<input type="text" data-filter-type placeholder="Tipo filtro (es.: select, date)">
+			<div class="buttons">
+				<button id="btn-add-field">Aggiungi filtro</button> <!-- aggiungi filtro -->
+			</div>
+		</fieldset>
+	</section>
+
+	<button id="btn-create-json">crea</button>
+
+	<script type="text/javascript" src="init.js"></script>
 </body>
 </html>
