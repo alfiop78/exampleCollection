@@ -74,7 +74,7 @@
 	};
 
     // recupero il json selezionato
-    app.init = () => {
+    app.init = async () => {
 		const url = "get_json.php";
 		const req = new Request(url);
 		// console.log('load data for template');
@@ -87,7 +87,15 @@
 		.then( (data) => {
 			console.log(data);
 			if (data) {
-				// console.log(data);
+				for (const [key, value] of Object.entries(data)) {
+                    console.log(key, value);
+                    let p = document.createElement('p');
+                    let div = document.createElement('div');
+                    p.innerText = value[0];
+                    div.innerHTML = value[1];
+                    p.appendChild(div);
+                    app.json.appendChild(p);
+                    }
 			} else {
 				// TODO: 
 			}

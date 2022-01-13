@@ -4,23 +4,21 @@
     $password = 'harley-davidson2018';
     $link = new mysqli($host, $user, $password, 'test_local') or die("Errore nella connessione al DB {$link->error}");
 
-    $sql = "INSERT INTO json_template (json_key, json_value) VALUES('$name', $json);";
+    $sql = "SELECT json_key, json_value FROM json_template;";
     // var_dump($sql);
     // exit;
     try {
-        if ($stmt->prepare($sql)){
-            // echo "prepare statement";
-            if (!$stmt->execute()) {
-              //throw new Exception("Errore nell'esecuzione della query");
-              throw new Exception("Err.",$link->errno);
-            }
-            $affectedRow = $stmt->affected_rows;
-            $stmt->close();
-            $link->close();
-            echo $affectedRow;
-        } else {
+        if (!$result = $link->query($sql)) {
+            //throw new Exception("Errore nella query");
             throw new Exception("Errore : ",$link->errno);
-            //return FALSE;
+        } elseif ($result->num_rows > 0) {
+            while ($row = $result->fetch_row()) {$arr[] = $row;}
+            $link->close();
+            // echo json_encode($arr);
+            echo json_encode($arr, JSON_FORCE_OBJECT);
+        } else {
+            echo FALSE;
+            //throw new Exception("Nessun risultato dalla query");
         }
     } catch (Exception $e) {
         echo $e->getMessage();
