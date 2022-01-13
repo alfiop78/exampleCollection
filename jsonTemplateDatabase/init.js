@@ -4,7 +4,8 @@
 		templateFilters : document.getElementById('filter-template-inputs'),
 		// buttons
 		btnAddField : document.getElementById('btn-add-field'),
-		btnCreateJson : document.getElementById('btn-create-json')
+		btnCreateJson : document.getElementById('btn-create-json'),
+        json : document.getElementById('json')
 
 	};
 
@@ -15,11 +16,14 @@
 		// parent.childElementCount conta quanti elmeenti sono stati aggiunti ed assegna un numero all'attr data-id
 		tmpl.querySelector('div').setAttribute('data-id', parent.childElementCount);
 		parent.appendChild(tmpl);
+        console.log(parent.querySelector("div[data-id='"+(parent.childElementCount-1)+"'] > input[data-filter-name]") );
+        parent.querySelector("div[data-id='"+(parent.childElementCount-1)+"'] > input[data-filter-name]").focus();
 	};
 
 	app.btnCreateJson.onclick = async (e) => {
 		console.log('Salvataggio json nel DB');
 		const name = document.getElementById('input-filename').value;
+        if (!name) {console.error('Nome non inserito');return;}
 		// TODO: recupero tutte le input da inserire nel file
 		// quanti filtri ci sono ?
 		let paramsObj = {};
@@ -68,6 +72,30 @@
 		})
 		.catch( (err) => console.error(err));
 	};
+
+    // recupero il json selezionato
+    app.init = () => {
+		const url = "get_json.php";
+		const req = new Request(url);
+		// console.log('load data for template');
+		await fetch(req)
+		.then( (response) => {
+	        if (!response.ok) {throw Error(response.statusText);}
+	        return response;
+	    })
+		.then( (response) => response.json())
+		.then( (data) => {
+			console.log(data);
+			if (data) {
+				// console.log(data);
+			} else {
+				// TODO: 
+			}
+		})
+		.catch( (err) => console.error(err));
+    };
+
+    app.init();
 
 })();
 
