@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="icon" href="/favicon.png" type="image/png" />
+  <title>Map Database</title>
+  <link rel="stylesheet" href="init.css" />
+</head>
+
+<body class="antialiased">
+
+  <template id="tmpl-li">
+    <li data-element-search data-label data-searchable="true"></li>
+    <li data-element-search data-label data-searchable="true" draggable="true"></li>
+  </template>
+
+  <template id="tmpl-card">
+    <section class="card dropzone" data-id="1" data-count-table="0">
+      <div class="card-area" data-translate-x="0" data-join-count="0">
+        <small data-path-to></small>
+        <div class="table dropzone">
+          <span></span>
+        </div>
+        <small data-path-from></small>
+      </div>
+    </section>
+  </template>
+
+  <main>
+
+    <div id="container">
+      <div id="content">
+        <div id="body">
+
+          <section class="wrapper">
+            <section>
+              <h3>Creazione nuova dimensione</h3>
+            </section>
+            <section id="canvas-area">
+              <div id="translate" class="translate" data-translate-x="0" data-translate-y="0">
+                <!--<canvas id="canvas-1"></canvas>-->
+                <div class="hierarchy dropzone" id="h">
+                  <div class="flow">
+                    <section class="card dropzone" data-id="1" data-count-table="0">
+                      <div class="card-area" data-translate-x="0" data-join-count="0">
+                        <small data-path-to></small>
+                        <div class="table dropzone">
+                          <span></span>
+                        </div>
+                        <small data-path-from></small>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+                <svg id="svg" class="dropzone"></svg>
+              </div>
+            </section>
+            <section id="tables-area">
+              <section class="table-area-wrapper">
+                <section class="list-search">
+                  <div class="relative-ul">
+                    <ul id="ul-tables" class="custom-scrollbar">
+                      <li id="data-1" data-translate-x="0" data-translate-y="0" data-label="table 1" draggable="true">
+                        table 1</li>
+                      <li id="data-2" data-translate-x="0" data-translate-y="0" data-label="table 2" draggable="true">
+                        table 2</li>
+                      <li id="data-3" data-translate-x="0" data-translate-y="0" data-label="table 3" draggable="true">
+                        table 3</li>
+                      <li id="data-4" data-translate-x="0" data-translate-y="0" data-label="table 4" draggable="true">
+                        table 4</li>
+                      <li id="data-5" data-translate-x="0" data-translate-y="0" data-label="table 5" draggable="true">
+                        table 5</li>
+                      <li id="data-6" data-translate-x="0" data-translate-y="0" data-label="table 6" draggable="true">
+                        table 6</li>
+                      <li id="data-7" data-translate-x="0" data-translate-y="0" data-label="table 7" draggable="true">
+                        table 7</li>
+                      <li id="data-8" data-translate-x="0" data-translate-y="0" data-label="table 8" draggable="true">
+                        table 8</li>
+                      <li id="data-9" data-translate-x="0" data-translate-y="0" data-label="table 9" draggable="true">
+                        table 9</li>
+                      <li id="data-10" data-translate-x="0" data-translate-y="0" data-label="table 10" draggable="true">
+                        table 10</li>
+                    </ul>
+                  </div>
+                </section>
+              </section>
+            </section>
+          </section>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+  <script type="text/javascript" src="init-responsive.js" async></script>
+</body>
+
+</html>
