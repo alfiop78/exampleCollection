@@ -40,21 +40,16 @@
             </section>
             <section id="canvas-area">
               <div id="translate" class="translate" data-translate-x="0" data-translate-y="0">
-                <!--<canvas id="canvas-1"></canvas>-->
-                <div class="hierarchy dropzone" id="h">
-                  <div class="flow">
-                    <section class="card dropzone" data-id="1" data-count-table="0">
-                      <div class="card-area" data-translate-x="0" data-join-count="0">
-                        <small data-path-to></small>
-                        <div class="table dropzone">
-                          <span></span>
-                        </div>
-                        <small data-path-from></small>
-                      </div>
-                    </section>
-                  </div>
-                </div>
-                <svg id="svg" class="dropzone"></svg>
+                <svg id="svg" class="dropzone">
+                  <!-- <filter id="shadow">
+                    <feDropShadow dx="0.2" dy="0" stdDeviation="0.2" />
+                  </filter> -->
+                  <g>
+                    <line id="break-line-1" x1="250" y1="0" x2="250" y2="100%" stroke="dimgrey" stroke-width="0.5" />
+                    <!-- <line x1="500" y1="0" x2="500" y2="100%" stroke="dimgrey" stroke-width="0.5" /> -->
+
+                  </g>
+                </svg>
               </div>
             </section>
             <section id="tables-area">
