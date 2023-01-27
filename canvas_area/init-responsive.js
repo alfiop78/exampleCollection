@@ -13,7 +13,7 @@
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
     svg: document.getElementById('svg'),
-    hierarchy: document.getElementById('h')
+    flow: document.getElementById('flow')
   }
 
   // Callback function to execute when mutations are observed
@@ -57,15 +57,13 @@
     app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
     // console.log(app.dragElementPosition);
     e.dataTransfer.setData('text/plain', e.target.id);
+    // inizio il drag, rendo la dropzone z-index maggiore
+    app.svg.style['z-index'] = 4;
     // creo la linea
-    if (app.svg.querySelectorAll('rect').length > 0) {
+    if (app.flow.querySelectorAll('.table').length > 0) {
       console.log('create line');
       app.l = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       app.l.dataset.id = app.svg.querySelectorAll('rect').length;
-      // app.l.setAttribute('fill', 'transparent');
-      app.l.setAttribute('stroke', 'red');
-      app.l.setAttribute('stroke-linecap', 'round');
-      app.l.setAttribute('stroke-width', 3);
       app.svg.appendChild(app.l);
       /* app.letsdraw = {
         x: 0,
@@ -86,7 +84,16 @@
         x: e.offsetX,
         y: e.offsetY
       }
-      if (app.l) app.l.setAttribute('d', 'M 250 300 L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
+      // cerco le card con left minore della posizione corrente del mouse
+      let prevPosition;
+      app.flow.querySelectorAll('.table').forEach(tbl => {
+        if (tbl.dataset.x < e.offsetX) {
+          prevPosition = { x: tbl.dataset.x, y: tbl.dataset.y };
+        }
+      });
+      // console.log(app.letsdraw);
+      if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
+      // if (app.l) app.l.setAttribute('d', 'M 250 300 L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
       // if (app.l) app.l.setAttribute('d', 'M ' + app.letsdraw.x + ' ' + app.letsdraw.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
     } else {
       e.dataTransfer.dropEffect = "none";
@@ -133,8 +140,10 @@
     e.preventDefault();
   }
 
-  app.handlerDragEndH = async (e) => {
+  app.handlerDragEndH = (e) => {
+    debugger;
     e.preventDefault();
+    app.svg.style['z-index'] = 1;
     // faccio il DESCRIBE della tabella
     // controllo lo stato di dropEffect per verificare se il drop è stato completato correttamente, come descritto qui:https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API#drag_end
     // in app.getTable() vengono utilizzate le property della classe Cube (cube.card.schema, cube.card.tableName);
@@ -147,12 +156,46 @@
     e.preventDefault();
     e.target.classList.replace('dropping', 'dropped');
     if (!e.target.classList.contains('dropzone')) return;
+    app.svg.style['z-index'] = 1;
+    console.log(app.letsdraw);
     // const elementId = e.dataTransfer.getData('text/plain');
     // console.log(elementId);
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
     console.log(liElement);
     liElement.classList.remove('dragging');
-    const svgTable = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    const flow = document.getElementById('flow');
+    let table = document.createElement('div');
+    table.classList.add('table');
+    table.innerHTML = liElement.dataset.label;
+    table.style.left = app.letsdraw.x + 'px';
+    table.style.top = app.letsdraw.y + 'px';
+    table.dataset.x = app.letsdraw.x;
+    table.dataset.y = app.letsdraw.y;
+    flow.appendChild(table);
+    /* const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    marker.id = "mark1";
+    marker.setAttribute('markerWidth', 5);
+    marker.setAttribute('markerHeight', 5);
+    marker.setAttribute('refX', 5);
+    marker.setAttribute('refY', 5);
+    marker.setAttribute('viewBox', '0 0 10 10');
+    circle.setAttribute('cx', 5);
+    circle.setAttribute('cy', 5);
+    circle.setAttribute('r', 5);
+    circle.setAttribute('fill', 'blue');
+    marker.appendChild(circle);
+    app.svg.appendChild(marker); */
+    /* <marker
+      id="dot"
+      viewBox="0 0 10 10"
+      refX="5"
+      refY="5"
+      markerWidth="5"
+      markerHeight="5">
+      <circle cx="5" cy="5" r="5" fill="red" />
+    </marker> */
+    /* const svgTable = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     const svgTableText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 
     svgTable.id = liElement.id;
@@ -163,7 +206,8 @@
     svgTableText.setAttribute('y', app.letsdraw.y + 24);
     svgTableText.innerHTML = liElement.dataset.label;
     app.svg.appendChild(svgTable);
-    app.svg.appendChild(svgTableText);
+    app.svg.appendChild(svgTableText); */
+
     /* span.innerHTML = liElement.dataset.label;
     card.dataset.label = liElement.dataset.label;
     card.dataset.schema = liElement.dataset.schema;

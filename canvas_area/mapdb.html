@@ -40,6 +40,7 @@
             </section>
             <section id="canvas-area">
               <div id="translate" class="translate" data-translate-x="0" data-translate-y="0">
+                <div id="flow"></div>
                 <svg id="svg" class="dropzone">
                   <!-- <filter id="shadow">
                     <feDropShadow dx="0.2" dy="0" stdDeviation="0.2" />
@@ -49,6 +50,14 @@
                     <!-- <line x1="500" y1="0" x2="500" y2="100%" stroke="dimgrey" stroke-width="0.5" /> -->
 
                   </g>
+                  <defs>
+                    <!-- simple dot marker definition -->
+                    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5">
+                      <circle cx="5" cy="5" r="5" fill="red" />
+                    </marker>
+                  </defs>
+                  <polyline points="5,66 159,180" fill="none" stroke="grey" marker-start="url(#dot)"
+                    marker-mid="url(#dot)" marker-end="url(#dot)" />
                 </svg>
               </div>
             </section>
