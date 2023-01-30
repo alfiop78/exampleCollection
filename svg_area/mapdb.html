@@ -29,6 +29,7 @@
   </template>
 
   <main>
+
     <div id="container">
       <div id="content">
         <div id="body">
@@ -39,22 +40,27 @@
             </section>
             <section id="canvas-area">
               <div id="translate" class="translate" data-translate-x="0" data-translate-y="0">
-                <canvas class="dropzone">
-                  <label><input type=checkbox id=showA> Show As</label>
-                  <label><input type=checkbox id=showB> Show Bs</label>
-                </canvas>
-                <!-- <div id="flow"></div> -->
-                <!-- <svg id="svg" class="dropzone"> -->
-                <!--   <g> -->
-                <!--     <line id="break-line-1" x1="250" y1="0" x2="250" y2="100%" stroke="dimgrey" stroke-width="0.5" /> -->
-                <!--   </g> -->
-                <!--   <defs> -->
-                <!--     <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5"> -->
-                <!--       <circle cx="5" cy="5" r="5" fill="red" /> -->
-                <!--     </marker> -->
-                <!--   </defs> -->
-                <!-- <polyline points="5,66 159,180" fill="none" stroke="grey" marker-start="url(#dot)" marker-mid="url(#dot)" marker-end="url(#dot)" /> -->
-                <!-- </svg> -->
+                <div id="flow"></div>
+                <svg id="svg" class="dropzone">
+                  <!-- <path d="M 10 80 Q 52.5 10, 95 80 T 180 80" stroke="black" fill="transparent" /> -->
+                  <path d="M 10 80 Q 40 80, 80 180 T 160 300" stroke="black" fill="transparent" />
+                  <!-- <filter id="shadow">
+                    <feDropShadow dx="0.2" dy="0" stdDeviation="0.2" />
+                  </filter> -->
+                  <g>
+                    <line id="break-line-1" x1="250" y1="0" x2="250" y2="100%" stroke="dimgrey" stroke-width="0.5" />
+                    <!-- <line x1="500" y1="0" x2="500" y2="100%" stroke="dimgrey" stroke-width="0.5" /> -->
+
+                  </g>
+                  <defs>
+                    <!-- simple dot marker definition -->
+                    <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5">
+                      <circle cx="5" cy="5" r="5" fill="red" />
+                    </marker>
+                  </defs>
+                  <polyline points="5,66 159,180" fill="none" stroke="grey" marker-start="url(#dot)"
+                    marker-mid="url(#dot)" marker-end="url(#dot)" />
+                </svg>
               </div>
             </section>
             <section id="tables-area">
@@ -90,7 +96,9 @@
           </section>
 
         </div>
+
       </div>
+
     </div>
   </main>
   <script type="text/javascript" src="init-responsive.js" async></script>

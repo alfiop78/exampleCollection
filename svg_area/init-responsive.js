@@ -13,7 +13,7 @@
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
     svg: document.getElementById('svg'),
-    flow: document.getElementById('flow'),
+    flow: document.getElementById('flow')
   }
 
   // Callback function to execute when mutations are observed
@@ -49,204 +49,9 @@
   document.querySelectorAll('dialog').forEach(dialog => observerList.observe(dialog, config));
   observerList.observe(app.body, config);
 
-  /* canvas */
-  const canvas = document.querySelector('canvas');
-  canvas.width = app.translate.offsetWidth;
-  canvas.height = app.translate.offsetHeight;
-  const ctx = canvas.getContext('2d');
-
-  function getMousePos(canvas, event) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top
-    };
-  }
-
-  function isInside(pos, rect) {
-    return pos.x > rect.x && pos.x < rect.x + rect.width && pos.y < rect.y + rect.heigth && pos.y > rect.y
-  }
-
-  var rect = {
-    x: 100,
-    y: 100,
-    width: 170,
-    heigth: 35
-  };
-
-  canvas.addEventListener('click', function(evt) {
-    var mousePos = getMousePos(canvas, evt);
-    if (isInside(mousePos, rect)) {
-      alert('clicked inside rect');
-    } else {
-      alert('clicked outside rect');
-    }
-  }, false);
-
-  canvas.addEventListener('mousemove', (e) => {
-    /* var mousePos = getMousePos(canvas, e);
-    if (isInside(mousePos, rect)) {
-      console.log('mouseover button')
-    } else {
-      // console.log('mouseleave button')
-    } */
-
-    /* const isPointInPath = ctx.isPointInPath(app.table, e.offsetX, e.offsetY);
-    ctx.fillStyle = isPointInPath ? '#3f3f4036' : 'gainsboro'; */
-
-    // Draw table rect
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // ctx.fill(app.table);
-  }, true);
-
-  app.createButton = (x, y) => {
-    app.table = new Path2D();
-    ctx.beginPath();
-    app.table.roundRect(x - 20, y, 170, 30, 4);
-    ctx.fillStyle = "gainsboro";
-    ctx.fill(app.table);
-
-    app.table.roundRect(x - 20, y, 170, 30, 4);
-    ctx.lineWidth = 0.3;
-    ctx.strokeStyle = 'gray';
-    ctx.stroke(app.table);
-    ctx.closePath();
-    ctx.font = '0.8rem sans-serif';
-    ctx.fillStyle = '#494949';
-    ctx.fillText('table 1', x, y + 20);
-  }
-
-  app.canvasDragEnter = (e) => {
-    e.preventDefault();
-    // console.log('dragEnter');
-    console.log(e.offsetX, e.offsetY);
-  }
-
-  app.canvasDragLeave = (e) => {
-    e.preventDefault();
-    // console.log('dragLeave');
-    console.log(e.offsetX, e.offsetY);
-  }
-
-  app.canvasDragOver = (e) => {
-    e.preventDefault();
-    // console.log('dragOver');
-    console.log(e.offsetX, e.offsetY);
-    ctx.save();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    app.createButton();
-    // creo la linea di join
-    ctx.beginPath();
-    ctx.strokeStyle = 'darkorange';
-    const p0 = { x: 280, y: 115 }
-    const p1 = { x: p0.x + 150, y: 115 }
-    const p2 = { x: e.offsetX, y: e.offsetY }
-    ctx.lineWidth = 3;
-    ctx.moveTo(p0.x, p0.y);
-    // ctx.bezierCurveTo(p0.x + 80, 115, 350, p1.y, 430, p1.y);
-    ctx.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  app.canvasDrop = (e) => {
-    e.preventDefault();
-    console.log('drop');
-    console.log(e.offsetX, e.offsetY);
-    app.createButton(e.offsetX, e.offsetY);
-  }
-
-
-  // ctx.fillStyle = 'green';
-  // ctx.fillRect(10, 10, 150, 100);
-  function drawCheckbox(ctx, element, x, y, paint) {
-    ctx.save();
-    ctx.font = '10px sans-serif';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    var metrics = ctx.measureText(element.labels[0].textContent);
-    if (paint) {
-      ctx.beginPath();
-      ctx.strokeStyle = 'black';
-      ctx.rect(x - 5, y - 5, 10, 10);
-      ctx.stroke();
-      if (element.checked) {
-        ctx.fillStyle = 'black';
-        ctx.fill();
-      }
-      ctx.fillText(element.labels[0].textContent, x + 5, y);
-    }
-    ctx.beginPath();
-    ctx.rect(x - 7, y - 7, 12 + metrics.width + 2, 14);
-
-    ctx.drawFocusIfNeeded(element);
-    ctx.restore();
-  }
-  function drawBase() { /* ... */ }
-  function drawAs() { /* ... */ }
-  function drawBs() { /* ... */ }
-
-  function redraw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawCheckbox(ctx, document.getElementById('showA'), 20, 40, true);
-    drawCheckbox(ctx, document.getElementById('showB'), 20, 60, true);
-    drawBase();
-    if (document.getElementById('showA').checked)
-      drawAs();
-    if (document.getElementById('showB').checked)
-      drawBs();
-  }
-
-  function processClick(event) {
-    var x = event.clientX;
-    var y = event.clientY;
-    var node = event.target;
-    while (node) {
-      x -= node.offsetLeft - node.scrollLeft;
-      y -= node.offsetTop - node.scrollTop;
-      node = node.offsetParent;
-    }
-    drawCheckbox(ctx, document.getElementById('showA'), 20, 40, false);
-    if (ctx.isPointInPath(x, y))
-      document.getElementById('showA').checked = !(document.getElementById('showA').checked);
-    drawCheckbox(ctx, document.getElementById('showB'), 20, 60, false);
-    if (ctx.isPointInPath(x, y))
-      document.getElementById('showB').checked = !(document.getElementById('showB').checked);
-    redraw();
-  }
-  // canvas.addEventListener('focus', redraw, true);
-  // canvas.addEventListener('blur', redraw, true);
-  // canvas.addEventListener('change', redraw, true);
-  // canvas.addEventListener('click', processClick, false);
-  // canvas.addEventListener('click', app.canvasClick, false);
-  canvas.addEventListener('dragenter', app.canvasDragEnter, false);
-  canvas.addEventListener('dragover', app.canvasDragOver, false);
-  canvas.addEventListener('dragleave', app.canvasDragLeave, false);
-  canvas.addEventListener('dragend', app.canvasDragEnd, false);
-  canvas.addEventListener('drop', app.canvasDrop, false);
-  // redraw();
-  /* end canvas */
   /* drag events */
-  app.handlerDragStart = (e) => {
-    console.log('e.target : ', e.target.id);
-    e.target.classList.add('dragging');
-    app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
-    // console.log(app.dragElementPosition);
-    e.dataTransfer.setData('text/plain', e.target.id);
-    // inizio il drag, rendo la dropzone z-index maggiore
-    // app.svg.style['z-index'] = 4;
-    // creo la linea
-    /* if (app.flow.querySelectorAll('.table').length > 0) {
-      console.log('create line');
-      app.l = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      app.l.dataset.id = app.svg.querySelectorAll('rect').length;
-      // app.svg.appendChild(app.l);
-    } */
-    console.log(e.dataTransfer);
-    e.dataTransfer.effectAllowed = "copy";
-  }
 
-  /* app.handlerDragStart = (e) => {
+  app.handlerDragStart = (e) => {
     console.log('e.target : ', e.target.id);
     e.target.classList.add('dragging');
     app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
@@ -260,10 +65,15 @@
       app.l = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       app.l.dataset.id = app.svg.querySelectorAll('rect').length;
       app.svg.appendChild(app.l);
+      /* app.letsdraw = {
+        x: 0,
+        y: 0
+      } */
+
     }
     console.log(e.dataTransfer);
     e.dataTransfer.effectAllowed = "copy";
-  } */
+  }
 
   app.handlerDragOverH = (e) => {
     e.preventDefault();
@@ -282,7 +92,9 @@
         }
       });
       // console.log(app.letsdraw);
-      if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
+      // if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
+      // if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' Q ' + (prevPosition.x + 70) + ' ' + prevPosition.y + ', ' + e.offsetX + ' ' + (e.offsetY - 80) + ' T ' + e.offsetX + ' ' + (e.offsetY + 100));
+      if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + (prevPosition.x + 30) + ' 80 Q 50 80, 80 180 T ' + e.offsetX + ' ' + e.offsetY);
       // if (app.l) app.l.setAttribute('d', 'M 250 300 L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
       // if (app.l) app.l.setAttribute('d', 'M ' + app.letsdraw.x + ' ' + app.letsdraw.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
     } else {
@@ -423,11 +235,11 @@
   });
 
   /* end drag events */
-  /* app.svg.addEventListener('dragover', app.handlerDragOverH, true);
+  app.svg.addEventListener('dragover', app.handlerDragOverH, true);
   app.svg.addEventListener('dragenter', app.handlerDragEnterH, true);
   app.svg.addEventListener('dragleave', app.handlerDragLeaveH, true);
   app.svg.addEventListener('drop', app.handlerDropH, true);
-  app.svg.addEventListener('dragend', app.handlerDragEndH, true); */
+  app.svg.addEventListener('dragend', app.handlerDragEndH, true);
   /* end drag events */
 
   /* page init  (impostazioni inziali per la pagina, alcune sono necessarie per essere catturate dal mutationObserve)*/
@@ -473,4 +285,7 @@
 
   /* end mouse events */
 
-})();
+})(); 
+ 
+ 
+ 

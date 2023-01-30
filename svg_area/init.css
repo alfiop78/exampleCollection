@@ -161,10 +161,3 @@ svg path{
 .table-rect text{
   fill: #494949;
 }
-
-canvas{
-  /* width: 80%;
-  height: 90%; */
-  /* background-color: lightgreen; */
-  position: absolute;
-}
