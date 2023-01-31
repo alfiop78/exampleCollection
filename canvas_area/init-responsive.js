@@ -12,8 +12,7 @@
     body: document.getElementById('body'),
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
-    svg: document.getElementById('svg'),
-    flow: document.getElementById('flow'),
+    canvas: document.getElementById('canvas'),
   }
 
   // Callback function to execute when mutations are observed
@@ -74,14 +73,16 @@
     heigth: 35
   };
 
-  canvas.addEventListener('click', function(evt) {
-    var mousePos = getMousePos(canvas, evt);
+  canvas.addEventListener('click', (e) => {
+    /* var mousePos = getMousePos(canvas, evt);
     if (isInside(mousePos, rect)) {
       alert('clicked inside rect');
     } else {
       alert('clicked outside rect');
-    }
-  }, false);
+    } */
+    const isPointInPath = ctx.isPointInPath(app.table, e.offsetX, e.offsetY);
+    console.log(isPointInPath);
+  }, true);
 
   canvas.addEventListener('mousemove', (e) => {
     /* var mousePos = getMousePos(canvas, e);
@@ -105,8 +106,8 @@
     app.table.roundRect(x - 20, y, 170, 30, 4);
     ctx.fillStyle = "gainsboro";
     ctx.fill(app.table);
-
     app.table.roundRect(x - 20, y, 170, 30, 4);
+    app.table.id = 'e';
     ctx.lineWidth = 0.3;
     ctx.strokeStyle = 'gray';
     ctx.stroke(app.table);
@@ -120,6 +121,7 @@
     e.preventDefault();
     // console.log('dragEnter');
     console.log(e.offsetX, e.offsetY);
+    app.createJoinLine(e.offsetX, e.offsetY);
   }
 
   app.canvasDragLeave = (e) => {
@@ -128,24 +130,29 @@
     console.log(e.offsetX, e.offsetY);
   }
 
+  app.createJoinLine = (x, y) => {
+    ctx.beginPath();
+    app.line = new Path2D();
+    ctx.strokeStyle = 'darkorange';
+    const p0 = { x: 280, y: 115 }
+    const p1 = { x: p0.x + 150, y: 115 }
+    const p2 = { x: x, y: y }
+    ctx.lineWidth = 3;
+    app.line.moveTo(p0.x, p0.y);
+    // ctx.bezierCurveTo(p0.x + 80, 115, 350, p1.y, 430, p1.y);
+    app.line.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
+    ctx.stroke(app.line);
+  }
+
   app.canvasDragOver = (e) => {
     e.preventDefault();
     // console.log('dragOver');
     console.log(e.offsetX, e.offsetY);
     ctx.save();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
     app.createButton();
-    // creo la linea di join
-    ctx.beginPath();
-    ctx.strokeStyle = 'darkorange';
-    const p0 = { x: 280, y: 115 }
-    const p1 = { x: p0.x + 150, y: 115 }
-    const p2 = { x: e.offsetX, y: e.offsetY }
-    ctx.lineWidth = 3;
-    ctx.moveTo(p0.x, p0.y);
-    // ctx.bezierCurveTo(p0.x + 80, 115, 350, p1.y, 430, p1.y);
-    ctx.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
-    ctx.stroke();
+    app.line.transform(e.offsetX, e.offsetY);
+    // app.createJoinLine(e.offsetX, e.offsetY);
     ctx.restore();
   }
 

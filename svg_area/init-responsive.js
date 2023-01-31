@@ -55,7 +55,7 @@
     console.log('e.target : ', e.target.id);
     e.target.classList.add('dragging');
     app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
-    // console.log(app.dragElementPosition);
+    console.log(app.dragElementPosition);
     e.dataTransfer.setData('text/plain', e.target.id);
     // inizio il drag, rendo la dropzone z-index maggiore
     app.svg.style['z-index'] = 4;
@@ -88,14 +88,17 @@
       let prevPosition;
       app.flow.querySelectorAll('.table').forEach(tbl => {
         if (tbl.dataset.x < e.offsetX) {
-          prevPosition = { x: tbl.dataset.x, y: tbl.dataset.y };
+          prevPosition = { x: +tbl.dataset.x + tbl.offsetWidth + 10, y: +tbl.dataset.y + (tbl.offsetHeight / 2) };
         }
       });
+      console.log(prevPosition);
       // console.log(app.letsdraw);
       // if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
       // if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' Q ' + (prevPosition.x + 70) + ' ' + prevPosition.y + ', ' + e.offsetX + ' ' + (e.offsetY - 80) + ' T ' + e.offsetX + ' ' + (e.offsetY + 100));
-      if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + (prevPosition.x + 30) + ' 80 Q 50 80, 80 180 T ' + e.offsetX + ' ' + e.offsetY);
-      // if (app.l) app.l.setAttribute('d', 'M 250 300 L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
+      if (app.l && prevPosition) {
+        const d = `M${prevPosition.x},${prevPosition.y} C${prevPosition.x + 100},${prevPosition.y} ${e.offsetX - 180},${e.offsetY} ${e.offsetX - app.dragElementPosition.x - 5},${e.offsetY - (app.dragElementPosition.y)}`;
+        if (app.l && prevPosition) app.l.setAttribute('d', d);
+      }
       // if (app.l) app.l.setAttribute('d', 'M ' + app.letsdraw.x + ' ' + app.letsdraw.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
     } else {
       e.dataTransfer.dropEffect = "none";
@@ -285,7 +288,7 @@
 
   /* end mouse events */
 
-})(); 
- 
- 
- 
+})();
+
+
+

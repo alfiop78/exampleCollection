@@ -71,11 +71,12 @@ svg {
   height: 100%;
   position: absolute;
   background-color: #3b629540;
+  border: solid thin transparent;
   z-index: 1;
 }
 
 svg.dropzone.dropping{
-  border: solid thick orangered;
+  border: solid thin orangered;
   z-index: 3
 }
 
