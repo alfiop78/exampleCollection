@@ -13,6 +13,10 @@
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
     canvas: document.getElementById('canvas'),
+    tables: new Map(),
+    tableId: 0,
+    joinLines: new Map(),
+    joinLinesId: 0
   }
 
   // Callback function to execute when mutations are observed
@@ -54,44 +58,12 @@
   canvas.height = app.translate.offsetHeight;
   const ctx = canvas.getContext('2d');
 
-  function getMousePos(canvas, event) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top
-    };
-  }
-
-  function isInside(pos, rect) {
-    return pos.x > rect.x && pos.x < rect.x + rect.width && pos.y < rect.y + rect.heigth && pos.y > rect.y
-  }
-
-  var rect = {
-    x: 100,
-    y: 100,
-    width: 170,
-    heigth: 35
-  };
-
   canvas.addEventListener('click', (e) => {
-    /* var mousePos = getMousePos(canvas, evt);
-    if (isInside(mousePos, rect)) {
-      alert('clicked inside rect');
-    } else {
-      alert('clicked outside rect');
-    } */
-    const isPointInPath = ctx.isPointInPath(app.table, e.offsetX, e.offsetY);
-    console.log(isPointInPath);
+    // const isPointInPath = ctx.isPointInPath(app.table, e.offsetX, e.offsetY);
+    // console.log(isPointInPath);
   }, true);
 
   canvas.addEventListener('mousemove', (e) => {
-    /* var mousePos = getMousePos(canvas, e);
-    if (isInside(mousePos, rect)) {
-      console.log('mouseover button')
-    } else {
-      // console.log('mouseleave button')
-    } */
-
     /* const isPointInPath = ctx.isPointInPath(app.table, e.offsetX, e.offsetY);
     ctx.fillStyle = isPointInPath ? '#3f3f4036' : 'gainsboro'; */
 
@@ -100,28 +72,14 @@
     // ctx.fill(app.table);
   }, true);
 
-  app.createButton = (x, y) => {
-    app.table = new Path2D();
-    ctx.beginPath();
-    app.table.roundRect(x - 20, y, 170, 30, 4);
-    ctx.fillStyle = "gainsboro";
-    ctx.fill(app.table);
-    app.table.roundRect(x - 20, y, 170, 30, 4);
-    app.table.id = 'e';
-    ctx.lineWidth = 0.3;
-    ctx.strokeStyle = 'gray';
-    ctx.stroke(app.table);
-    ctx.closePath();
-    ctx.font = '0.8rem sans-serif';
-    ctx.fillStyle = '#494949';
-    ctx.fillText('table 1', x, y + 20);
-  }
-
   app.canvasDragEnter = (e) => {
     e.preventDefault();
     // console.log('dragEnter');
     console.log(e.offsetX, e.offsetY);
-    app.createJoinLine(e.offsetX, e.offsetY);
+    // app.createJoinLine(e.offsetX, e.offsetY);
+    // creo la linea
+    // app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': 100, 'y': 100 }, 'cp1x': 0, 'cp1y': 0, 'cp2x': 0, 'cp2y': 0, 'x': 0, 'y': 0 });
+    // app.drawLines();
   }
 
   app.canvasDragLeave = (e) => {
@@ -130,7 +88,7 @@
     console.log(e.offsetX, e.offsetY);
   }
 
-  app.createJoinLine = (x, y) => {
+  /* app.createJoinLine = (x, y) => {
     ctx.beginPath();
     app.line = new Path2D();
     ctx.strokeStyle = 'darkorange';
@@ -142,26 +100,93 @@
     // ctx.bezierCurveTo(p0.x + 80, 115, 350, p1.y, 430, p1.y);
     app.line.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
     ctx.stroke(app.line);
-  }
+  } */
 
   app.canvasDragOver = (e) => {
     e.preventDefault();
     // console.log('dragOver');
     console.log(e.offsetX, e.offsetY);
     ctx.save();
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    app.createButton();
-    app.line.transform(e.offsetX, e.offsetY);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ridisegno i buttons aggiunti all'oggetto Map() app.tables
+    app.createButtons();
+    const p0 = { x: 280, y: 115 }
+    const p1 = { x: p0.x + 150, y: 115 }
+    const p2 = { x: e.offsetX, y: e.offsetY }
+    app.joinLines.set('line-' + (app.joinLinesId), { 'pos': { 'x': p0.x, 'y': p0.y }, 'cp1x': p1.x, 'cp1y': 115, 'cp2x': p2.x - 150, 'cp2y': p2.y, 'x': p2.x, 'y': p2.y });
+    app.drawLines();
+    console.log(app.joinLines);
     // app.createJoinLine(e.offsetX, e.offsetY);
     ctx.restore();
+  }
+
+  app.createButtons = () => {
+    // creo, oppure, ricreo tutte le table presenti nel canvas
+    for (const [tableId, coords] of app.tables) {
+      console.log(tableId, coords.x, coords.y);
+      ctx.beginPath();
+      ctx.roundRect(coords.x - 20, coords.y, 170, 30, 4);
+      const ctxTable = new Path2D();
+      ctx.beginPath();
+      ctxTable.roundRect(coords.x - 20, coords.y, 170, 30, 4);
+      ctx.fillStyle = "gainsboro";
+      ctx.fill(ctxTable);
+      ctxTable.roundRect(coords.x - 20, coords.y, 170, 30, 4);
+      ctxTable.id = 'e';
+      ctx.lineWidth = 0.3;
+      ctx.strokeStyle = 'gray';
+      ctx.stroke(ctxTable);
+      ctx.closePath();
+      ctx.font = '0.8rem sans-serif';
+      ctx.fillStyle = '#494949';
+      ctx.fillText(tableId, coords.x, coords.y + 20);
+    }
+  }
+
+  app.drawLines = () => {
+    ctx.beginPath();
+    const ctxLine = new Path2D();
+    for (const [lineId, coords] of app.joinLines) {
+      // ctx.beginPath();
+      ctx.strokeStyle = 'darkorange';
+      // const p0 = { x: 280, y: 115 }
+      // const p1 = { x: p0.x + 150, y: 115 }
+      // const p2 = { x: x, y: y }
+      ctx.lineWidth = 3;
+      ctxLine.moveTo(coords.pos.x, coords.pos.y);
+      // ctxLine.moveTo(p0.x, p0.y);
+      // ctxLine.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
+      ctxLine.bezierCurveTo(coords.cp1x, coords.cp1y, coords.cp2x, coords.cp2y, coords.x, coords.y);
+    }
+    ctx.stroke(ctxLine);
   }
 
   app.canvasDrop = (e) => {
     e.preventDefault();
     console.log('drop');
     console.log(e.offsetX, e.offsetY);
-    app.createButton(e.offsetX, e.offsetY);
+    app.tableId++;
+    app.tables.set('table-' + app.tableId++, { x: e.offsetX, y: e.offsetY });
+    app.createButtons();
+    const p0 = { x: 280, y: 115 }
+    const p1 = { x: p0.x + 150, y: 115 }
+    const p2 = { x: e.offsetX, y: e.offsetY }
+    app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': p0.x, 'y': p0.y }, 'cp1x': p1.x, 'cp1y': 115, 'cp2x': p2.x - 150, 'cp2y': p2.y, 'x': p2.x, 'y': p2.y });
   }
+
+  app.handlerDragStart = (e) => {
+    console.log('e.target : ', e.target.id);
+    e.target.classList.add('dragging');
+    app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
+    // console.log(app.dragElementPosition);
+    e.dataTransfer.setData('text/plain', e.target.id);
+    console.log(e.dataTransfer);
+    e.dataTransfer.effectAllowed = "copy";
+  }
+
+
+
+
 
 
   // ctx.fillStyle = 'green';
@@ -231,28 +256,10 @@
   canvas.addEventListener('dragleave', app.canvasDragLeave, false);
   canvas.addEventListener('dragend', app.canvasDragEnd, false);
   canvas.addEventListener('drop', app.canvasDrop, false);
+  canvas.addEventListener('drop', app.canvasDrop, false);
   // redraw();
   /* end canvas */
   /* drag events */
-  app.handlerDragStart = (e) => {
-    console.log('e.target : ', e.target.id);
-    e.target.classList.add('dragging');
-    app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
-    // console.log(app.dragElementPosition);
-    e.dataTransfer.setData('text/plain', e.target.id);
-    // inizio il drag, rendo la dropzone z-index maggiore
-    // app.svg.style['z-index'] = 4;
-    // creo la linea
-    /* if (app.flow.querySelectorAll('.table').length > 0) {
-      console.log('create line');
-      app.l = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      app.l.dataset.id = app.svg.querySelectorAll('rect').length;
-      // app.svg.appendChild(app.l);
-    } */
-    console.log(e.dataTransfer);
-    e.dataTransfer.effectAllowed = "copy";
-  }
-
   /* app.handlerDragStart = (e) => {
     console.log('e.target : ', e.target.id);
     e.target.classList.add('dragging');
