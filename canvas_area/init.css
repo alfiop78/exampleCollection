@@ -1,4 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@100;200;400;600&display=swap');
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=swap");
 * {box-sizing: border-box;}
+
+.material-icons-round.md-18{
+  font-size: 18px;
+}
 
 html, body{
   width: 100%;
@@ -58,7 +64,7 @@ canvas > div{
 
 .wrapper{
   display: grid;
-  grid-template-rows: auto 2fr 1fr;
+  grid-template-rows: 2fr 0.75fr;
   background-color: white;
   height: 100%;
 }
@@ -66,7 +72,7 @@ canvas > div{
 #canvas-area{
   width: 100%;
   position: relative;
-  padding: 1em;
+  /* padding: 1em; */
   overflow: hidden;
   display: grid;
   grid-auto-flow: row;
@@ -104,6 +110,7 @@ svg.dropzone.dropping{
 
 .translate{
   height: 100%;
+  width: 100%;
   /* background-color: navajowhite; */
   display: grid;
   grid-template-rows: 100%;
@@ -118,6 +125,7 @@ ul{
 }
 
 ul > li{
+  display: flex;
   margin: .5em;
   font-size: 1rem;
   list-style: none;
@@ -174,6 +182,8 @@ svg path{
 canvas{
   /* width: 80%;
   height: 90%; */
-  /* background-color: lightgreen; */
+  background-color: lightgreen;
+  /* height: inherit; */
+  /* width: inherit; */
   position: absolute;
 }
