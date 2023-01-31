@@ -16,7 +16,7 @@
     tables: new Map(),
     tableId: 0,
     joinLines: new Map(),
-    joinLinesId: 0
+    joinLinesId: 1
   }
 
   // Callback function to execute when mutations are observed
@@ -76,10 +76,6 @@
     e.preventDefault();
     // console.log('dragEnter');
     console.log(e.offsetX, e.offsetY);
-    // app.createJoinLine(e.offsetX, e.offsetY);
-    // creo la linea
-    // app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': 100, 'y': 100 }, 'cp1x': 0, 'cp1y': 0, 'cp2x': 0, 'cp2y': 0, 'x': 0, 'y': 0 });
-    // app.drawLines();
   }
 
   app.canvasDragLeave = (e) => {
@@ -88,42 +84,29 @@
     console.log(e.offsetX, e.offsetY);
   }
 
-  /* app.createJoinLine = (x, y) => {
-    ctx.beginPath();
-    app.line = new Path2D();
-    ctx.strokeStyle = 'darkorange';
-    const p0 = { x: 280, y: 115 }
-    const p1 = { x: p0.x + 150, y: 115 }
-    const p2 = { x: x, y: y }
-    ctx.lineWidth = 3;
-    app.line.moveTo(p0.x, p0.y);
-    // ctx.bezierCurveTo(p0.x + 80, 115, 350, p1.y, 430, p1.y);
-    app.line.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
-    ctx.stroke(app.line);
-  } */
-
   app.canvasDragOver = (e) => {
     e.preventDefault();
     // console.log('dragOver');
-    console.log(e.offsetX, e.offsetY);
+    // console.log(e.offsetX, e.offsetY);
     ctx.save();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // ridisegno i buttons aggiunti all'oggetto Map() app.tables
     app.createButtons();
-    const p0 = { x: 280, y: 115 }
-    const p1 = { x: p0.x + 150, y: 115 }
-    const p2 = { x: e.offsetX, y: e.offsetY }
-    app.joinLines.set('line-' + (app.joinLinesId), { 'pos': { 'x': p0.x, 'y': p0.y }, 'cp1x': p1.x, 'cp1y': 115, 'cp2x': p2.x - 150, 'cp2y': p2.y, 'x': p2.x, 'y': p2.y });
-    app.drawLines();
-    console.log(app.joinLines);
-    // app.createJoinLine(e.offsetX, e.offsetY);
+    if (app.tables.size !== 0) {
+      const startLineX = app.tables.get('table-' + app.joinLinesId).from.x;
+      const startLineY = app.tables.get('table-' + app.joinLinesId).from.y;
+      const p1 = { x: startLineX + 150 }
+      const p2 = { x: e.offsetX - 150, y: e.offsetY }
+      app.joinLines.set('line-' + (app.joinLinesId), { 'pos': { 'x': startLineX, 'y': startLineY }, 'cp1x': p1.x, 'cp1y': startLineY, 'cp2x': p2.x, 'cp2y': p2.y, 'x': e.offsetX, 'y': e.offsetY });
+      app.drawLines();
+    }
     ctx.restore();
   }
 
   app.createButtons = () => {
     // creo, oppure, ricreo tutte le table presenti nel canvas
     for (const [tableId, coords] of app.tables) {
-      console.log(tableId, coords.x, coords.y);
+      // console.log(tableId, coords.x, coords.y);
       ctx.beginPath();
       ctx.roundRect(coords.x - 20, coords.y, 170, 30, 4);
       const ctxTable = new Path2D();
@@ -140,38 +123,95 @@
       ctx.font = '0.8rem sans-serif';
       ctx.fillStyle = '#494949';
       ctx.fillText(tableId, coords.x, coords.y + 20);
+      // startpoint / endpoint
+      ctx.beginPath();
+      ctx.fillStyle = 'dimgray';
+      ctx.arc(coords.x - 30, coords.y + 15, 2, 0, 6);
+      ctx.fill(); // cerchio senza colore di riempimento
+      ctx.closePath();
+      ctx.beginPath();
+      ctx.arc(coords.x + 160, coords.y + 15, 2, 0, 6);
+      // ctx.stroke(); // cerchio senza colore di riempimento
+      ctx.fill();
+      ctx.closePath();
     }
   }
 
   app.drawLines = () => {
-    ctx.beginPath();
+    // se non sono presenti tabelle non disegno la linea
+    if (app.tables.size === 0) return;
     const ctxLine = new Path2D();
     for (const [lineId, coords] of app.joinLines) {
-      // ctx.beginPath();
+      ctx.beginPath();
       ctx.strokeStyle = 'darkorange';
-      // const p0 = { x: 280, y: 115 }
-      // const p1 = { x: p0.x + 150, y: 115 }
-      // const p2 = { x: x, y: y }
       ctx.lineWidth = 3;
       ctxLine.moveTo(coords.pos.x, coords.pos.y);
       // ctxLine.moveTo(p0.x, p0.y);
       // ctxLine.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
       ctxLine.bezierCurveTo(coords.cp1x, coords.cp1y, coords.cp2x, coords.cp2y, coords.x, coords.y);
+      ctx.stroke(ctxLine);
     }
-    ctx.stroke(ctxLine);
   }
 
   app.canvasDrop = (e) => {
     e.preventDefault();
     console.log('drop');
     console.log(e.offsetX, e.offsetY);
+    // e.target.classList.replace('dropping', 'dropped');
+    if (!e.target.classList.contains('dropzone')) return;
+    // console.log(elementId);
+    const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
+    console.log(liElement);
+    const div = document.createElement('div');
+    div.id = liElement.id;
+    div.dataset.label = liElement.dataset.label;
+    // console.log(app.canvas.childElementCount);
+    div.dataset.id = 'table-' + app.canvas.childElementCount;
+    div.dataset.x = e.offsetX;
+    div.dataset.y = e.offsetY;
+    div.dataset.fromX = e.offsetX + 160;
+    div.dataset.fromY = e.offsetY + 15;
+    div.dataset.toX = e.offsetX - 30;
+    div.dataset.toY = e.offsetY + 15;
+    app.canvas.append(div);
+    /* app.createButtons();
+    if (app.canvas.childElementCount > 1) {
+      const fromX = app.tables.get('table-' + app.joinLinesId).from.x;
+      const fromY = app.tables.get('table-' + app.joinLinesId).from.y;
+      const toX = app.tables.get('table-' + app.tableId).to.x;
+      const toY = app.tables.get('table-' + app.tableId).to.y;
+      const p1 = { x: startLineX + 150 }
+      const p2 = { x: e.offsetX - 150, y: e.offsetY }
+      app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': startLineX, 'y': startLineY }, 'cp1x': p1.x, 'cp1y': startLineY, 'cp2x': p2.x, 'cp2y': p2.y, 'x': toX, 'y': toY });
+      console.log(app.joinLines);
+    } */
+
     app.tableId++;
-    app.tables.set('table-' + app.tableId++, { x: e.offsetX, y: e.offsetY });
+    app.tables.set('table-' + app.tableId, {
+      x: e.offsetX, y: e.offsetY,
+      'from': {
+        'x': e.offsetX + 160,
+        'y': e.offsetY + 15
+      },
+      'to': {
+        'x': e.offsetX - 30,
+        'y': e.offsetY + 15
+      }
+    });
+    console.log(app.tables);
     app.createButtons();
-    const p0 = { x: 280, y: 115 }
-    const p1 = { x: p0.x + 150, y: 115 }
-    const p2 = { x: e.offsetX, y: e.offsetY }
-    app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': p0.x, 'y': p0.y }, 'cp1x': p1.x, 'cp1y': 115, 'cp2x': p2.x - 150, 'cp2y': p2.y, 'x': p2.x, 'y': p2.y });
+    if (app.tables.size > 1) {
+      const startLineX = app.tables.get('table-' + app.joinLinesId).from.x;
+      const startLineY = app.tables.get('table-' + app.joinLinesId).from.y;
+      const toX = app.tables.get('table-' + app.tableId).to.x;
+      const toY = app.tables.get('table-' + app.tableId).to.y;
+      const p1 = { x: startLineX + 150 }
+      const p2 = { x: e.offsetX - 150, y: e.offsetY }
+      app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': startLineX, 'y': startLineY }, 'cp1x': p1.x, 'cp1y': startLineY, 'cp2x': p2.x, 'cp2y': p2.y, 'x': toX, 'y': toY });
+      // app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': startLineX, 'y': startLineY }, 'cp1x': p1.x, 'cp1y': startLineY, 'cp2x': p2.x, 'cp2y': p2.y, 'x': e.offsetX, 'y': e.offsetY });
+      // app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': p0.x, 'y': p0.y }, 'cp1x': p1.x, 'cp1y': 115, 'cp2x': p2.x - 150, 'cp2y': p2.y, 'x': p2.x, 'y': p2.y });
+      console.log(app.joinLines);
+    }
   }
 
   app.handlerDragStart = (e) => {

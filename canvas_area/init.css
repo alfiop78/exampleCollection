@@ -47,6 +47,15 @@ main > #container{
     height: calc(100% - 64px);
 }
 
+canvas > div{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 170px;
+  height: 30px;
+  background-color: red;
+}
+
 .wrapper{
   display: grid;
   grid-template-rows: auto 2fr 1fr;
