@@ -19,7 +19,8 @@
     joinLinesId: 1,
     coordsRef: document.getElementById('coords'),
     ctxTables: [],
-    ctxTablesObject: {}
+    ctxTablesObject: {},
+    lastFromCoords: {}
   }
 
   // Callback function to execute when mutations are observed
@@ -111,17 +112,18 @@
     // disegno la linea solo se, nel canvas, è già presente una tabella
     if (app.canvas.childElementCount >= 1) {
       let fromPointX, fromPointY;
-      // console.info('data-', app.joinLinesId);
-      // fromPointX = app.tables.get('data-' + app.joinLinesId).from.x;
-      // fromPointY = app.tables.get('data-' + app.joinLinesId).from.y;
       // recupero i fromPoint della precedente tabella. Da qui partirà la linea che si collega alla tabella che sto draggando
-      app.canvas.querySelectorAll('div[data-id]').forEach(tbl => {
-        // tbl.dataset.x +85 è il centro del button
-        if ((+tbl.dataset.x + 85) < e.offsetX) {
-          fromPointX = +tbl.dataset.fromX;
-          fromPointY = +tbl.dataset.fromY;
+      for (const [tableId, props] of app.tables) {
+        if ((props.x + 50) < e.offsetX && (props.y - 40) < e.offsetY) {
+          fromPointX = props.from.x;
+          fromPointY = props.from.y;
+          app.lastFromCoords.x = fromPointX;
+          app.lastFromCoords.y = fromPointY;
+        } else {
+          fromPointX = app.lastFromCoords.x;
+          fromPointY = app.lastFromCoords.y;
         }
-      });
+      }
       // toPoint definisce il punto di arrivo della linea (vicino alla tabella che sto draggando)
       const toPointX = e.offsetX - app.dragElementPosition.x - 10;
       const toPointY = e.offsetY - app.dragElementPosition.y + 15;
@@ -152,30 +154,30 @@
       // console.log(tableId, value);
       ctx.beginPath();
       const table = new Path2D();
-      ctx.roundRect(value.x, value.y, 170, 30, 4);
+      // ctx.roundRect(value.x, value.y, 170, 30, 4);
       ctx.beginPath();
       table.roundRect(value.x, value.y, 170, 30, 4);
       ctx.fillStyle = "gainsboro";
       ctx.fill(table);
-      table.roundRect(value.x, value.y, 170, 30, 4);
-      table.id = 'canvas-' + tableId;
+      // table.roundRect(value.x, value.y, 170, 30, 4);
+      table.id = tableId;
       table.table = value.name;
-      ctx.lineWidth = 0.3;
+      ctx.lineWidth = 0.2;
       ctx.strokeStyle = 'gray';
       ctx.stroke(table);
       ctx.closePath();
       app.ctxTablesObject[tableId] = table;
       // console.log(app.ctxTablesObject);
 
-      ctx.font = '0.8rem sans-serif';
+      ctx.font = '0.8rem Barlow';
       ctx.fillStyle = '#494949';
       ctx.fillText(value.name, value.x + 20, value.y + 20);
 
       // startpoint / endpoint
       ctx.beginPath();
-      ctx.fillStyle = 'dimgray';
+      ctx.fillStyle = 'lightgray';
       ctx.arc(value.x - 10, value.y + 15, 2, 0, 6);
-      ctx.fill(); // cerchio senza colore di riempimento
+      ctx.fill();
       ctx.closePath();
       ctx.beginPath();
       ctx.arc(value.x + 180, value.y + 15, 2, 0, 6);
@@ -210,10 +212,9 @@
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
     // console.log(liElement);
     const div = document.createElement('div');
-    div.id = liElement.id;
+    div.id = `canvas-${liElement.id}`;
     div.dataset.table = liElement.dataset.label;
     div.dataset.schema = liElement.dataset.schema;
-    // console.log(app.canvas.childElementCount);
     div.dataset.id = 'data-' + app.canvas.childElementCount;
     // all'offsetX elimino l'offset che identifica la distanza tra il mouse e il left dell'elemento draggato
     const coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
@@ -236,8 +237,6 @@
       console.log(app.joinLines);
     } */
 
-    // app.tableId++;
-    debugger;
     app.tables.set('canvas-data-' + app.canvas.childElementCount, {
       name: liElement.dataset.label,
       x: coords.x, y: coords.y,
@@ -251,18 +250,21 @@
       }
     });
     app.createButtons();
-    console.log(app.ctxTablesObject);
-    console.log(app.tables);
+    // console.log(app.ctxTablesObject);
+    // console.log(app.tables);
+    // console.log(app.canvas.childElementCount, app.tables.size);
     if (app.tables.size > 1) {
-      let fromPointX = app.tables.get('canvas-data-' + app.joinLinesId).from.x;
-      let fromPointY = app.tables.get('canvas-data-' + app.joinLinesId).from.y;
-      app.canvas.querySelectorAll('div[data-id]').forEach(tbl => {
-        // tbl.dataset.x +85 è il centro del button
-        if ((+tbl.dataset.x + 85) < e.offsetX) {
-          fromPointX = +tbl.dataset.fromX;
-          fromPointY = +tbl.dataset.fromY;
+      for (const [tableId, props] of app.tables) {
+        if ((props.x + 50) < e.offsetX && (props.y - 40) < e.offsetY) {
+          fromPointX = props.from.x;
+          fromPointY = props.from.y;
+          app.lastFromCoords.x = fromPointX;
+          app.lastFromCoords.y = fromPointY;
+        } else {
+          fromPointX = app.lastFromCoords.x;
+          fromPointY = app.lastFromCoords.y;
         }
-      });
+      }
       const toX = app.tables.get('canvas-data-' + app.canvas.childElementCount).to.x;
       const toY = app.tables.get('canvas-data-' + app.canvas.childElementCount).to.y;
       const p1 = { x: fromPointX + 60 }
@@ -291,7 +293,7 @@
     app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
     // console.log(app.dragElementPosition);
     e.dataTransfer.setData('text/plain', e.target.id);
-    console.log(e.dataTransfer);
+    // console.log(e.dataTransfer);
     e.dataTransfer.effectAllowed = "copy";
   }
 

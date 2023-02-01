@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@100;200;400;600&display=swap');
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp&display=swap");
-* {box-sizing: border-box;}
+* {box-sizing: border-box; font-family: 'Barlow'; font-size: .9rem;}
 
 .material-icons-round.md-18{
   font-size: 18px;
