@@ -16,7 +16,9 @@
     tables: new Map(),
     tableId: 0,
     joinLines: new Map(),
-    joinLinesId: 1
+    joinLinesId: 1,
+    coordsRef: document.getElementById('coords'),
+    ctxTables: []
   }
 
   // Callback function to execute when mutations are observed
@@ -59,11 +61,19 @@
   const ctx = canvas.getContext('2d');
 
   canvas.addEventListener('click', (e) => {
-    // const isPointInPath = ctx.isPointInPath(app.table, e.offsetX, e.offsetY);
-    // console.log(isPointInPath);
+    app.ctxTables.forEach(table => {
+      const isPointInPath = ctx.isPointInPath(table, e.offsetX, e.offsetY);
+      // console.log(isPointInPath);
+    });
   }, true);
 
   canvas.addEventListener('mousemove', (e) => {
+    app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
+    app.ctxTables.forEach(table => {
+      const isPointInPath = ctx.isPointInPath(table, e.offsetX, e.offsetY);
+      // console.log(isPointInPath);
+
+    });
     /* const isPointInPath = ctx.isPointInPath(app.table, e.offsetX, e.offsetY);
     ctx.fillStyle = isPointInPath ? '#3f3f4036' : 'gainsboro'; */
 
@@ -74,11 +84,6 @@
 
   app.canvasDragEnter = (e) => {
     e.preventDefault();
-    // console.log('dragEnter');
-    console.log(e.offsetX, e.offsetY);
-    // app.tableId++;
-    // app.tables.set('table-' + app.tableId, {});
-    // console.log(app.tables);
   }
 
   app.canvasDragLeave = (e) => {
@@ -89,37 +94,31 @@
 
   app.canvasDragOver = (e) => {
     e.preventDefault();
-    console.log('over ', e.offsetX, e.offsetY);
+    app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
     ctx.save();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // ridisegno i buttons e le linee dopo aver pulito il canvas
     app.createButtons();
-    console.log(app.tables);
+    // console.log(app.tables);
     // disegno la linea solo se, nel canvas, è già presente una tabella
     if (app.canvas.childElementCount >= 1) {
-
       let fromPointX, fromPointY;
-      /* if (e.offsetX < app.tables.get('table-' + app.joinLinesId).from.x) {
-        console.log((app.canvas.querySelector('div[data-x]').dataset.x < e.offsetX));
-      } */
+      fromPointX = app.tables.get('data-' + app.joinLinesId).from.x;
+      fromPointY = app.tables.get('data-' + app.joinLinesId).from.y;
       // recupero i fromPoint della precedente tabella. Da qui partirà la linea che si collega alla tabella che sto draggando
-      /* app.canvas.querySelectorAll('div[data-id]').forEach(tbl => {
-        if (e.offsetX < tbl.dataset.x) {
-          fromPointX = +tbl.dataset.x + 180 + 10;
-          fromPointY = +tbl.dataset.y + 15;
-        } else {
-          fromPointX = app.tables.get('table-' + app.joinLinesId).from.x;
-          fromPointY = app.tables.get('table-' + app.joinLinesId).from.y;
+      app.canvas.querySelectorAll('div[data-id]').forEach(tbl => {
+        // tbl.dataset.x +85 è il centro del button
+        if ((+tbl.dataset.x + 85) < e.offsetX) {
+          fromPointX = +tbl.dataset.fromX;
+          fromPointY = +tbl.dataset.fromY;
         }
-      }); */
-      fromPointX = app.tables.get('table-' + app.joinLinesId).from.x;
-      fromPointY = app.tables.get('table-' + app.joinLinesId).from.y;
+      });
       // toPoint definisce il punto di arrivo della linea (vicino alla tabella che sto draggando)
       const toPointX = e.offsetX - app.dragElementPosition.x - 10;
       const toPointY = e.offsetY - app.dragElementPosition.y + 15;
       // parametri per la bezierCurveTo
-      const p1 = { x: fromPointX + 120 }
-      const p2 = { x: e.offsetX - 120, y: e.offsetY }
+      const p1 = { x: fromPointX + 60 }
+      const p2 = { x: e.offsetX - 60, y: e.offsetY }
       // memorizzo, in un oggetto Map() i parametri della linea
       app.joinLines.set('line-' + (app.joinLinesId), {
         'pos': {
@@ -140,32 +139,35 @@
 
   app.createButtons = () => {
     // creo, oppure, ricreo tutte le table presenti nel canvas
-    for (const [tableId, coords] of app.tables) {
-      // console.log(tableId, coords.x, coords.y);
+    for (const [tableId, value] of app.tables) {
+      console.log(tableId, value);
       ctx.beginPath();
-      ctx.roundRect(coords.x, coords.y, 170, 30, 4);
-      const ctxTable = new Path2D();
+      const table = new Path2D();
+      ctx.roundRect(value.x, value.y, 170, 30, 4);
       ctx.beginPath();
-      ctxTable.roundRect(coords.x, coords.y, 170, 30, 4);
+      table.roundRect(value.x, value.y, 170, 30, 4);
       ctx.fillStyle = "gainsboro";
-      ctx.fill(ctxTable);
-      ctxTable.roundRect(coords.x, coords.y, 170, 30, 4);
-      ctxTable.id = 'e';
+      ctx.fill(table);
+      table.roundRect(value.x, value.y, 170, 30, 4);
+      table.id = 'e';
       ctx.lineWidth = 0.3;
       ctx.strokeStyle = 'gray';
-      ctx.stroke(ctxTable);
+      ctx.stroke(table);
       ctx.closePath();
+      app.ctxTables.push(table);
+
       ctx.font = '0.8rem sans-serif';
       ctx.fillStyle = '#494949';
-      ctx.fillText(tableId, coords.x + 20, coords.y + 20);
+      ctx.fillText(value.name, value.x + 20, value.y + 20);
+
       // startpoint / endpoint
       ctx.beginPath();
       ctx.fillStyle = 'dimgray';
-      ctx.arc(coords.x - 10, coords.y + 15, 2, 0, 6);
+      ctx.arc(value.x - 10, value.y + 15, 2, 0, 6);
       ctx.fill(); // cerchio senza colore di riempimento
       ctx.closePath();
       ctx.beginPath();
-      ctx.arc(coords.x + 180, coords.y + 15, 2, 0, 6);
+      ctx.arc(value.x + 180, value.y + 15, 2, 0, 6);
       // ctx.stroke(); // cerchio senza colore di riempimento
       ctx.fill();
       ctx.closePath();
@@ -190,7 +192,6 @@
 
   app.canvasDrop = (e) => {
     e.preventDefault();
-    console.log('drop');
     console.log(e.offsetX, e.offsetY);
     // e.target.classList.replace('dropping', 'dropped');
     if (!e.target.classList.contains('dropzone')) return;
@@ -201,13 +202,15 @@
     div.id = liElement.id;
     div.dataset.label = liElement.dataset.label;
     // console.log(app.canvas.childElementCount);
-    div.dataset.id = 'table-' + app.canvas.childElementCount;
-    div.dataset.x = e.offsetX;
-    div.dataset.y = e.offsetY;
-    div.dataset.fromX = e.offsetX + 180;
-    div.dataset.fromY = e.offsetY + 15;
-    div.dataset.toX = e.offsetX - 10;
-    div.dataset.toY = e.offsetY + 15;
+    div.dataset.id = 'data-' + app.canvas.childElementCount;
+    // all'offsetX elimino l'offset che identifica la distanza tra il mouse e il left dell'elemento draggato
+    const coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
+    div.dataset.x = coords.x;
+    div.dataset.y = coords.y;
+    div.dataset.fromX = coords.x + 180;
+    div.dataset.fromY = coords.y + 15;
+    div.dataset.toX = coords.x - 10;
+    div.dataset.toY = coords.y + 15;
     app.canvas.append(div);
     /* app.createButtons();
     if (app.canvas.childElementCount > 1) {
@@ -222,9 +225,8 @@
     } */
 
     app.tableId++;
-    // console.log(app.dragElementPosition, e.offsetX, e.offsetY);
-    const coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
-    app.tables.set('table-' + app.tableId, {
+    app.tables.set('data-' + app.tableId, {
+      name: liElement.dataset.label,
       x: coords.x, y: coords.y,
       'from': {
         'x': coords.x + 180,
@@ -238,12 +240,12 @@
     console.log(app.tables);
     app.createButtons();
     if (app.tables.size > 1) {
-      const fromPointX = app.tables.get('table-' + app.joinLinesId).from.x;
-      const fromPointY = app.tables.get('table-' + app.joinLinesId).from.y;
-      const toX = app.tables.get('table-' + app.tableId).to.x;
-      const toY = app.tables.get('table-' + app.tableId).to.y;
-      const p1 = { x: fromPointX + 120 }
-      const p2 = { x: e.offsetX - 120, y: e.offsetY }
+      const fromPointX = app.tables.get('data-' + app.joinLinesId).from.x;
+      const fromPointY = app.tables.get('data-' + app.joinLinesId).from.y;
+      const toX = app.tables.get('data-' + app.tableId).to.x;
+      const toY = app.tables.get('data-' + app.tableId).to.y;
+      const p1 = { x: fromPointX + 60 }
+      const p2 = { x: e.offsetX - 60, y: e.offsetY }
       app.joinLines.set('line-' + (app.joinLinesId++), {
         'pos': {
           'x': fromPointX,
@@ -258,6 +260,7 @@
       });
       console.log(app.joinLines);
     }
+    console.log(app.canvas.querySelector('#data-1'));
   }
 
   app.handlerDragStart = (e) => {
@@ -269,7 +272,6 @@
     console.log(e.dataTransfer);
     e.dataTransfer.effectAllowed = "copy";
   }
-
 
 
 
@@ -548,7 +550,7 @@
   /* mouse events */
   document.querySelectorAll('.translate').forEach(el => {
     el.onmousedown = (e) => {
-      console.log(app.coords);
+      // console.log(app.coords);
       app.coords = { x: +e.currentTarget.dataset.translateX, y: +e.currentTarget.dataset.translateY };
       app.el = e.currentTarget;
     }

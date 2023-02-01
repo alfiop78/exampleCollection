@@ -187,3 +187,10 @@ canvas{
   /* width: inherit; */
   position: absolute;
 }
+
+#coords{
+  position: absolute;
+  background-color: #494949;
+  color: white;
+  bottom: 0px;
+}
