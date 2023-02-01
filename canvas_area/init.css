@@ -180,12 +180,9 @@ svg path{
 }
 
 canvas{
-  /* width: 80%;
-  height: 90%; */
-  background-color: lightgreen;
-  /* height: inherit; */
-  /* width: inherit; */
+  background-color: #90ee9029;
   position: absolute;
+  /* position: relative; */
 }
 
 #coords{

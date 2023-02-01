@@ -18,7 +18,8 @@
     joinLines: new Map(),
     joinLinesId: 1,
     coordsRef: document.getElementById('coords'),
-    ctxTables: []
+    ctxTables: [],
+    ctxTablesObject: {}
   }
 
   // Callback function to execute when mutations are observed
@@ -61,19 +62,33 @@
   const ctx = canvas.getContext('2d');
 
   canvas.addEventListener('click', (e) => {
-    app.ctxTables.forEach(table => {
-      const isPointInPath = ctx.isPointInPath(table, e.offsetX, e.offsetY);
-      // console.log(isPointInPath);
-    });
+    for (const [tableId, path2d] of Object.entries(app.ctxTablesObject)) {
+      const isPointInPath = ctx.isPointInPath(path2d, e.offsetX, e.offsetY);
+      if (isPointInPath) {
+        console.log(isPointInPath);
+        console.log(path2d);
+        console.log('tabella selezionata : ', path2d.id, path2d.table);
+        // recupero dentro il canvas l'elemento creato dinamicamente con id qui selezionato
+        console.log(app.canvas.querySelector('#' + path2d.id));
+      }
+    }
   }, true);
 
   canvas.addEventListener('mousemove', (e) => {
     app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
-    app.ctxTables.forEach(table => {
-      const isPointInPath = ctx.isPointInPath(table, e.offsetX, e.offsetY);
-      // console.log(isPointInPath);
+    for (const [tableId, path2d] of Object.entries(app.ctxTablesObject)) {
+      const isPointInPath = ctx.isPointInPath(path2d, e.offsetX, e.offsetY);
+      if (isPointInPath) {
+        // console.log(isPointInPath);
+        // console.log(path2d);
+      }
+    }
+    // app.ctxTables.forEach(table => {
+    //   const isPointInPath = ctx.isPointInPath(table, e.offsetX, e.offsetY);
+    //   console.log(isPointInPath);
 
-    });
+    // });
+    //
     /* const isPointInPath = ctx.isPointInPath(app.table, e.offsetX, e.offsetY);
     ctx.fillStyle = isPointInPath ? '#3f3f4036' : 'gainsboro'; */
 
@@ -149,12 +164,16 @@
       ctx.fillStyle = "gainsboro";
       ctx.fill(table);
       table.roundRect(value.x, value.y, 170, 30, 4);
-      table.id = 'e';
+      table.id = tableId;
+      table.table = value.name;
       ctx.lineWidth = 0.3;
       ctx.strokeStyle = 'gray';
       ctx.stroke(table);
       ctx.closePath();
-      app.ctxTables.push(table);
+      // app.ctxTables.push(table);
+      app.ctxTablesObject[tableId] = table;
+      // console.log(app.ctxTables);
+      console.log(app.ctxTablesObject);
 
       ctx.font = '0.8rem sans-serif';
       ctx.fillStyle = '#494949';
@@ -200,7 +219,8 @@
     // console.log(liElement);
     const div = document.createElement('div');
     div.id = liElement.id;
-    div.dataset.label = liElement.dataset.label;
+    div.dataset.table = liElement.dataset.label;
+    div.dataset.schema = liElement.dataset.schema;
     // console.log(app.canvas.childElementCount);
     div.dataset.id = 'data-' + app.canvas.childElementCount;
     // all'offsetX elimino l'offset che identifica la distanza tra il mouse e il left dell'elemento draggato
@@ -265,6 +285,7 @@
 
   app.handlerDragStart = (e) => {
     console.log('e.target : ', e.target.id);
+    console.log('e.target : ', e.currentTarget.id);
     e.target.classList.add('dragging');
     app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
     // console.log(app.dragElementPosition);
@@ -343,7 +364,6 @@
   canvas.addEventListener('dragover', app.canvasDragOver, false);
   canvas.addEventListener('dragleave', app.canvasDragLeave, false);
   canvas.addEventListener('dragend', app.canvasDragEnd, false);
-  canvas.addEventListener('drop', app.canvasDrop, false);
   canvas.addEventListener('drop', app.canvasDrop, false);
   // redraw();
   /* end canvas */
