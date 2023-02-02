@@ -4,22 +4,15 @@ var Canvas = new DrawCanvas('canvas');
     // templates
     tmplList: document.getElementById('tmpl-li'),
     tmplCard: document.getElementById('tmpl-card'),
-    // dialogs
-    dialogTables: document.getElementById('dlg-tables'),
-    // buttons
-    btnCreateDimension: document.getElementById('btn-create-dimension'),
-    btnSelectSchema: document.getElementById('btn-select-schema'),
     // body
     body: document.getElementById('body'),
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
-    canvas: document.getElementById('canvas'),
+    // canvas: document.getElementById('canvas'),
     tables: new Map(),
-    tableId: 0,
     joinLines: new Map(),
     joinLinesId: 1,
     coordsRef: document.getElementById('coords'),
-    ctxTables: [],
     ctxTablesObject: {},
     lastFromCoords: {}
   }
@@ -58,28 +51,25 @@ var Canvas = new DrawCanvas('canvas');
   observerList.observe(app.body, config);
 
   /* canvas */
-  const canvas = document.querySelector('canvas');
-  canvas.width = app.translate.offsetWidth;
-  canvas.height = app.translate.offsetHeight;
-  const ctx = canvas.getContext('2d');
+  // const ctx = app.canvas.getContext('2d');
 
-  canvas.addEventListener('click', (e) => {
-    for (const [tableId, path2d] of Object.entries(app.ctxTablesObject)) {
-      const isPointInPath = ctx.isPointInPath(path2d, e.offsetX, e.offsetY);
+  Canvas.canvas.addEventListener('click', (e) => {
+    for (const [tableId, path2d] of Object.entries(Canvas.ctxTablesObject)) {
+      const isPointInPath = Canvas.ctx.isPointInPath(path2d, e.offsetX, e.offsetY);
       if (isPointInPath) {
         console.log(isPointInPath);
         console.log(path2d);
         console.log('tabella selezionata : ', path2d.id, path2d.table);
         // recupero dentro il canvas l'elemento creato dinamicamente con id qui selezionato
-        console.log(app.canvas.querySelector('#' + path2d.id));
+        console.log(Canvas.canvas.querySelector('#' + path2d.id));
       }
     }
   }, true);
 
-  canvas.addEventListener('mousemove', (e) => {
+  Canvas.canvas.addEventListener('mousemove', (e) => {
     app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
-    for (const [tableId, path2d] of Object.entries(app.ctxTablesObject)) {
-      const isPointInPath = ctx.isPointInPath(path2d, e.offsetX, e.offsetY);
+    for (const [tableId, path2d] of Object.entries(Canvas.ctxTablesObject)) {
+      const isPointInPath = Canvas.ctx.isPointInPath(path2d, e.offsetX, e.offsetY);
       if (isPointInPath) {
         // console.log(isPointInPath);
         // console.log(path2d);
@@ -123,16 +113,17 @@ var Canvas = new DrawCanvas('canvas');
     if (e.target.classList.contains('dropzone')) {
       e.dataTransfer.dropEffect = "copy";
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
-      ctx.save();
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      Canvas.ctx.save();
+      Canvas.ctx.clearRect(0, 0, Canvas.canvas.width, Canvas.canvas.height);
       // ridisegno i buttons e le linee dopo aver pulito il canvas
-      app.createButtons();
+      Canvas.drawTables();
+      // app.createButtons();
       // console.log(app.tables);
       // disegno la linea solo se, nel canvas, è già presente una tabella
-      if (app.canvas.childElementCount >= 1) {
+      if (Canvas.canvas.childElementCount >= 1) {
         let fromPointX, fromPointY;
         // recupero i fromPoint della precedente tabella. Da qui partirà la linea che si collega alla tabella che sto draggando
-        for (const [tableId, props] of app.tables) {
+        for (const [tableId, props] of Canvas.tables) {
           if ((props.x + 50) < e.offsetX && (props.y - 40) < e.offsetY) {
             fromPointX = props.from.x;
             fromPointY = props.from.y;
@@ -150,78 +141,26 @@ var Canvas = new DrawCanvas('canvas');
         const p1 = { x: fromPointX + 60 }
         const p2 = { x: e.offsetX - 60, y: e.offsetY }
         // memorizzo, in un oggetto Map() i parametri della linea
-        app.joinLines.set('line-' + (app.joinLinesId), {
-          'pos': {
-            'x': fromPointX,
-            'y': fromPointY
-          },
-          'cp1x': p1.x,
-          'cp1y': fromPointY,
-          'cp2x': p2.x,
-          'cp2y': p2.y,
-          'x': toPointX,
-          'y': toPointY
-        });
-        app.drawLines();
+        Canvas.joinLines = {
+          id: `line-${app.joinLinesId}`,
+          properties: {
+            'pos': {
+              'x': fromPointX,
+              'y': fromPointY
+            },
+            'cp1x': p1.x,
+            'cp1y': fromPointY,
+            'cp2x': p2.x,
+            'cp2y': p2.y,
+            'x': toPointX,
+            'y': toPointY
+          }
+        };
+        Canvas.drawLines();
       }
-      ctx.restore();
+      Canvas.ctx.restore();
     } else {
       e.dataTransfer.dropEffect = "none";
-    }
-  }
-
-  app.createButtons = () => {
-    // creo, oppure, ricreo tutte le table presenti nel canvas
-    for (const [tableId, value] of app.tables) {
-      // console.log(tableId, value);
-      ctx.beginPath();
-      const table = new Path2D();
-      // ctx.roundRect(value.x, value.y, 170, 30, 4);
-      ctx.beginPath();
-      table.roundRect(value.x, value.y, 170, 30, 4);
-      ctx.fillStyle = "gainsboro";
-      ctx.fill(table);
-      // table.roundRect(value.x, value.y, 170, 30, 4);
-      table.id = tableId;
-      table.table = value.name;
-      ctx.lineWidth = 0.2;
-      ctx.strokeStyle = 'gray';
-      ctx.stroke(table);
-      ctx.closePath();
-      app.ctxTablesObject[tableId] = table;
-      // console.log(app.ctxTablesObject);
-
-      ctx.font = '0.8rem Barlow';
-      ctx.fillStyle = '#494949';
-      ctx.fillText(value.name, value.x + 20, value.y + 20);
-
-      // startpoint / endpoint
-      ctx.beginPath();
-      ctx.fillStyle = 'lightgray';
-      ctx.arc(value.x - 10, value.y + 15, 2, 0, 6);
-      ctx.fill();
-      ctx.closePath();
-      ctx.beginPath();
-      ctx.arc(value.x + 180, value.y + 15, 2, 0, 6);
-      // ctx.stroke(); // cerchio senza colore di riempimento
-      ctx.fill();
-      ctx.closePath();
-    }
-  }
-
-  app.drawLines = () => {
-    // se non sono presenti tabelle non disegno la linea
-    if (app.tables.size === 0) return;
-    const ctxLine = new Path2D();
-    for (const [lineId, coords] of app.joinLines) {
-      ctx.beginPath();
-      ctx.strokeStyle = 'darkorange';
-      ctx.lineWidth = 3;
-      ctxLine.moveTo(coords.pos.x, coords.pos.y);
-      // ctxLine.moveTo(p0.x, p0.y);
-      // ctxLine.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
-      ctxLine.bezierCurveTo(coords.cp1x, coords.cp1y, coords.cp2x, coords.cp2y, coords.x, coords.y);
-      ctx.stroke(ctxLine);
     }
   }
 
@@ -234,10 +173,11 @@ var Canvas = new DrawCanvas('canvas');
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
     // console.log(liElement);
     const div = document.createElement('div');
-    div.id = `canvas-${liElement.id}`;
+    // div.id = `canvas-${liElement.id}`;
+    div.id = `canvas-data-${Canvas.canvas.childElementCount + 1}`;
     div.dataset.table = liElement.dataset.label;
     div.dataset.schema = liElement.dataset.schema;
-    div.dataset.id = 'data-' + app.canvas.childElementCount;
+    div.dataset.id = 'data-' + Canvas.canvas.childElementCount;
     // all'offsetX elimino l'offset che identifica la distanza tra il mouse e il left dell'elemento draggato
     const coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
     div.dataset.x = coords.x;
@@ -246,7 +186,7 @@ var Canvas = new DrawCanvas('canvas');
     div.dataset.fromY = coords.y + 15;
     div.dataset.toX = coords.x - 10;
     div.dataset.toY = coords.y + 15;
-    app.canvas.append(div);
+    Canvas.canvas.append(div);
     /* app.createButtons();
     if (app.canvas.childElementCount > 1) {
       const fromX = app.tables.get('table-' + app.joinLinesId).from.x;
@@ -258,28 +198,29 @@ var Canvas = new DrawCanvas('canvas');
       app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': startLineX, 'y': startLineY }, 'cp1x': p1.x, 'cp1y': startLineY, 'cp2x': p2.x, 'cp2y': p2.y, 'x': toX, 'y': toY });
       console.log(app.joinLines);
     } */
-
-    app.tables.set('canvas-data-' + app.canvas.childElementCount, {
-      name: liElement.dataset.label,
-      x: coords.x, y: coords.y,
-      'from': {
-        'x': coords.x + 180,
-        'y': coords.y + 15
-      },
-      'to': {
-        'x': coords.x - 10,
-        'y': coords.y + 15
+    Canvas.tables = {
+      id: `canvas-data-${Canvas.canvas.childElementCount}`,
+      properties: {
+        name: liElement.dataset.label,
+        x: coords.x,
+        y: coords.y,
+        'from': {
+          'x': coords.x + 180,
+          'y': coords.y + 15
+        },
+        'to': {
+          'x': coords.x - 10,
+          'y': coords.y + 15
+        }
       }
-    });
-    app.createButtons();
-    // console.log(app.ctxTablesObject);
-    // console.log(app.tables);
-    // console.log(app.canvas.childElementCount, app.tables.size);
-    if (app.tables.size > 1) {
-      for (const [tableId, props] of app.tables) {
-        if ((props.x + 50) < e.offsetX && (props.y - 40) < e.offsetY) {
-          fromPointX = props.from.x;
-          fromPointY = props.from.y;
+    };
+    Canvas.drawTables();
+
+    if (Canvas.tables.size > 1) {
+      for (const [tableId, properties] of Canvas.tables) {
+        if ((properties.x + 50) < e.offsetX && (properties.y - 40) < e.offsetY) {
+          fromPointX = properties.from.x;
+          fromPointY = properties.from.y;
           app.lastFromCoords.x = fromPointX;
           app.lastFromCoords.y = fromPointY;
         } else {
@@ -287,25 +228,29 @@ var Canvas = new DrawCanvas('canvas');
           fromPointY = app.lastFromCoords.y;
         }
       }
-      const toX = app.tables.get('canvas-data-' + app.canvas.childElementCount).to.x;
-      const toY = app.tables.get('canvas-data-' + app.canvas.childElementCount).to.y;
+      const toPointX = Canvas.tables.get('canvas-data-' + Canvas.canvas.childElementCount).to.x;
+      const toPointY = Canvas.tables.get('canvas-data-' + Canvas.canvas.childElementCount).to.y;
       const p1 = { x: fromPointX + 60 }
       const p2 = { x: e.offsetX - 60, y: e.offsetY }
-      app.joinLines.set('line-' + (app.joinLinesId++), {
-        'pos': {
-          'x': fromPointX,
-          'y': fromPointY
-        },
-        'cp1x': p1.x,
-        'cp1y': fromPointY,
-        'cp2x': p2.x,
-        'cp2y': p2.y,
-        'x': toX,
-        'y': toY
-      });
+      Canvas.joinLines = {
+        id: `line-${app.joinLinesId++}`,
+        properties: {
+          'pos': {
+            'x': fromPointX,
+            'y': fromPointY
+          },
+          'cp1x': p1.x,
+          'cp1y': fromPointY,
+          'cp2x': p2.x,
+          'cp2y': p2.y,
+          'x': toPointX,
+          'y': toPointY
+        }
+      };
+
       console.log(app.joinLines);
     }
-    // console.log(app.canvas.querySelector('#data-1'));
+    console.log(Canvas.canvas.querySelector('#canvas-data-1'));
   }
 
   app.handlerDragStart = (e) => {
@@ -323,11 +268,11 @@ var Canvas = new DrawCanvas('canvas');
     e.preventDefault();
   }
 
-  canvas.addEventListener('dragenter', app.canvasDragEnter, false);
-  canvas.addEventListener('dragover', app.canvasDragOver, false);
-  canvas.addEventListener('dragleave', app.canvasDragLeave, false);
-  canvas.addEventListener('dragend', app.canvasDragEnd, false);
-  canvas.addEventListener('drop', app.canvasDrop, false);
+  Canvas.canvas.addEventListener('dragenter', app.canvasDragEnter, false);
+  Canvas.canvas.addEventListener('dragover', app.canvasDragOver, false);
+  Canvas.canvas.addEventListener('dragleave', app.canvasDragLeave, false);
+  Canvas.canvas.addEventListener('dragend', app.canvasDragEnd, false);
+  Canvas.canvas.addEventListener('drop', app.canvasDrop, false);
 
 
 
@@ -362,7 +307,7 @@ var Canvas = new DrawCanvas('canvas');
   function drawBs() { /* ... */ }
 
   function redraw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, Canvas.canvas.width, Canvas.canvas.height);
     drawCheckbox(ctx, document.getElementById('showA'), 20, 40, true);
     drawCheckbox(ctx, document.getElementById('showB'), 20, 60, true);
     drawBase();
@@ -389,11 +334,11 @@ var Canvas = new DrawCanvas('canvas');
       document.getElementById('showB').checked = !(document.getElementById('showB').checked);
     redraw();
   }
-  // canvas.addEventListener('focus', redraw, true);
-  // canvas.addEventListener('blur', redraw, true);
-  // canvas.addEventListener('change', redraw, true);
-  // canvas.addEventListener('click', processClick, false);
-  // canvas.addEventListener('click', app.canvasClick, false);
+  // app.canvas.addEventListener('focus', redraw, true);
+  // app.canvas.addEventListener('blur', redraw, true);
+  // app.canvas.addEventListener('change', redraw, true);
+  // app.canvas.addEventListener('click', processClick, false);
+  // app.canvas.addEventListener('click', app.canvasClick, false);
   // redraw();
   /* end canvas */
   /* drag events */
