@@ -173,7 +173,12 @@ var Canvas = new DrawCanvas('canvas');
     div.dataset.schema = liElement.dataset.schema;
     div.dataset.id = 'data-' + Canvas.canvas.childElementCount;
     // all'offsetX elimino l'offset che identifica la distanza tra il mouse e il left dell'elemento draggato
-    const coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
+    let coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
+    console.log(Canvas.canvas.childElementCount);
+    if (Canvas.canvas.childElementCount === 0) {
+      // prima tabella
+      coords = { x: 40, y: 60 };
+    }
     div.dataset.x = coords.x;
     div.dataset.y = coords.y;
     div.dataset.fromX = coords.x + 180;
@@ -199,6 +204,7 @@ var Canvas = new DrawCanvas('canvas');
     };
     Canvas.drawTables();
 
+    // coordinate per la linea in base alle tabelle presenti nel canvas
     if (Canvas.tables.size > 1) {
       for (const [tableId, properties] of Canvas.tables) {
         if ((properties.x + 50) < e.offsetX && (properties.y - 40) < e.offsetY) {
