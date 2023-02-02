@@ -1,16 +1,18 @@
 class DrawCanvas {
   #tables = new Map();
-  // #ctxTablesObject = {};
   #joinLines = new Map();
 
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
-    console.log(this.canvas);
     this.ctx = this.canvas.getContext('2d');
     this.canvas.width = this.canvas.parentElement.offsetWidth;
     this.canvas.height = this.canvas.parentElement.offsetHeight;
     // accessibili dall'esterno
+    // Object che contiene la lista delle tabelle Path2d
     this.ctxTablesObject = {};
+    this.joinLineId = 1;
+    // consente di spostarmi, durante il drag&drop anche oltre (-x, -y) le tables già presenti nel Canvas
+    this.lastFromLineCoords = {};
   }
 
   set tables(value) {

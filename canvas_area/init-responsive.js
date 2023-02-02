@@ -8,13 +8,7 @@ var Canvas = new DrawCanvas('canvas');
     body: document.getElementById('body'),
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
-    // canvas: document.getElementById('canvas'),
-    tables: new Map(),
-    joinLines: new Map(),
-    joinLinesId: 1,
     coordsRef: document.getElementById('coords'),
-    ctxTablesObject: {},
-    lastFromCoords: {}
   }
 
   // Callback function to execute when mutations are observed
@@ -127,11 +121,11 @@ var Canvas = new DrawCanvas('canvas');
           if ((props.x + 50) < e.offsetX && (props.y - 40) < e.offsetY) {
             fromPointX = props.from.x;
             fromPointY = props.from.y;
-            app.lastFromCoords.x = fromPointX;
-            app.lastFromCoords.y = fromPointY;
+            Canvas.lastFromLineCoords.x = fromPointX;
+            Canvas.lastFromLineCoords.y = fromPointY;
           } else {
-            fromPointX = app.lastFromCoords.x;
-            fromPointY = app.lastFromCoords.y;
+            fromPointX = Canvas.lastFromLineCoords.x;
+            fromPointY = Canvas.lastFromLineCoords.y;
           }
         }
         // toPoint definisce il punto di arrivo della linea (vicino alla tabella che sto draggando)
@@ -142,7 +136,7 @@ var Canvas = new DrawCanvas('canvas');
         const p2 = { x: e.offsetX - 60, y: e.offsetY }
         // memorizzo, in un oggetto Map() i parametri della linea
         Canvas.joinLines = {
-          id: `line-${app.joinLinesId}`,
+          id: `line-${Canvas.joinLineId}`,
           properties: {
             'pos': {
               'x': fromPointX,
@@ -187,17 +181,6 @@ var Canvas = new DrawCanvas('canvas');
     div.dataset.toX = coords.x - 10;
     div.dataset.toY = coords.y + 15;
     Canvas.canvas.append(div);
-    /* app.createButtons();
-    if (app.canvas.childElementCount > 1) {
-      const fromX = app.tables.get('table-' + app.joinLinesId).from.x;
-      const fromY = app.tables.get('table-' + app.joinLinesId).from.y;
-      const toX = app.tables.get('table-' + app.tableId).to.x;
-      const toY = app.tables.get('table-' + app.tableId).to.y;
-      const p1 = { x: startLineX + 150 }
-      const p2 = { x: e.offsetX - 150, y: e.offsetY }
-      app.joinLines.set('line-' + (app.joinLinesId++), { 'pos': { 'x': startLineX, 'y': startLineY }, 'cp1x': p1.x, 'cp1y': startLineY, 'cp2x': p2.x, 'cp2y': p2.y, 'x': toX, 'y': toY });
-      console.log(app.joinLines);
-    } */
     Canvas.tables = {
       id: `canvas-data-${Canvas.canvas.childElementCount}`,
       properties: {
@@ -221,11 +204,11 @@ var Canvas = new DrawCanvas('canvas');
         if ((properties.x + 50) < e.offsetX && (properties.y - 40) < e.offsetY) {
           fromPointX = properties.from.x;
           fromPointY = properties.from.y;
-          app.lastFromCoords.x = fromPointX;
-          app.lastFromCoords.y = fromPointY;
+          Canvas.lastFromLineCoords.x = fromPointX;
+          Canvas.lastFromLineCoords.y = fromPointY;
         } else {
-          fromPointX = app.lastFromCoords.x;
-          fromPointY = app.lastFromCoords.y;
+          fromPointX = Canvas.lastFromLineCoords.x;
+          fromPointY = Canvas.lastFromLineCoords.y;
         }
       }
       const toPointX = Canvas.tables.get('canvas-data-' + Canvas.canvas.childElementCount).to.x;
@@ -233,7 +216,7 @@ var Canvas = new DrawCanvas('canvas');
       const p1 = { x: fromPointX + 60 }
       const p2 = { x: e.offsetX - 60, y: e.offsetY }
       Canvas.joinLines = {
-        id: `line-${app.joinLinesId++}`,
+        id: `line-${Canvas.joinLineId++}`,
         properties: {
           'pos': {
             'x': fromPointX,
@@ -248,7 +231,7 @@ var Canvas = new DrawCanvas('canvas');
         }
       };
 
-      console.log(app.joinLines);
+      console.log(Canvas.joinLines);
     }
     console.log(Canvas.canvas.querySelector('#canvas-data-1'));
   }
