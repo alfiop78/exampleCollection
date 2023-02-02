@@ -1,3 +1,4 @@
+var Canvas = new DrawCanvas('canvas');
 (() => {
   var app = {
     // templates
@@ -93,6 +94,22 @@
 
   app.canvasDragEnter = (e) => {
     e.preventDefault();
+    // e.target.classList.remove('dropping');
+    if (e.target.classList.contains('dropzone')) {
+      console.info('DROPZONE');
+      // e.dataTransfer.dropEffect = "copy";
+      // coloro il border differente per la dropzone
+      e.target.classList.add('dropping');
+      /* const breakLine = document.getElementById('break-line-1');
+      console.log(e.offsetX, breakLine.getAttribute('x1'));
+      if (e.offsetX > breakLine.getAttribute('x1')) {
+        console.log('level 2');
+      } */
+    } else {
+      console.warn('non in dropzone');
+      // TODO: se non sono in una dropzone modifico l'icona del drag&drop (icona "non consentito")
+      // e.dataTransfer.dropEffect = "none";
+    }
   }
 
   app.canvasDragLeave = (e) => {
@@ -103,49 +120,54 @@
 
   app.canvasDragOver = (e) => {
     e.preventDefault();
-    app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
-    ctx.save();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // ridisegno i buttons e le linee dopo aver pulito il canvas
-    app.createButtons();
-    // console.log(app.tables);
-    // disegno la linea solo se, nel canvas, è già presente una tabella
-    if (app.canvas.childElementCount >= 1) {
-      let fromPointX, fromPointY;
-      // recupero i fromPoint della precedente tabella. Da qui partirà la linea che si collega alla tabella che sto draggando
-      for (const [tableId, props] of app.tables) {
-        if ((props.x + 50) < e.offsetX && (props.y - 40) < e.offsetY) {
-          fromPointX = props.from.x;
-          fromPointY = props.from.y;
-          app.lastFromCoords.x = fromPointX;
-          app.lastFromCoords.y = fromPointY;
-        } else {
-          fromPointX = app.lastFromCoords.x;
-          fromPointY = app.lastFromCoords.y;
+    if (e.target.classList.contains('dropzone')) {
+      e.dataTransfer.dropEffect = "copy";
+      app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
+      ctx.save();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // ridisegno i buttons e le linee dopo aver pulito il canvas
+      app.createButtons();
+      // console.log(app.tables);
+      // disegno la linea solo se, nel canvas, è già presente una tabella
+      if (app.canvas.childElementCount >= 1) {
+        let fromPointX, fromPointY;
+        // recupero i fromPoint della precedente tabella. Da qui partirà la linea che si collega alla tabella che sto draggando
+        for (const [tableId, props] of app.tables) {
+          if ((props.x + 50) < e.offsetX && (props.y - 40) < e.offsetY) {
+            fromPointX = props.from.x;
+            fromPointY = props.from.y;
+            app.lastFromCoords.x = fromPointX;
+            app.lastFromCoords.y = fromPointY;
+          } else {
+            fromPointX = app.lastFromCoords.x;
+            fromPointY = app.lastFromCoords.y;
+          }
         }
+        // toPoint definisce il punto di arrivo della linea (vicino alla tabella che sto draggando)
+        const toPointX = e.offsetX - app.dragElementPosition.x - 10;
+        const toPointY = e.offsetY - app.dragElementPosition.y + 15;
+        // parametri per la bezierCurveTo
+        const p1 = { x: fromPointX + 60 }
+        const p2 = { x: e.offsetX - 60, y: e.offsetY }
+        // memorizzo, in un oggetto Map() i parametri della linea
+        app.joinLines.set('line-' + (app.joinLinesId), {
+          'pos': {
+            'x': fromPointX,
+            'y': fromPointY
+          },
+          'cp1x': p1.x,
+          'cp1y': fromPointY,
+          'cp2x': p2.x,
+          'cp2y': p2.y,
+          'x': toPointX,
+          'y': toPointY
+        });
+        app.drawLines();
       }
-      // toPoint definisce il punto di arrivo della linea (vicino alla tabella che sto draggando)
-      const toPointX = e.offsetX - app.dragElementPosition.x - 10;
-      const toPointY = e.offsetY - app.dragElementPosition.y + 15;
-      // parametri per la bezierCurveTo
-      const p1 = { x: fromPointX + 60 }
-      const p2 = { x: e.offsetX - 60, y: e.offsetY }
-      // memorizzo, in un oggetto Map() i parametri della linea
-      app.joinLines.set('line-' + (app.joinLinesId), {
-        'pos': {
-          'x': fromPointX,
-          'y': fromPointY
-        },
-        'cp1x': p1.x,
-        'cp1y': fromPointY,
-        'cp2x': p2.x,
-        'cp2y': p2.y,
-        'x': toPointX,
-        'y': toPointY
-      });
-      app.drawLines();
+      ctx.restore();
+    } else {
+      e.dataTransfer.dropEffect = "none";
     }
-    ctx.restore();
   }
 
   app.createButtons = () => {
@@ -297,6 +319,15 @@
     e.dataTransfer.effectAllowed = "copy";
   }
 
+  app.canvasDragEnd = (e) => {
+    e.preventDefault();
+  }
+
+  canvas.addEventListener('dragenter', app.canvasDragEnter, false);
+  canvas.addEventListener('dragover', app.canvasDragOver, false);
+  canvas.addEventListener('dragleave', app.canvasDragLeave, false);
+  canvas.addEventListener('dragend', app.canvasDragEnd, false);
+  canvas.addEventListener('drop', app.canvasDrop, false);
 
 
 
@@ -363,11 +394,6 @@
   // canvas.addEventListener('change', redraw, true);
   // canvas.addEventListener('click', processClick, false);
   // canvas.addEventListener('click', app.canvasClick, false);
-  canvas.addEventListener('dragenter', app.canvasDragEnter, false);
-  canvas.addEventListener('dragover', app.canvasDragOver, false);
-  canvas.addEventListener('dragleave', app.canvasDragLeave, false);
-  canvas.addEventListener('dragend', app.canvasDragEnd, false);
-  canvas.addEventListener('drop', app.canvasDrop, false);
   // redraw();
   /* end canvas */
   /* drag events */
@@ -389,156 +415,6 @@
     console.log(e.dataTransfer);
     e.dataTransfer.effectAllowed = "copy";
   } */
-
-  app.handlerDragOverH = (e) => {
-    e.preventDefault();
-    // console.log('dragOver:', e.target);
-    if (e.target.classList.contains('dropzone')) {
-      e.dataTransfer.dropEffect = "copy";
-      app.letsdraw = {
-        x: e.offsetX,
-        y: e.offsetY
-      }
-      // cerco le card con left minore della posizione corrente del mouse
-      let prevPosition;
-      app.flow.querySelectorAll('.table').forEach(tbl => {
-        if (tbl.dataset.x < e.offsetX) {
-          prevPosition = { x: tbl.dataset.x, y: tbl.dataset.y };
-        }
-      });
-      // console.log(app.letsdraw);
-      if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
-      // if (app.l) app.l.setAttribute('d', 'M 250 300 L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
-      // if (app.l) app.l.setAttribute('d', 'M ' + app.letsdraw.x + ' ' + app.letsdraw.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
-    } else {
-      e.dataTransfer.dropEffect = "none";
-    }
-  }
-
-  app.handlerDragEnterCard = (e) => {
-    console.log('dragEnter Card');
-  }
-
-  app.handlerDragEnterH = (e) => {
-    console.log('handlerDragEnter :', e.target);
-    e.preventDefault();
-    if (e.target.classList.contains('dropzone')) {
-      console.info('DROPZONE');
-      // e.dataTransfer.dropEffect = "copy";
-      // coloro il border differente per la dropzone
-      e.target.classList.add('dropping');
-      const breakLine = document.getElementById('break-line-1');
-      console.log(e.offsetX, breakLine.getAttribute('x1'));
-      if (e.offsetX > breakLine.getAttribute('x1')) {
-        console.log('level 2');
-      }
-      /* app.letsdraw = {
-        x: ,
-        y: 
-      } */
-      // console.log(app.letsdraw);
-      // app.line.setAttribute('d', 'M ' + app.letsdraw.x + ' ' + app.letsdraw.y + ' L ' + e.offsetX + ' ' + e.offsetY);
-    } else {
-      console.warn('non in dropzone');
-      // TODO: se non sono in una dropzone modifico l'icona del drag&drop (icona "non consentito")
-      // e.dataTransfer.dropEffect = "none";
-    }
-  }
-
-  app.handlerDragLeaveH = (e) => {
-    console.log('dragLeave : ', e.target);
-    e.preventDefault();
-    e.target.classList.remove('dropping');
-  }
-
-  app.handlerDragLeaveCard = (e) => {
-    e.preventDefault();
-  }
-
-  app.handlerDragEndH = (e) => {
-    debugger;
-    e.preventDefault();
-    app.svg.style['z-index'] = 1;
-    // faccio il DESCRIBE della tabella
-    // controllo lo stato di dropEffect per verificare se il drop è stato completato correttamente, come descritto qui:https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API#drag_end
-    // in app.getTable() vengono utilizzate le property della classe Cube (cube.card.schema, cube.card.tableName);
-    if (e.dataTransfer.dropEffect === 'copy') {
-      // imposto prima la <ul> altrimenti si verifica il bug riportato nella issue#50
-    }
-  }
-
-  app.handlerDropH = (e) => {
-    e.preventDefault();
-    e.target.classList.replace('dropping', 'dropped');
-    if (!e.target.classList.contains('dropzone')) return;
-    app.svg.style['z-index'] = 1;
-    console.log(app.letsdraw);
-    // const elementId = e.dataTransfer.getData('text/plain');
-    // console.log(elementId);
-    const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
-    console.log(liElement);
-    liElement.classList.remove('dragging');
-    const flow = document.getElementById('flow');
-    let table = document.createElement('div');
-    table.classList.add('table');
-    table.innerHTML = liElement.dataset.label;
-    table.style.left = app.letsdraw.x + 'px';
-    table.style.top = app.letsdraw.y + 'px';
-    table.dataset.x = app.letsdraw.x;
-    table.dataset.y = app.letsdraw.y;
-    flow.appendChild(table);
-    /* const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    marker.id = "mark1";
-    marker.setAttribute('markerWidth', 5);
-    marker.setAttribute('markerHeight', 5);
-    marker.setAttribute('refX', 5);
-    marker.setAttribute('refY', 5);
-    marker.setAttribute('viewBox', '0 0 10 10');
-    circle.setAttribute('cx', 5);
-    circle.setAttribute('cy', 5);
-    circle.setAttribute('r', 5);
-    circle.setAttribute('fill', 'blue');
-    marker.appendChild(circle);
-    app.svg.appendChild(marker); */
-    /* <marker
-      id="dot"
-      viewBox="0 0 10 10"
-      refX="5"
-      refY="5"
-      markerWidth="5"
-      markerHeight="5">
-      <circle cx="5" cy="5" r="5" fill="red" />
-    </marker> */
-    /* const svgTable = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    const svgTableText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-
-    svgTable.id = liElement.id;
-    svgTable.setAttribute('class', 'table-rect');
-    svgTable.setAttribute('x', app.letsdraw.x);
-    svgTable.setAttribute('y', app.letsdraw.y);
-    svgTableText.setAttribute('x', app.letsdraw.x + 20);
-    svgTableText.setAttribute('y', app.letsdraw.y + 24);
-    svgTableText.innerHTML = liElement.dataset.label;
-    app.svg.appendChild(svgTable);
-    app.svg.appendChild(svgTableText); */
-
-    /* span.innerHTML = liElement.dataset.label;
-    card.dataset.label = liElement.dataset.label;
-    card.dataset.schema = liElement.dataset.schema;
-    card.dataset.level = app.hierarchy.childElementCount;
-    e.target.appendChild(card); */
-    /* if (app.l) {
-      span.dataset.lineId = app.l.dataset.id;
-      app.l.dataset.level = app.hierarchy.childElementCount;
-      // let span = card.querySelector('span');
-      app.hierarchy.querySelectorAll(".card-area[data-level='" + app.hierarchy.childElementCount + "']").forEach(card => {
-        const line = app.svg.querySelector("path[data-level='" + app.hierarchy.childElementCount + "'][data-id='" + span.dataset.lineId + "']");
-        line.setAttribute('stroke', 'orange');
-        line.setAttribute('d', 'M ' + app.letsdraw.x + ' ' + app.letsdraw.y + ' L ' + card.querySelector('.table').offsetParent.offsetLeft + ' ' + (card.querySelector('.table').offsetParent.offsetTop + (span.offsetParent.offsetHeight / 2)));
-      });
-    } */
-  }
 
   /* drag events */
 
