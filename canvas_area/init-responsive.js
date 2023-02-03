@@ -186,6 +186,63 @@ var Canvas = new DrawCanvas('canvas');
     div.dataset.toX = coords.x - 10;
     div.dataset.toY = coords.y + 15;
     Canvas.canvas.append(div);
+
+    // Canvas.drawTables();
+
+    // coordinate per la linea in base alle tabelle presenti nel canvas
+    if (Canvas.canvas.childElementCount > 1) {
+      Canvas.canvas.querySelectorAll('div[data-id]').forEach(table => {
+        if ((+table.dataset.x + 50) < e.offsetX && (+table.dataset.y - 40) < e.offsetY) {
+          fromPointX = +table.dataset.fromX;
+          fromPointY = +table.dataset.fromY;
+          Canvas.lastFromLineCoords.x = fromPointX;
+          Canvas.lastFromLineCoords.y = fromPointY;
+          Canvas.tableJoin = table.id; // tabella a cui sto legando quella attuale
+        } else {
+          fromPointX = Canvas.lastFromLineCoords.x;
+          fromPointY = Canvas.lastFromLineCoords.y;
+        }
+      });
+      /* for (const [tableId, properties] of Canvas.tables) {
+        if ((properties.x + 50) < e.offsetX && (properties.y - 40) < e.offsetY) {
+          fromPointX = properties.from.x;
+          fromPointY = properties.from.y;
+          Canvas.lastFromLineCoords.x = fromPointX;
+          Canvas.lastFromLineCoords.y = fromPointY;
+          Canvas.tableJoin = tableId; // tabella a cui sto legando quella attuale
+        } else {
+          fromPointX = Canvas.lastFromLineCoords.x;
+          fromPointY = Canvas.lastFromLineCoords.y;
+        }
+      } */
+      console.log('tableJoin ', Canvas.tableJoin);
+      // recupero la posizione (y) di lastJoinTable
+
+      // const toPointX = Canvas.tables.get('canvas-data-' + Canvas.canvas.childElementCount).to.x;
+      const toPointX = Canvas.canvas.querySelector('#canvas-data-' + Canvas.canvas.childElementCount).dataset.toX;
+      const toPointY = Canvas.canvas.querySelector('#canvas-data-' + Canvas.canvas.childElementCount).dataset.toY;
+      // const toPointY = Canvas.tables.get('canvas-data-' + Canvas.canvas.childElementCount).to.y;
+      const p1 = { x: fromPointX + 60 }
+      const p2 = { x: e.offsetX - 60, y: e.offsetY }
+
+      Canvas.joinLines = {
+        id: `line-${Canvas.joinLineId++}`,
+        properties: {
+          'pos': {
+            'x': fromPointX,
+            'y': fromPointY
+          },
+          'cp1x': p1.x,
+          'cp1y': fromPointY,
+          'cp2x': p2.x,
+          'cp2y': p2.y,
+          'x': toPointX,
+          'y': toPointY
+        }
+      };
+      console.log(Canvas.joinLines);
+    }
+    console.log(Canvas.canvas.querySelector('#canvas-data-1'));
     Canvas.tables = {
       id: `canvas-data-${Canvas.canvas.childElementCount}`,
       properties: {
@@ -203,43 +260,15 @@ var Canvas = new DrawCanvas('canvas');
       }
     };
     Canvas.drawTables();
+    app.computeTablePosition();
+  }
 
-    // coordinate per la linea in base alle tabelle presenti nel canvas
+  app.computeTablePosition = () => {
     if (Canvas.tables.size > 1) {
-      for (const [tableId, properties] of Canvas.tables) {
-        if ((properties.x + 50) < e.offsetX && (properties.y - 40) < e.offsetY) {
-          fromPointX = properties.from.x;
-          fromPointY = properties.from.y;
-          Canvas.lastFromLineCoords.x = fromPointX;
-          Canvas.lastFromLineCoords.y = fromPointY;
-        } else {
-          fromPointX = Canvas.lastFromLineCoords.x;
-          fromPointY = Canvas.lastFromLineCoords.y;
-        }
-      }
-      const toPointX = Canvas.tables.get('canvas-data-' + Canvas.canvas.childElementCount).to.x;
-      const toPointY = Canvas.tables.get('canvas-data-' + Canvas.canvas.childElementCount).to.y;
-      const p1 = { x: fromPointX + 60 }
-      const p2 = { x: e.offsetX - 60, y: e.offsetY }
-      Canvas.joinLines = {
-        id: `line-${Canvas.joinLineId++}`,
-        properties: {
-          'pos': {
-            'x': fromPointX,
-            'y': fromPointY
-          },
-          'cp1x': p1.x,
-          'cp1y': fromPointY,
-          'cp2x': p2.x,
-          'cp2y': p2.y,
-          'x': toPointX,
-          'y': toPointY
-        }
-      };
-
-      console.log(Canvas.joinLines);
+      const table = Canvas.tables.get(Canvas.tableJoin);
+      console.log(table);
+      Canvas.drawTables();
     }
-    console.log(Canvas.canvas.querySelector('#canvas-data-1'));
   }
 
   app.handlerDragStart = (e) => {
