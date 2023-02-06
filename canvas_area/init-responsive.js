@@ -197,11 +197,11 @@ var Canvas = new DrawCanvas('canvas');
           fromPointY = +table.dataset.fromY;
           Canvas.lastFromLineCoords.x = fromPointX;
           Canvas.lastFromLineCoords.y = fromPointY;
-          Canvas.tableJoin = table.id; // tabella a cui sto legando quella attuale
         } else {
           fromPointX = Canvas.lastFromLineCoords.x;
           fromPointY = Canvas.lastFromLineCoords.y;
         }
+        Canvas.tableJoin = table.id; // tabella a cui sto legando quella attuale
       });
       /* for (const [tableId, properties] of Canvas.tables) {
         if ((properties.x + 50) < e.offsetX && (properties.y - 40) < e.offsetY) {

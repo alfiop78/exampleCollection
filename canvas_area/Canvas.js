@@ -33,9 +33,6 @@ class DrawCanvas {
       // console.log(tableId, value);
       this.ctx.beginPath();
       const table = new Path2D();
-      // ctx.roundRect(value.x, value.y, 170, 30, 4);
-      this.ctx.beginPath();
-
       table.roundRect(properties.x, properties.y, 170, 30, 4);
       this.ctx.fillStyle = "gainsboro";
       this.ctx.fill(table);
@@ -65,7 +62,6 @@ class DrawCanvas {
       this.ctx.fill();
       this.ctx.closePath();
     }
-
   }
 
   drawLines() {
