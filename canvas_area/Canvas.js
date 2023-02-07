@@ -27,40 +27,47 @@ class DrawCanvas {
 
   get joinLines() { return this.#joinLines; }
 
+  drawTable() {
+    // console.log(this.currentTable);
+    // creo, oppure, ricreo tutte le table presenti nel canvas
+    // console.log(tableId, value);
+    this.ctx.beginPath();
+    const table = new Path2D();
+    table.roundRect(this.currentTable.x, this.currentTable.y, 170, 30, 4);
+    this.ctx.fillStyle = "gainsboro";
+    this.ctx.fill(table);
+    // table.roundRect(value.x, value.y, 170, 30, 4);
+    table.id = this.currentTable.key;
+    table.table = this.currentTable.name;
+    this.ctx.lineWidth = 0.2;
+    this.ctx.strokeStyle = 'gray';
+    this.ctx.stroke(table);
+    this.ctx.closePath();
+    this.ctxTablesObject[this.currentTable.key] = table;
+    // console.log(app.ctxTablesObject);
+
+    this.ctx.font = '0.8rem Barlow';
+    this.ctx.fillStyle = '#494949';
+    this.ctx.fillText(this.currentTable.name, this.currentTable.x + 20, this.currentTable.y + 20);
+
+    // startpoint / endpoint
+    this.ctx.beginPath();
+    this.ctx.fillStyle = 'lightgray';
+    this.ctx.arc(this.currentTable.x - 10, this.currentTable.y + 15, 2, 0, 6);
+    this.ctx.fill();
+    this.ctx.closePath();
+    this.ctx.beginPath();
+    this.ctx.arc(this.currentTable.x + 180, this.currentTable.y + 15, 2, 0, 6);
+    // ctx.stroke(); // cerchio senza colore di riempimento
+    this.ctx.fill();
+    this.ctx.closePath();
+  }
+
   drawTables() {
     // creo, oppure, ricreo tutte le table presenti nel canvas
     for (const [tableId, properties] of this.#tables) {
-      // console.log(tableId, value);
-      this.ctx.beginPath();
-      const table = new Path2D();
-      table.roundRect(properties.x, properties.y, 170, 30, 4);
-      this.ctx.fillStyle = "gainsboro";
-      this.ctx.fill(table);
-      // table.roundRect(value.x, value.y, 170, 30, 4);
-      table.id = tableId;
-      table.table = properties.name;
-      this.ctx.lineWidth = 0.2;
-      this.ctx.strokeStyle = 'gray';
-      this.ctx.stroke(table);
-      this.ctx.closePath();
-      this.ctxTablesObject[tableId] = table;
-      // console.log(app.ctxTablesObject);
-
-      this.ctx.font = '0.8rem Barlow';
-      this.ctx.fillStyle = '#494949';
-      this.ctx.fillText(properties.name, properties.x + 20, properties.y + 20);
-
-      // startpoint / endpoint
-      this.ctx.beginPath();
-      this.ctx.fillStyle = 'lightgray';
-      this.ctx.arc(properties.x - 10, properties.y + 15, 2, 0, 6);
-      this.ctx.fill();
-      this.ctx.closePath();
-      this.ctx.beginPath();
-      this.ctx.arc(properties.x + 180, properties.y + 15, 2, 0, 6);
-      // ctx.stroke(); // cerchio senza colore di riempimento
-      this.ctx.fill();
-      this.ctx.closePath();
+      this.currentTable = properties;
+      this.drawTable();
     }
   }
 
@@ -78,5 +85,14 @@ class DrawCanvas {
       line.bezierCurveTo(properties.cp1x, properties.cp1y, properties.cp2x, properties.cp2y, properties.x, properties.y);
       this.ctx.stroke(line);
     }
+  }
+
+  redraw() {
+    this.ctx.save();
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawTables();
+    // this.drawTableByJoin();
+    this.drawLines();
+    this.ctx.restore();
   }
 }
