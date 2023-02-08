@@ -176,8 +176,7 @@ var Canvas = new DrawCanvas('canvas');
     div.dataset.id = 'data-' + Canvas.canvas.childElementCount;
     // all'offsetX elimino l'offset che identifica la distanza tra il mouse e il left dell'elemento draggato
     let coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
-    // console.log(Canvas.canvas.childElementCount);
-    if (Canvas.canvas.childElementCount === 0) {
+    if (Canvas.tables.size === 0) {
       // prima tabella
       coords = { x: 40, y: 60 };
     }
@@ -191,8 +190,7 @@ var Canvas = new DrawCanvas('canvas');
     let fromPointX, fromPointY;
 
     // coordinate per la linea in base alle tabelle presenti nel canvas
-    if (Canvas.canvas.childElementCount > 1) {
-      // if (Canvas.tables.size > 1) {
+    if (Canvas.tables.size >= 1) {
       for (const [tableId, properties] of Canvas.tables) {
         if ((properties.x + 40) < e.offsetX && (properties.y - 40) < e.offsetY) {
           fromPointX = properties.from.x;
@@ -217,7 +215,7 @@ var Canvas = new DrawCanvas('canvas');
     // console.log(Canvas.canvas.querySelector('#canvas-data-1'));
     // aggiungo la tabella appena droppata all'oggetto Map Canvas.tables
     // calcolo le coords per creare la linea di join
-    if (Canvas.canvas.childElementCount > 1) {
+    if (Canvas.tables.size >= 1) {
       Canvas.tables = {
         id: `canvas-data-${Canvas.canvas.childElementCount}`,
         properties: {
@@ -227,14 +225,15 @@ var Canvas = new DrawCanvas('canvas');
           y: Canvas.tableJoin.y,
           'from': {
             'x': coords.x + 180,
-            'y': coords.y + 15
+            'y': Canvas.tableJoin.y + 15
           },
           'to': {
             'x': coords.x - 10,
-            'y': coords.y + 15
+            'y': Canvas.tableJoin.y + 15
           }
         }
       };
+      console.log('tables ', Canvas.tables);
       Canvas.currentTable = Canvas.tables.get(div.id);
       Canvas.drawTable();
       // Canvas.drawTableByJoin();
