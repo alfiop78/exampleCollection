@@ -1,6 +1,7 @@
 class DrawCanvas {
   #tables = new Map();
   #joinLines = new Map();
+  #levels = new Map();
 
   constructor(canvasId) {
     this.canvas = document.getElementById(canvasId);
@@ -10,6 +11,7 @@ class DrawCanvas {
     // accessibili dall'esterno
     // Object che contiene la lista delle tabelle Path2d
     this.ctxTablesObject = {};
+    this.ctxLevels = {};
     this.joinLineId = 1;
     // consente di spostarmi, durante il drag&drop anche oltre (-x, -y) le tables già presenti nel Canvas
     this.lastFromLineCoords = {};
@@ -26,6 +28,28 @@ class DrawCanvas {
   }
 
   get joinLines() { return this.#joinLines; }
+
+  set levels(value) {
+    // this.#levels.set(`level-${this.#levels.size}`, { x: value.x, y: value.y, x1: value.x1 });
+    this.#levels.set(value.id, { id: value.id, x: value.x, y: value.y, width: value.width });
+  }
+
+  get levels() { return this.#levels; }
+
+  drawLevels() {
+    for (const [key, value] of this.#levels) {
+      // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.ctx.beginPath();
+      const level = new Path2D();
+      level.id = `level-${key}`;
+      level.rect(value.x, value.y, value.width, this.canvas.height);
+      this.ctx.fillStyle = 'transparent';
+      // this.ctx.fillStyle = 'lightgrey';
+      this.ctx.fill(level);
+      this.ctx.closePath();
+      this.ctxLevels[level.id] = level;
+    }
+  }
 
   drawTable() {
     // console.log(this.currentTable);
@@ -90,8 +114,9 @@ class DrawCanvas {
   redraw() {
     this.ctx.save();
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawLevels();
     this.drawTables();
-    // this.drawTableByJoin();
+    this.drawLevels();
     this.drawLines();
     this.ctx.restore();
   }

@@ -69,11 +69,11 @@ var Canvas = new DrawCanvas('canvas');
         // console.log(path2d);
       }
     }
-    /* const isPointInPath = ctx.isPointInPath(app.table, e.offsetX, e.offsetY);
-    ctx.fillStyle = isPointInPath ? '#3f3f4036' : 'gainsboro'; */
-    // Draw table rect
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // ctx.fill(app.table);
+    for (const [levelId, path2d] of Object.entries(Canvas.ctxLevels)) {
+      const isPointInPathTest = Canvas.ctx.isPointInPath(path2d, e.offsetX, e.offsetY);
+      if (isPointInPathTest) console.log(path2d.id);
+      // console.log(isPointInPathTest);
+    }
   }, true);
 
   app.canvasDragEnter = (e) => {
@@ -110,7 +110,7 @@ var Canvas = new DrawCanvas('canvas');
       Canvas.ctx.save();
       Canvas.ctx.clearRect(0, 0, Canvas.canvas.width, Canvas.canvas.height);
       // ridisegno i buttons e le linee dopo aver pulito il canvas
-      Canvas.drawTables();
+      // Canvas.drawTables();
       // app.createButtons();
       // console.log(app.tables);
       // disegno la linea solo se, nel canvas, è già presente una tabella
@@ -152,8 +152,9 @@ var Canvas = new DrawCanvas('canvas');
             'y': toPointY
           }
         };
-        Canvas.drawLines();
+        // Canvas.drawLines();
       }
+      Canvas.redraw();
       Canvas.ctx.restore();
     } else {
       e.dataTransfer.dropEffect = "none";
@@ -197,7 +198,6 @@ var Canvas = new DrawCanvas('canvas');
           fromPointY = properties.from.y;
           Canvas.lastFromLineCoords.x = fromPointX;
           Canvas.lastFromLineCoords.y = fromPointY;
-          // Canvas.tableJoin = tableId; // tabella a cui sto legando quella attuale
           Canvas.tableJoin = Canvas.tables.get(tableId); // tabella a cui sto legando quella attuale
           console.log('in ', tableId);
         } else {
@@ -213,22 +213,20 @@ var Canvas = new DrawCanvas('canvas');
       console.log('tableJoin ', Canvas.tableJoin);
     }
     // console.log(Canvas.canvas.querySelector('#canvas-data-1'));
-    // aggiungo la tabella appena droppata all'oggetto Map Canvas.tables
-    // calcolo le coords per creare la linea di join
     if (Canvas.tables.size >= 1) {
       Canvas.tables = {
         id: `canvas-data-${Canvas.canvas.childElementCount}`,
         properties: {
           key: `canvas-data-${Canvas.canvas.childElementCount}`,
           name: liElement.dataset.label,
-          x: coords.x,
+          x: Canvas.tableJoin.x + 300,
           y: Canvas.tableJoin.y,
           'from': {
-            'x': coords.x + 180,
+            'x': Canvas.tableJoin.x + 300 + 180,
             'y': Canvas.tableJoin.y + 15
           },
           'to': {
-            'x': coords.x - 10,
+            'x': Canvas.tableJoin.x + 300 - 10,
             'y': Canvas.tableJoin.y + 15
           }
         }
@@ -280,6 +278,8 @@ var Canvas = new DrawCanvas('canvas');
       };
       Canvas.currentTable = Canvas.tables.get(div.id);
       Canvas.drawTable();
+      Canvas.levels = { id: Canvas.levels.size, x: (275 * Canvas.levels.size), y: 0, width: 275 };
+      Canvas.drawLevels();
     }
   }
 
@@ -303,6 +303,8 @@ var Canvas = new DrawCanvas('canvas');
   Canvas.canvas.addEventListener('dragleave', app.canvasDragLeave, false);
   Canvas.canvas.addEventListener('dragend', app.canvasDragEnd, false);
   Canvas.canvas.addEventListener('drop', app.canvasDrop, false);
+  Canvas.levels = { id: Canvas.levels.size, x: 0, y: 0, width: 275 };
+  Canvas.drawLevels();
 
 
 
