@@ -38,6 +38,7 @@ class DrawCanvas {
   get levels() { return this.#levels; }
 
   drawLevels() {
+    let colors = ['#D0B8A8', '#DFD3C3', '#B4CFB0', '#C7B198', '#E2C2B9'];
     for (const [key, value] of this.#levels) {
       // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.beginPath();
@@ -45,8 +46,10 @@ class DrawCanvas {
       level.id = `level-${key}`;
       level.levelId = key;
       level.rect(value.x, value.y, value.width, this.canvas.height);
-      this.ctx.fillStyle = 'lightgrey';
-      // this.ctx.fillStyle = 'lightgrey';
+      // this.ctx.fillStyle = 'lightgreen';
+      // this.ctx.fillStyle = 'rgb(24, 44, 66)';
+      // this.ctx.fillStyle = '#DFD3C3';
+      this.ctx.fillStyle = colors[key];
       this.ctx.fill(level);
       this.ctx.closePath();
       this.ctxLevels[level.id] = level;
@@ -105,10 +108,10 @@ class DrawCanvas {
       this.ctx.beginPath();
       this.ctx.strokeStyle = 'darkorange';
       this.ctx.lineWidth = 3;
-      line.moveTo(properties.pos.x, properties.pos.y);
+      line.moveTo(properties.pos.start.x, properties.pos.start.y);
       // ctxLine.moveTo(p0.x, p0.y);
       // ctxLine.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
-      line.bezierCurveTo(properties.cp1x, properties.cp1y, properties.cp2x, properties.cp2y, properties.x, properties.y);
+      line.bezierCurveTo(properties.cp1x, properties.cp1y, properties.cp2x, properties.cp2y, properties.pos.end.x, properties.pos.end.y);
       this.ctx.stroke(line);
     }
   }

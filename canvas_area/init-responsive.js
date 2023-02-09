@@ -139,15 +139,13 @@ var Canvas = new DrawCanvas('canvas');
           id: `line-${Canvas.joinLineId}`,
           properties: {
             'pos': {
-              'x': fromPointX,
-              'y': fromPointY
+              start: { x: fromPointX, y: fromPointY },
+              end: { x: toPointX, y: toPointY }
             },
             'cp1x': p1.x,
             'cp1y': fromPointY,
             'cp2x': p2.x,
-            'cp2y': p2.y,
-            'x': toPointX,
-            'y': toPointY
+            'cp2y': p2.y
           }
         };
       }
@@ -158,7 +156,7 @@ var Canvas = new DrawCanvas('canvas');
     for (const [levelId, path2d] of Object.entries(Canvas.ctxLevels)) {
       const isPointInPathTest = Canvas.ctx.isPointInPath(path2d, e.offsetX, e.offsetY);
       if (isPointInPathTest) {
-        console.log(`levelId dragover ${path2d.levelId}`);
+        // console.log(`levelId dragover ${path2d.levelId}`);
         // Canvas.currentLevel = path2d.id;
         Canvas.currentLevel = Canvas.canvas.querySelector(`.levels[data-level-id='${path2d.levelId}']`);
         // console.log(Canvas.currentLevel);
@@ -171,9 +169,12 @@ var Canvas = new DrawCanvas('canvas');
     const section = content.querySelector('section[data-level-id]');
     // recupero l'ultimo data-level-id aggiunto al canvas
     const lastLevelId = +Canvas.canvas.querySelector('.levels:last-child').dataset.levelId;
+    const endX = +Canvas.canvas.querySelector('.levels:last-child').dataset.startX + 275;
     section.dataset.levelId = lastLevelId + 1;
+    section.dataset.startX = +endX;
+    section.dataset.endX = (+endX + 20);
     Canvas.canvas.appendChild(section);
-    Canvas.levels = { id: Canvas.levels.size, x: (275 * Canvas.levels.size), y: 0, width: 275 };
+    Canvas.levels = { id: Canvas.levels.size, x: +section.dataset.startX, y: 0, width: 275 };
   }
 
   app.canvasDrop = (e) => {
@@ -185,7 +186,6 @@ var Canvas = new DrawCanvas('canvas');
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
     // console.log(liElement);
     const div = document.createElement('div');
-    // div.id = `canvas-${liElement.id}`;
     div.id = `canvas-data-${Canvas.tables.size}`;
     div.dataset.table = liElement.dataset.label;
     div.dataset.schema = liElement.dataset.schema;
@@ -197,8 +197,6 @@ var Canvas = new DrawCanvas('canvas');
     if (Canvas.currentLevel === undefined) {
       // il puntatore del mouse è oltre l'ultimo level definito nel canvas. Recupero l'ultimo level definito.
       Canvas.currentLevel = Canvas.canvas.querySelector('.levels:last-child');
-      console.log(Canvas.currentLevel);
-      // Canvas.currentLevelRef = Canvas.canvas.querySelector(`.levels[data-level-id='${Canvas.currentLevel}']`);
     }
     /* div.dataset.x = coords.x;
     div.dataset.y = coords.y;
@@ -207,11 +205,10 @@ var Canvas = new DrawCanvas('canvas');
     div.dataset.toX = coords.x - 10;
     div.dataset.toY = coords.y + 15; */
     console.log(Canvas.currentLevel);
-    // Canvas.currentLevel.append(div);
     // se il livello successivo a quello a cui sto aggiungendo la tabella già esiste non creo un altro livello
     // verifico se esiste il level successivo a quello corrente
     if (Canvas.currentLevel.nextElementSibling) {
-      console.log('level successivo già presente');
+      // console.log('level successivo già presente');
     } else {
       app.addLevel();
     }
@@ -244,25 +241,30 @@ var Canvas = new DrawCanvas('canvas');
         Se sono presenti altre tabelle devo aggiungere quella attuale sotto (quindi dopo) l'ultima tabella presente.
       */
       if (Canvas.currentLevel.childElementCount === 0) {
-        console.log(Canvas.tableJoin.y);
+        console.log(Canvas.tableJoin);
         Canvas.tables = {
           id: `canvas-data-${Canvas.tables.size}`,
           properties: {
             key: `canvas-data-${Canvas.tables.size}`,
+            level: +Canvas.currentLevel.dataset.levelId,
             name: liElement.dataset.label,
-            x: Canvas.tableJoin.x + 300,
+            x: Canvas.tableJoin.x + 275,
             y: Canvas.tableJoin.y,
             'from': {
-              'x': Canvas.tableJoin.x + 300 + 180,
+              'x': Canvas.tableJoin.x + 275 + 180,
               'y': Canvas.tableJoin.y + 15
             },
             'to': {
-              'x': Canvas.tableJoin.x + 300 - 10,
+              'x': Canvas.tableJoin.x + 275 - 10,
               'y': Canvas.tableJoin.y + 15
             }
           }
         };
         Canvas.currentTable = Canvas.tables.get(div.id);
+        Canvas.tableJoin.join = (Canvas.tableJoin.hasOwnProperty('join')) ? ++Canvas.tableJoin.join : 1;
+        console.log(Canvas.currentTable);
+        console.log(Canvas.tableJoin);
+        // TODO: un tableJoin.join > 1 deve attivare lo spostamento della tableJoin al centro (y) rispetto al level successivo
         const toPointX = Canvas.currentTable.to.x;
         const toPointY = Canvas.tableJoin.to.y;
         const p1 = { x: fromPointX + 40 }
@@ -271,56 +273,73 @@ var Canvas = new DrawCanvas('canvas');
           id: `line-${Canvas.joinLineId++}`,
           properties: {
             'pos': {
-              'x': fromPointX,
-              'y': fromPointY
+              start: { x: fromPointX, y: fromPointY },
+              end: { x: toPointX, y: toPointY }
             },
             'cp1x': p1.x,
             'cp1y': fromPointY,
             'cp2x': p2.x,
-            'cp2y': p2.y,
-            'x': toPointX,
-            'y': toPointY
+            'cp2y': p2.y
           }
         };
       } else {
-        console.log(`altre tabelle presenti ${Canvas.tableJoin.y}`);
-        debugger;
-        // Canvas.tableJoin.y = 120;
+        console.log('altre tabelle presenti');
+        // Canvas.tableJoin.y = 80;
+        // tabelle presenti nel currentLevel
+        let Y;
+        for (const [key, value] of Canvas.tables) {
+          if (value.level === +Canvas.currentLevel.dataset.levelId) {
+            console.log('tabelle dello stesso level', key);
+            // table in posizione -y più vicino a offsetY
+            // if (e.offsetY < value.y)
+            // table in posizione +y più vicino a offsetY
+            Y = (e.offsetY < value.y) ? value.y - 80 : value.y + 80;
+          }
+        }
         Canvas.tables = {
           id: `canvas-data-${Canvas.tables.size}`,
           properties: {
             key: `canvas-data-${Canvas.tables.size}`,
+            level: +Canvas.currentLevel.dataset.levelId,
             name: liElement.dataset.label,
-            x: Canvas.tableJoin.x + 300,
-            y: Canvas.tableJoin.y + 120,
+            x: Canvas.tableJoin.x + 275,
+            y: Y,
             'from': {
-              'x': Canvas.tableJoin.x + 300 + 180,
-              'y': Canvas.tableJoin.y + 120 + 15
+              'x': Canvas.tableJoin.x + 275 + 180,
+              'y': Y + 15
             },
             'to': {
-              'x': Canvas.tableJoin.x + 300 - 10,
-              'y': Canvas.tableJoin.y + 120 + 15
+              'x': Canvas.tableJoin.x + 275 - 10,
+              'y': Y + 15
             }
           }
         };
+
         Canvas.currentTable = Canvas.tables.get(div.id);
+        Canvas.tableJoin.join = (Canvas.tableJoin.hasOwnProperty('join')) ? ++Canvas.tableJoin.join : 1;
+        // TODO: un tableJoin.join > 1 deve attivare lo spostamento della tableJoin al centro (y) rispetto al level successivo
+        if (Canvas.tableJoin.join > 1) {
+          Canvas.tableJoin.y = ((30 * Canvas.tableJoin.join) + 50);
+        }
+        console.log(Canvas.currentTable);
+        console.log(Canvas.tableJoin);
+        debugger;
         const toPointX = Canvas.currentTable.to.x;
-        const toPointY = Canvas.tableJoin.to.y + 120;
+        // const toPointY = Canvas.tableJoin.to.y + 80;
+        const toPointY = Y + 15;
         const p1 = { x: fromPointX + 40 }
         const p2 = { x: e.offsetX - 40, y: toPointY }
         Canvas.joinLines = {
           id: `line-${Canvas.joinLineId++}`,
           properties: {
             'pos': {
-              'x': fromPointX,
-              'y': fromPointY
+              start: { x: fromPointX, y: fromPointY },
+              end: { x: toPointX, y: toPointY }
             },
             'cp1x': p1.x,
             'cp1y': fromPointY,
             'cp2x': p2.x,
-            'cp2y': p2.y,
-            'x': toPointX,
-            'y': toPointY
+            'cp2y': p2.y
           }
         };
       }
@@ -334,6 +353,7 @@ var Canvas = new DrawCanvas('canvas');
         id: `canvas-data-${Canvas.tables.size}`,
         properties: {
           key: `canvas-data-${Canvas.tables.size}`,
+          level: +Canvas.currentLevel.dataset.levelId,
           name: liElement.dataset.label,
           x: coords.x,
           y: coords.y,
@@ -350,20 +370,6 @@ var Canvas = new DrawCanvas('canvas');
       Canvas.currentTable = Canvas.tables.get(div.id);
     }
     Canvas.redraw();
-    // app.autoPosition();
-  }
-
-  app.autoPosition = () => {
-    // ultimo .levels presente nel canvas
-    const lastLevel = Canvas.canvas.querySelector('.levels:last-child');
-    debugger;
-    if (Canvas.tables.size === 1) {
-      console.log('prima tabella');
-      // la prima tabella và inserita nel #level-1
-
-    } else {
-      console.log('Sono presenti altre tabelle');
-    }
   }
 
   app.handlerDragStart = (e) => {
