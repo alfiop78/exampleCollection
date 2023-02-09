@@ -17,6 +17,10 @@
     <li data-element-search data-label data-searchable="true" draggable="true"></li>
   </template>
 
+  <template id="tmpl-level">
+    <section class="levels" data-level-id></section>
+  </template>
+
   <main>
     <div id="container">
       <div id="content">
@@ -25,7 +29,9 @@
           <section class="wrapper">
             <section id="canvas-area">
               <div id="translate" class="translate" data-translate-x="0" data-translate-y="0">
-                <canvas id="canvas" class="dropzone"></canvas>
+                <canvas id="canvas" class="dropzone">
+                  <section class="levels" data-level-id="0"></section>
+                </canvas>
                 <span id="coords"></span>
               </div>
             </section>

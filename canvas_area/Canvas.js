@@ -15,6 +15,7 @@ class DrawCanvas {
     this.joinLineId = 1;
     // consente di spostarmi, durante il drag&drop anche oltre (-x, -y) le tables già presenti nel Canvas
     this.lastFromLineCoords = {};
+    this.currentLevel;
   }
 
   set tables(value) {
@@ -42,8 +43,9 @@ class DrawCanvas {
       this.ctx.beginPath();
       const level = new Path2D();
       level.id = `level-${key}`;
+      level.levelId = key;
       level.rect(value.x, value.y, value.width, this.canvas.height);
-      this.ctx.fillStyle = 'transparent';
+      this.ctx.fillStyle = 'lightgrey';
       // this.ctx.fillStyle = 'lightgrey';
       this.ctx.fill(level);
       this.ctx.closePath();
@@ -116,7 +118,6 @@ class DrawCanvas {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawLevels();
     this.drawTables();
-    this.drawLevels();
     this.drawLines();
     this.ctx.restore();
   }
