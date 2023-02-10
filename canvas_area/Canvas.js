@@ -97,7 +97,23 @@ class DrawCanvas {
     for (const [tableId, properties] of this.#tables) {
       this.currentTable = properties;
       this.drawTable();
+      if (properties.hasOwnProperty('join_table')) this.drawLine();
     }
+  }
+
+  drawLine() {
+    // se non sono presenti tabelle non disegno la linea
+    const tableJoin = this.tables.get(this.currentTable.join_table);
+    const line = new Path2D();
+    this.ctx.beginPath();
+    this.ctx.strokeStyle = 'darkorange';
+    this.ctx.lineWidth = 3;
+    line.moveTo(tableJoin.from.x, tableJoin.from.y);
+    // ctxLine.moveTo(p0.x, p0.y);
+    // ctxLine.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
+    line.bezierCurveTo(tableJoin.from.x + 40, tableJoin.from.y, tableJoin.from.x + 40, this.currentTable.to.y, this.currentTable.to.x, this.currentTable.to.y);
+    this.ctx.stroke(line);
+    this.ctx.closePath();
   }
 
   drawLines() {
@@ -105,7 +121,7 @@ class DrawCanvas {
     if (this.#tables.size === 0) return;
     const line = new Path2D();
     for (const [lineId, properties] of this.joinLines) {
-      this.ctx.beginPath();
+      // this.ctx.beginPath();
       this.ctx.strokeStyle = 'darkorange';
       this.ctx.lineWidth = 3;
       line.moveTo(properties.pos.start.x, properties.pos.start.y);

@@ -116,17 +116,25 @@ var Canvas = new DrawCanvas('canvas');
         let fromPointX, fromPointY;
         // recupero i fromPoint della precedente tabella. Da qui partirà la linea che si collega alla tabella che sto draggando
         for (const [tableId, props] of Canvas.tables) {
-          if ((props.x + 40) < e.offsetX && (props.y - 40) < e.offsetY) {
-            fromPointX = props.from.x;
-            fromPointY = props.from.y;
-            Canvas.lastFromLineCoords.x = fromPointX;
-            Canvas.lastFromLineCoords.y = fromPointY;
-            // console.log('in ', tableId);
-          } else {
-            fromPointX = Canvas.lastFromLineCoords.x;
-            fromPointY = Canvas.lastFromLineCoords.y;
-            console.log('out ', tableId);
+          for (const [tableId, properties] of Canvas.tables) {
+            if ((properties.x + 40) < e.offsetX && (properties.y - 40) < e.offsetY) {
+              fromPointX = properties.from.x;
+              fromPointY = properties.from.y;
+              Canvas.lastFromLineCoords.x = fromPointX;
+              Canvas.lastFromLineCoords.y = fromPointY;
+              Canvas.tableJoin = Canvas.tables.get(tableId); // tabella a cui sto legando quella attuale
+              console.log('in ', tableId);
+            } else {
+              fromPointX = Canvas.lastFromLineCoords.x;
+              fromPointY = Canvas.lastFromLineCoords.y;
+              // se è presente una sola tabella, la join verrà fatta con quella, cioè la prima tabella aggiunta al canvas
+              if (Canvas.tables.size === 1) {
+                let tableJoinId = Canvas.canvas.querySelector("div[data-id='data-0']").getAttribute('id');
+                Canvas.tableJoin = Canvas.tables.get(tableJoinId);
+              }
+            }
           }
+          console.log('tableJoin ', Canvas.tableJoin);
         }
         // toPoint definisce il punto di arrivo della linea (vicino alla tabella che sto draggando)
         const toPointX = e.offsetX - app.dragElementPosition.x - 10;
@@ -213,7 +221,6 @@ var Canvas = new DrawCanvas('canvas');
       app.addLevel();
     }
     let fromPointX, fromPointY;
-    // coordinate per la linea in base alle tabelle presenti nel canvas
     if (Canvas.tables.size >= 1) {
       for (const [tableId, properties] of Canvas.tables) {
         if ((properties.x + 40) < e.offsetX && (properties.y - 40) < e.offsetY) {
@@ -242,6 +249,7 @@ var Canvas = new DrawCanvas('canvas');
       */
       if (Canvas.currentLevel.childElementCount === 0) {
         console.log(Canvas.tableJoin);
+        // in questo level non ci sono tabelle, quindi prendo come riferimento la tableJoin a cui sto legando
         Canvas.tables = {
           id: `canvas-data-${Canvas.tables.size}`,
           properties: {
@@ -250,38 +258,21 @@ var Canvas = new DrawCanvas('canvas');
             name: liElement.dataset.label,
             x: Canvas.tableJoin.x + 275,
             y: Canvas.tableJoin.y,
-            'from': {
-              'x': Canvas.tableJoin.x + 275 + 180,
-              'y': Canvas.tableJoin.y + 15
+            from: {
+              x: Canvas.tableJoin.x + 275 + 180, // punto di start della linea da questa tabella (punto a destra)
+              y: Canvas.tableJoin.y + 15
             },
-            'to': {
-              'x': Canvas.tableJoin.x + 275 - 10,
-              'y': Canvas.tableJoin.y + 15
-            }
+            to: {
+              x: Canvas.tableJoin.x + 275 - 10, // punto di arrivo a questa tabella (punto a sinistra)
+              y: Canvas.tableJoin.y + 15
+            },
+            join_table: Canvas.tableJoin.key,
           }
         };
         Canvas.currentTable = Canvas.tables.get(div.id);
         Canvas.tableJoin.join = (Canvas.tableJoin.hasOwnProperty('join')) ? ++Canvas.tableJoin.join : 1;
         console.log(Canvas.currentTable);
         console.log(Canvas.tableJoin);
-        // TODO: un tableJoin.join > 1 deve attivare lo spostamento della tableJoin al centro (y) rispetto al level successivo
-        const toPointX = Canvas.currentTable.to.x;
-        const toPointY = Canvas.tableJoin.to.y;
-        const p1 = { x: fromPointX + 40 }
-        const p2 = { x: e.offsetX - 40, y: toPointY }
-        Canvas.joinLines = {
-          id: `line-${Canvas.joinLineId++}`,
-          properties: {
-            'pos': {
-              start: { x: fromPointX, y: fromPointY },
-              end: { x: toPointX, y: toPointY }
-            },
-            'cp1x': p1.x,
-            'cp1y': fromPointY,
-            'cp2x': p2.x,
-            'cp2y': p2.y
-          }
-        };
       } else {
         console.log('altre tabelle presenti');
         // Canvas.tableJoin.y = 80;
@@ -311,7 +302,8 @@ var Canvas = new DrawCanvas('canvas');
             'to': {
               'x': Canvas.tableJoin.x + 275 - 10,
               'y': Y + 15
-            }
+            },
+            join_table: Canvas.tableJoin.key,
           }
         };
 
@@ -319,33 +311,22 @@ var Canvas = new DrawCanvas('canvas');
         Canvas.tableJoin.join = (Canvas.tableJoin.hasOwnProperty('join')) ? ++Canvas.tableJoin.join : 1;
         // TODO: un tableJoin.join > 1 deve attivare lo spostamento della tableJoin al centro (y) rispetto al level successivo
         if (Canvas.tableJoin.join > 1) {
-          Canvas.tableJoin.y = ((30 * Canvas.tableJoin.join) + 50);
+          let totalY = 0;
+          for (const [tableId, props] of Canvas.tables) {
+            if (props.level === +Canvas.currentLevel.dataset.levelId) {
+              totalY += props.y;
+            }
+          }
+          Canvas.tableJoin.y = (totalY / Canvas.tableJoin.join); // centro (y) del level, riferito al level successivo
+          Canvas.tableJoin.from.y = (totalY / Canvas.tableJoin.join) + 15; // centro (y) del level, riferito al level successivo
+          Canvas.tableJoin.to.y = (totalY / Canvas.tableJoin.join) + 15; // centro (y) del level, riferito al level successivo
         }
         console.log(Canvas.currentTable);
         console.log(Canvas.tableJoin);
-        debugger;
-        const toPointX = Canvas.currentTable.to.x;
-        // const toPointY = Canvas.tableJoin.to.y + 80;
-        const toPointY = Y + 15;
-        const p1 = { x: fromPointX + 40 }
-        const p2 = { x: e.offsetX - 40, y: toPointY }
-        Canvas.joinLines = {
-          id: `line-${Canvas.joinLineId++}`,
-          properties: {
-            'pos': {
-              start: { x: fromPointX, y: fromPointY },
-              end: { x: toPointX, y: toPointY }
-            },
-            'cp1x': p1.x,
-            'cp1y': fromPointY,
-            'cp2x': p2.x,
-            'cp2y': p2.y
-          }
-        };
       }
       Canvas.currentLevel.append(div);
       console.log('tables ', Canvas.tables);
-      console.log(Canvas.joinLines);
+      // console.log(Canvas.joinLines);
     } else {
       Canvas.currentLevel.append(div);
       console.log('prima tabella droppata');
