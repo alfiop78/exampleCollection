@@ -112,29 +112,25 @@ var Canvas = new DrawCanvas('canvas');
       e.dataTransfer.dropEffect = "copy";
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
       // disegno la linea solo se, nel canvas, è già presente una tabella
-      if (Canvas.canvas.childElementCount >= 1) {
+      if (Canvas.tables.size >= 1) {
         let fromPointX, fromPointY;
         // recupero i fromPoint della precedente tabella. Da qui partirà la linea che si collega alla tabella che sto draggando
-        for (const [tableId, props] of Canvas.tables) {
-          for (const [tableId, properties] of Canvas.tables) {
-            if ((properties.x + 40) < e.offsetX && (properties.y - 40) < e.offsetY) {
-              fromPointX = properties.from.x;
-              fromPointY = properties.from.y;
-              Canvas.lastFromLineCoords.x = fromPointX;
-              Canvas.lastFromLineCoords.y = fromPointY;
-              Canvas.tableJoin = Canvas.tables.get(tableId); // tabella a cui sto legando quella attuale
-              console.log('in ', tableId);
-            } else {
-              fromPointX = Canvas.lastFromLineCoords.x;
-              fromPointY = Canvas.lastFromLineCoords.y;
-              // se è presente una sola tabella, la join verrà fatta con quella, cioè la prima tabella aggiunta al canvas
-              if (Canvas.tables.size === 1) {
-                let tableJoinId = Canvas.canvas.querySelector("div[data-id='data-0']").getAttribute('id');
-                Canvas.tableJoin = Canvas.tables.get(tableJoinId);
-              }
+        for (const [tableId, properties] of Canvas.tables) {
+          if ((properties.x + 40) < e.offsetX && (properties.y - 40) < e.offsetY) {
+            fromPointX = properties.from.x;
+            fromPointY = properties.from.y;
+            Canvas.lastFromLineCoords.x = fromPointX;
+            Canvas.lastFromLineCoords.y = fromPointY;
+            Canvas.tableJoin = Canvas.tables.get(tableId); // tabella a cui sto legando quella attuale
+          } else {
+            fromPointX = Canvas.lastFromLineCoords.x;
+            fromPointY = Canvas.lastFromLineCoords.y;
+            // se è presente una sola tabella, la join verrà fatta con quella, cioè la prima tabella aggiunta al canvas
+            if (Canvas.tables.size === 1) {
+              let tableJoinId = Canvas.canvas.querySelector("div[data-id='data-0']").getAttribute('id');
+              Canvas.tableJoin = Canvas.tables.get(tableJoinId);
             }
           }
-          console.log('tableJoin ', Canvas.tableJoin);
         }
         // toPoint definisce il punto di arrivo della linea (vicino alla tabella che sto draggando)
         const toPointX = e.offsetX - app.dragElementPosition.x - 10;
@@ -145,7 +141,9 @@ var Canvas = new DrawCanvas('canvas');
         // memorizzo, in un oggetto Map() i parametri della linea
         Canvas.joinLines = {
           id: `line-${Canvas.joinLineId}`,
-          properties: {
+          tableFrom: Canvas.tableJoin.key,
+          tableTo: { x: toPointX, y: toPointY }
+          /* properties: {
             'pos': {
               start: { x: fromPointX, y: fromPointY },
               end: { x: toPointX, y: toPointY }
@@ -154,7 +152,7 @@ var Canvas = new DrawCanvas('canvas');
             'cp1y': fromPointY,
             'cp2x': p2.x,
             'cp2y': p2.y
-          }
+          } */
         };
       }
       Canvas.redraw();
@@ -206,12 +204,6 @@ var Canvas = new DrawCanvas('canvas');
       // il puntatore del mouse è oltre l'ultimo level definito nel canvas. Recupero l'ultimo level definito.
       Canvas.currentLevel = Canvas.canvas.querySelector('.levels:last-child');
     }
-    /* div.dataset.x = coords.x;
-    div.dataset.y = coords.y;
-    div.dataset.fromX = coords.x + 180;
-    div.dataset.fromY = coords.y + 15;
-    div.dataset.toX = coords.x - 10;
-    div.dataset.toY = coords.y + 15; */
     console.log(Canvas.currentLevel);
     // se il livello successivo a quello a cui sto aggiungendo la tabella già esiste non creo un altro livello
     // verifico se esiste il level successivo a quello corrente
@@ -221,6 +213,7 @@ var Canvas = new DrawCanvas('canvas');
       app.addLevel();
     }
     let fromPointX, fromPointY;
+    // console.log(Canvas.canvas.querySelector('#canvas-data-1'));
     if (Canvas.tables.size >= 1) {
       for (const [tableId, properties] of Canvas.tables) {
         if ((properties.x + 40) < e.offsetX && (properties.y - 40) < e.offsetY) {
@@ -241,9 +234,6 @@ var Canvas = new DrawCanvas('canvas');
         }
       }
       console.log('tableJoin ', Canvas.tableJoin);
-    }
-    // console.log(Canvas.canvas.querySelector('#canvas-data-1'));
-    if (Canvas.tables.size >= 1) {
       /* verifico se, nello stesso levelId ci sono altre tabelle. 
         Se sono presenti altre tabelle devo aggiungere quella attuale sotto (quindi dopo) l'ultima tabella presente.
       */
@@ -271,8 +261,12 @@ var Canvas = new DrawCanvas('canvas');
         };
         Canvas.currentTable = Canvas.tables.get(div.id);
         Canvas.tableJoin.join = (Canvas.tableJoin.hasOwnProperty('join')) ? ++Canvas.tableJoin.join : 1;
-        console.log(Canvas.currentTable);
-        console.log(Canvas.tableJoin);
+        Canvas.joinLines = {
+          id: `line-${Canvas.joinLineId}`,
+          tableFrom: Canvas.tableJoin.key,
+          tableTo: Canvas.currentTable.key
+        };
+        console.log(Canvas.joinLines);
       } else {
         console.log('altre tabelle presenti');
         // Canvas.tableJoin.y = 80;
@@ -323,8 +317,15 @@ var Canvas = new DrawCanvas('canvas');
         }
         console.log(Canvas.currentTable);
         console.log(Canvas.tableJoin);
+        Canvas.joinLines = {
+          id: `line-${Canvas.joinLineId}`,
+          tableFrom: Canvas.tableJoin.key,
+          tableTo: Canvas.currentTable.key
+        };
+        console.log(Canvas.joinLines);
       }
       Canvas.currentLevel.append(div);
+      Canvas.joinLineId++;
       console.log('tables ', Canvas.tables);
       // console.log(Canvas.joinLines);
     } else {

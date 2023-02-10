@@ -25,7 +25,8 @@ class DrawCanvas {
   get tables() { return this.#tables; }
 
   set joinLines(value) {
-    this.#joinLines.set(value.id, value.properties);
+    this.#joinLines.set(value.id, value);
+    console.log(this.#joinLines);
   }
 
   get joinLines() { return this.#joinLines; }
@@ -97,37 +98,33 @@ class DrawCanvas {
     for (const [tableId, properties] of this.#tables) {
       this.currentTable = properties;
       this.drawTable();
-      if (properties.hasOwnProperty('join_table')) this.drawLine();
     }
-  }
-
-  drawLine() {
-    // se non sono presenti tabelle non disegno la linea
-    const tableJoin = this.tables.get(this.currentTable.join_table);
-    const line = new Path2D();
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = 'darkorange';
-    this.ctx.lineWidth = 3;
-    line.moveTo(tableJoin.from.x, tableJoin.from.y);
-    // ctxLine.moveTo(p0.x, p0.y);
-    // ctxLine.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
-    line.bezierCurveTo(tableJoin.from.x + 40, tableJoin.from.y, tableJoin.from.x + 40, this.currentTable.to.y, this.currentTable.to.x, this.currentTable.to.y);
-    this.ctx.stroke(line);
-    this.ctx.closePath();
   }
 
   drawLines() {
     // se non sono presenti tabelle non disegno la linea
     if (this.#tables.size === 0) return;
     const line = new Path2D();
-    for (const [lineId, properties] of this.joinLines) {
+    for (const [key, value] of this.joinLines) {
       // this.ctx.beginPath();
       this.ctx.strokeStyle = 'darkorange';
       this.ctx.lineWidth = 3;
-      line.moveTo(properties.pos.start.x, properties.pos.start.y);
+      // tabella da cui parte la line
+      const from = this.tables.get(value.tableFrom).from;
+      let to;
+      // se la tableTo non è definita, sto effettuando un drag&drop, quindi non esiste ancora in this.tables, per cui ne recupero e.offsetX/e.offsetY.
+      if (typeof value.tableTo === 'object') {
+        to = { x: value.tableTo.x, y: value.tableTo.y };
+      } else {
+        // la tabella è già definita e presente in this.tables, ne recupero le coordinate come fatto qui con tableFrom
+        to = this.tables.get(value.tableTo).to;
+      }
+      line.moveTo(from.x, from.y);
+      const p1 = { x: from.x + 40, y: from.y };
+      const p2 = { x: to.x - 40, y: to.y };
       // ctxLine.moveTo(p0.x, p0.y);
-      // ctxLine.bezierCurveTo(p1.x, 115, p2.x - 150, p2.y, p2.x, p2.y);
-      line.bezierCurveTo(properties.cp1x, properties.cp1y, properties.cp2x, properties.cp2y, properties.pos.end.x, properties.pos.end.y);
+      // ctxLine.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p2.x, p2.y);
+      line.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, to.x, to.y);
       this.ctx.stroke(line);
     }
   }
