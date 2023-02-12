@@ -13,7 +13,7 @@
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
     svg: document.getElementById('svg'),
-    flow: document.getElementById('flow')
+    currentLine: null
   }
 
   // Callback function to execute when mutations are observed
@@ -57,14 +57,12 @@
     app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
     console.log(app.dragElementPosition);
     e.dataTransfer.setData('text/plain', e.target.id);
-    // inizio il drag, rendo la dropzone z-index maggiore
-    app.svg.style['z-index'] = 4;
     // creo la linea
-    if (app.flow.querySelectorAll('.table').length > 0) {
+    if (app.svg.querySelectorAll('.table').length > 0) {
       console.log('create line');
-      app.l = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      app.l.dataset.id = app.svg.querySelectorAll('rect').length;
-      app.svg.appendChild(app.l);
+      app.currentLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      app.currentLine.dataset.id = app.svg.querySelectorAll('rect').length;
+      app.svg.appendChild(app.currentLine);
       /* app.letsdraw = {
         x: 0,
         y: 0
@@ -86,7 +84,7 @@
       }
       // cerco le card con left minore della posizione corrente del mouse
       let prevPosition;
-      app.flow.querySelectorAll('.table').forEach(tbl => {
+      app.svg.querySelectorAll('.table').forEach(tbl => {
         if (tbl.dataset.x < e.offsetX) {
           prevPosition = { x: +tbl.dataset.x + tbl.offsetWidth + 10, y: +tbl.dataset.y + (tbl.offsetHeight / 2) };
         }
@@ -95,7 +93,7 @@
       // console.log(app.letsdraw);
       // if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
       // if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' Q ' + (prevPosition.x + 70) + ' ' + prevPosition.y + ', ' + e.offsetX + ' ' + (e.offsetY - 80) + ' T ' + e.offsetX + ' ' + (e.offsetY + 100));
-      if (app.l && prevPosition) {
+      if (app.currentLine && prevPosition) {
         const d = `M${prevPosition.x},${prevPosition.y} C${prevPosition.x + 100},${prevPosition.y} ${e.offsetX - 180},${e.offsetY} ${e.offsetX - app.dragElementPosition.x - 5},${e.offsetY - (app.dragElementPosition.y)}`;
         if (app.l && prevPosition) app.l.setAttribute('d', d);
       }
@@ -118,7 +116,7 @@
       // coloro il border differente per la dropzone
       e.target.classList.add('dropping');
       const breakLine = document.getElementById('break-line-1');
-      console.log(e.offsetX, breakLine.getAttribute('x1'));
+      console.log(e.offsetX, +breakLine.getAttribute('x1'));
       if (e.offsetX > breakLine.getAttribute('x1')) {
         console.log('level 2');
       }
@@ -168,15 +166,19 @@
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
     console.log(liElement);
     liElement.classList.remove('dragging');
-    const flow = document.getElementById('flow');
-    let table = document.createElement('div');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('x', e.offsetX);
+    use.setAttribute('y', e.offsetY);
+    use.setAttribute('href', '#table');
+    app.svg.appendChild(use);
+    /* let table = document.createElement('div');
     table.classList.add('table');
     table.innerHTML = liElement.dataset.label;
     table.style.left = app.letsdraw.x + 'px';
     table.style.top = app.letsdraw.y + 'px';
     table.dataset.x = app.letsdraw.x;
     table.dataset.y = app.letsdraw.y;
-    flow.appendChild(table);
+    app.svg.appendChild(table); */
     /* const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     marker.id = "mark1";

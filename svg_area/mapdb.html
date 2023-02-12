@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-  <link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="icon" href="/images/favicon.png" type="image/png" />
   <title>Map Database</title>
   <link rel="stylesheet" href="init.css" />
 </head>
@@ -35,31 +35,29 @@
         <div id="body">
 
           <section class="wrapper">
-            <section>
-              <h3>Creazione nuova dimensione</h3>
-            </section>
             <section id="canvas-area">
               <div id="translate" class="translate" data-translate-x="0" data-translate-y="0">
-                <div id="flow"></div>
                 <svg id="svg" class="dropzone">
                   <!-- <path d="M 10 80 Q 52.5 10, 95 80 T 180 80" stroke="black" fill="transparent" /> -->
                   <!-- <path d="M 10 80 Q 40 80, 80 180 T 160 300" stroke="black" fill="transparent" /> -->
                   <!-- <filter id="shadow">
                     <feDropShadow dx="0.2" dy="0" stdDeviation="0.2" />
                   </filter> -->
+                  <defs>
+                    <rect id="table" width="170" height="35" fill="gainsboro" stroke-width="0.1" stroke="black"
+                      class="table"></rect>
+                  </defs>
                   <g>
                     <line id="break-line-1" x1="250" y1="0" x2="250" y2="100%" stroke="dimgrey" stroke-width="0.5" />
                     <!-- <line x1="500" y1="0" x2="500" y2="100%" stroke="dimgrey" stroke-width="0.5" /> -->
-
                   </g>
-                  <defs>
-                    <!-- simple dot marker definition -->
+                  <!-- <defs>
                     <marker id="dot" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5">
                       <circle cx="5" cy="5" r="5" fill="red" />
                     </marker>
                   </defs>
                   <polyline points="5,66 159,180" fill="none" stroke="grey" marker-start="url(#dot)"
-                    marker-mid="url(#dot)" marker-end="url(#dot)" />
+                    marker-mid="url(#dot)" marker-end="url(#dot)" /> -->
                 </svg>
               </div>
             </section>
@@ -68,26 +66,34 @@
                 <section class="list-search">
                   <div class="relative-ul">
                     <ul id="ul-tables" class="custom-scrollbar">
-                      <li id="data-1" data-translate-x="0" data-translate-y="0" data-label="table 1" draggable="true">
-                        table 1</li>
-                      <li id="data-2" data-translate-x="0" data-translate-y="0" data-label="table 2" draggable="true">
-                        table 2</li>
-                      <li id="data-3" data-translate-x="0" data-translate-y="0" data-label="table 3" draggable="true">
-                        table 3</li>
-                      <li id="data-4" data-translate-x="0" data-translate-y="0" data-label="table 4" draggable="true">
-                        table 4</li>
-                      <li id="data-5" data-translate-x="0" data-translate-y="0" data-label="table 5" draggable="true">
-                        table 5</li>
-                      <li id="data-6" data-translate-x="0" data-translate-y="0" data-label="table 6" draggable="true">
-                        table 6</li>
-                      <li id="data-7" data-translate-x="0" data-translate-y="0" data-label="table 7" draggable="true">
-                        table 7</li>
-                      <li id="data-8" data-translate-x="0" data-translate-y="0" data-label="table 8" draggable="true">
-                        table 8</li>
-                      <li id="data-9" data-translate-x="0" data-translate-y="0" data-label="table 9" draggable="true">
-                        table 9</li>
-                      <li id="data-10" data-translate-x="0" data-translate-y="0" data-label="table 10" draggable="true">
-                        table 10</li>
+                      <li id="data-1" data-translate-x="0" data-translate-y="0" data-label="Azienda"
+                        data-schema="automotive_bi_data" draggable="true">
+                        <i class="material-icons-round md-18">drag_handle</i><span>Azienda</span>
+                      </li>
+                      <li id="data-2" data-translate-x="0" data-translate-y="0" data-label="CodSedeDealer"
+                        data-schema="automotive_bi_data" draggable="true">
+                        <i class="material-icons-round md-18">drag_handle</i><span>CodSedeDealer</span>
+                      </li>
+                      <li id="data-3" data-translate-x="0" data-translate-y="0" data-label="DocVenditaIntestazione"
+                        data-schema="automotive_bi_data" draggable="true">
+                        <i class="material-icons-round md-18">drag_handle</i><span>DocVenditaIntestazione</span>
+                      </li>
+                      <li id="data-4" data-translate-x="0" data-translate-y="0" data-label="DocVenditaDettaglio"
+                        data-schema="automotive_bi_data" draggable="true">
+                        <i class="material-icons-round md-18">drag_handle</i><span>DocVenditaDettaglio</span>
+                      </li>
+                      <li id="data-5" data-translate-x="0" data-translate-y="0" data-label="CodMarcaRicambi"
+                        data-schema="automotive_bi_data" draggable="true">
+                        <i class="material-icons-round md-18">drag_handle</i><span>CodMarcaRicambi</span>
+                      </li>
+                      <li id="data-6" data-translate-x="0" data-translate-y="0" data-label="TipoMovimento"
+                        data-schema="automotive_bi_data" draggable="true">
+                        <i class="material-icons-round md-18">drag_handle</i><span>TipoMovimento</span>
+                      </li>
+                      <li id="data-7" data-translate-x="0" data-translate-y="0" data-label="Ricambi"
+                        data-schema="automotive_bi_data" draggable="true">
+                        <i class="material-icons-round md-18">drag_handle</i><span>Ricambi</span>
+                      </li>
                     </ul>
                   </div>
                 </section>

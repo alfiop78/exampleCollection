@@ -45,12 +45,12 @@ main > #container{
 }
 
 #content > #body{
-      font-size: .9rem;
-    margin: 0 auto;
-    margin-bottom: 64px;
-    color: #3f3f40;
-    padding: 1em 1em 0em;
-    height: calc(100% - 64px);
+  font-size: .9rem;
+  margin: 0 auto;
+  margin-bottom: 64px;
+  color: #3f3f40;
+  padding: 1em 1em 0em;
+  height: calc(100% - 64px);
 }
 
 canvas > div{
@@ -79,26 +79,6 @@ canvas > div{
   align-items: start;
   border-bottom: solid thick gainsboro;
   /* background-color: gainsboro; */
-}
-
-svg {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-color: #3b629540;
-  z-index: 1;
-}
-
-svg.dropzone.dropping{
-  border: solid thick orangered;
-  z-index: 3
-}
-
- #flow{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
 }
 
 .table{
@@ -153,30 +133,6 @@ ul > li:hover{
 
 .card-area[data-transform] {
   transform: translateY(50px);
-}
-
-svg path{
-  fill: transparent;
-  stroke: darkgoldenrod;
-  stroke-width: 4;
-  stroke-linecap: round;
-  /* transform: translateY(50px); */
-}
-
-.table-rect{
-  fill: gainsboro;
-  stroke: #494949;
-  stroke-width: 1;
-  width: 170px;
-  height: 35px;
-  padding: .5em;
-  /* filter: url(#shadow); */
-  rx: 4;
-  /* x: 450px; */
-}
-
-.table-rect text{
-  fill: #494949;
 }
 
 canvas{
