@@ -46,7 +46,6 @@ var Canvas = new DrawCanvas('canvas');
   observerList.observe(app.body, config);
 
   /* canvas */
-  // const ctx = app.canvas.getContext('2d');
 
   Canvas.canvas.addEventListener('click', (e) => {
     for (const [tableId, path2d] of Object.entries(Canvas.ctxTablesObject)) {

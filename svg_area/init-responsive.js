@@ -74,24 +74,29 @@ var Draw = new DrawSVG('svg');
       e.dataTransfer.dropEffect = "copy";
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
       if (Draw.svg.querySelectorAll('.table').length > 0) {
-        let joinTable;
         Draw.svg.querySelectorAll('g.table').forEach(table => {
           // console.log(table);
           if ((+table.dataset.x + 40) < e.offsetX && (+table.dataset.y - 40) < e.offsetY) {
             const rectBounding = table.getBoundingClientRect();
-            joinTable = { table, x: +table.dataset.x + rectBounding.width + 10, y: +table.dataset.y + (rectBounding.height / 2) };
-            app.from = { x: joinTable.x, y: joinTable.y };
+            Draw.tableJoin = { table, x: +table.dataset.x + rectBounding.width + 10, y: +table.dataset.y + (rectBounding.height / 2) };
+            app.from = { x: Draw.tableJoin.x, y: Draw.tableJoin.y };
             app.lastFrom = app.from;
           } else {
             app.from = app.lastFrom;
+            // se è presente una sola tabella, la join verrà fatta con quella, cioè la prima tabella aggiunta al canvas
+            if (Draw.svg.querySelectorAll('g.table').length === 1) {
+              const firstTable = Draw.querySelector("g.table[id='data-0']");
+              Draw.tableJoin = { table: firstTable, x: +firstTable.dataset.x, y: +firstTable.dataset.y };
+            }
           }
         });
-        console.log('joinTable :', joinTable.table.id);
+        // console.log('joinTable :', Draw.tableJoin);
+        console.log('tableJoin :', Draw.tableJoin.table.id);
         let d;
-        if (app.currentLine && joinTable) {
+        if (app.currentLine && Draw.tableJoin) {
           // dx1, dy1 dx2, dy2 dx, dy
           // linea con una tabella trovata a cui collegarla
-          d = `M${joinTable.x},${joinTable.y} C${joinTable.x + 80},${joinTable.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
+          d = `M${Draw.tableJoin.x},${Draw.tableJoin.y} C${Draw.tableJoin.x + 80},${Draw.tableJoin.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
         } else {
           // linea senza la tabella a cui collegarla ma in base a lastFrom la posizione di start della linea inizia dall'ultima tableJoin trovata
           d = `M${app.from.x},${app.from.y} C${app.from.x + 80},${app.from.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
@@ -154,14 +159,25 @@ var Draw = new DrawSVG('svg');
 
   app.handlerDrop = (e) => {
     e.preventDefault();
+    console.clear();
     e.currentTarget.classList.replace('dropping', 'dropped');
     if (!e.currentTarget.classList.contains('dropzone')) return;
     // const elementId = e.dataTransfer.getData('text/plain');
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
     liElement.classList.remove('dragging');
-    const tableId = +Draw.svg.querySelectorAll('g.table').length;
+    const tableId = Draw.svg.querySelectorAll('g.table').length;
     let coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
-    if (Draw.svg.querySelectorAll('g.table').length === 0) coords = { x: 40, y: 60 };
+    // se non è presente una tableJoin significa che sto aggiungendo la prima tabella
+    if (!Draw.tableJoin) {
+      coords = { x: 40, y: 60 };
+    } else {
+      Draw.tableJoin.joins = (Draw.tableJoin.hasOwnProperty('joins')) ? ++Draw.tableJoin.joins : 1;
+      Draw.svg.querySelector(`g.table[id="${Draw.tableJoin.table.id}"]`).dataset.joins = Draw.tableJoin.joins;
+      // la tabella che sto aggiungendo ha la stessa y di tableJoin
+      debugger;
+      coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: +Draw.tableJoin.table.dataset.y };
+    }
+    console.log(Draw.tableJoin);
     app.createTable(liElement, tableId, coords);
   }
 
