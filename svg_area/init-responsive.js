@@ -1,3 +1,4 @@
+var Draw = new DrawSVG('svg');
 (() => {
   var app = {
     // templates
@@ -12,7 +13,6 @@
     body: document.getElementById('body'),
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
-    svg: document.getElementById('svg'),
     currentLine: null,
     coordsRef: document.getElementById('coords')
   }
@@ -59,10 +59,10 @@
     console.log(app.dragElementPosition);
     e.dataTransfer.setData('text/plain', e.target.id);
     // creo la linea
-    if (app.svg.querySelectorAll('.table').length > 0) {
+    if (Draw.svg.querySelectorAll('.table').length > 0) {
       app.currentLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      app.currentLine.dataset.id = app.svg.querySelectorAll('g.table').length;
-      app.svg.appendChild(app.currentLine);
+      app.currentLine.dataset.id = Draw.svg.querySelectorAll('g.table').length;
+      Draw.svg.appendChild(app.currentLine);
     }
     console.log(e.dataTransfer);
     e.dataTransfer.effectAllowed = "copy";
@@ -70,23 +70,23 @@
 
   app.handlerDragOver = (e) => {
     e.preventDefault();
-    if (e.target.classList.contains('dropzone')) {
+    if (e.currentTarget.classList.contains('dropzone')) {
       e.dataTransfer.dropEffect = "copy";
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
-      if (app.svg.querySelectorAll('.table').length > 0) {
+      if (Draw.svg.querySelectorAll('.table').length > 0) {
         let joinTable;
-        app.svg.querySelectorAll('g.table').forEach(table => {
+        Draw.svg.querySelectorAll('g.table').forEach(table => {
           // console.log(table);
           if ((+table.dataset.x + 40) < e.offsetX && (+table.dataset.y - 40) < e.offsetY) {
             const rectBounding = table.getBoundingClientRect();
             joinTable = { table, x: +table.dataset.x + rectBounding.width + 10, y: +table.dataset.y + (rectBounding.height / 2) };
-            console.log(`joinTable : ${joinTable}`);
             app.from = { x: joinTable.x, y: joinTable.y };
             app.lastFrom = app.from;
           } else {
             app.from = app.lastFrom;
           }
         });
+        console.log('joinTable :', joinTable.table.id);
         let d;
         if (app.currentLine && joinTable) {
           // dx1, dy1 dx2, dy2 dx, dy
@@ -103,29 +103,13 @@
     }
   }
 
-  app.handlerDragEnterCard = (e) => {
-    console.log('dragEnter Card');
-  }
-
   app.handlerDragEnter = (e) => {
-    console.log('handlerDragEnter :', e.target);
     e.preventDefault();
-    if (e.target.classList.contains('dropzone')) {
+    if (e.currentTarget.classList.contains('dropzone')) {
       console.info('DROPZONE');
       // e.dataTransfer.dropEffect = "copy";
       // coloro il border differente per la dropzone
-      e.target.classList.add('dropping');
-      /* const breakLine = document.getElementById('break-line-1');
-      console.log(e.offsetX, +breakLine.getAttribute('x1'));
-      if (e.offsetX > breakLine.getAttribute('x1')) {
-        console.log('level 2');
-      } */
-      /* app.letsdraw = {
-        x: ,
-        y: 
-      } */
-      // console.log(app.letsdraw);
-      // app.line.setAttribute('d', 'M ' + app.letsdraw.x + ' ' + app.letsdraw.y + ' L ' + e.offsetX + ' ' + e.offsetY);
+      e.currentTarget.classList.add('dropping');
     } else {
       console.warn('non in dropzone');
       // TODO: se non sono in una dropzone modifico l'icona del drag&drop (icona "non consentito")
@@ -134,25 +118,12 @@
   }
 
   app.handlerDragLeave = (e) => {
-    console.log('dragLeave : ', e.target);
     e.preventDefault();
-    e.target.classList.remove('dropping');
-  }
-
-  app.handlerDragLeaveCard = (e) => {
-    e.preventDefault();
+    e.currentTarget.classList.remove('dropping');
   }
 
   app.handlerDragEnd = (e) => {
-    debugger;
     e.preventDefault();
-    app.svg.style['z-index'] = 1;
-    // faccio il DESCRIBE della tabella
-    // controllo lo stato di dropEffect per verificare se il drop è stato completato correttamente, come descritto qui:https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API#drag_end
-    // in app.getTable() vengono utilizzate le property della classe Cube (cube.card.schema, cube.card.tableName);
-    if (e.dataTransfer.dropEffect === 'copy') {
-      // imposto prima la <ul> altrimenti si verifica il bug riportato nella issue#50
-    }
   }
 
   app.createTable = (element, id, coords) => {
@@ -166,7 +137,7 @@
     g.setAttribute('y', coords.y);
     g.dataset.x = coords.x;
     g.dataset.y = coords.y;
-    app.svg.appendChild(g);
+    Draw.svg.appendChild(g);
     const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     rect.setAttribute('x', coords.x);
     rect.setAttribute('y', coords.y);
@@ -183,15 +154,14 @@
 
   app.handlerDrop = (e) => {
     e.preventDefault();
-    e.target.classList.replace('dropping', 'dropped');
-    if (!e.target.classList.contains('dropzone')) return;
-    console.log(app.letsdraw);
+    e.currentTarget.classList.replace('dropping', 'dropped');
+    if (!e.currentTarget.classList.contains('dropzone')) return;
     // const elementId = e.dataTransfer.getData('text/plain');
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
     liElement.classList.remove('dragging');
-    const tableId = +app.svg.querySelectorAll('g.table').length;
+    const tableId = +Draw.svg.querySelectorAll('g.table').length;
     let coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
-    if (app.svg.querySelectorAll('g.table').length === 0) coords = { x: 40, y: 60 };
+    if (Draw.svg.querySelectorAll('g.table').length === 0) coords = { x: 40, y: 60 };
     app.createTable(liElement, tableId, coords);
   }
 
@@ -201,16 +171,16 @@
     el.ondragstart = app.handlerDragStart;
   });
 
-  app.svg.addEventListener('mousemove', (e) => {
+  Draw.svg.addEventListener('mousemove', (e) => {
     app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
   }, true);
 
   /* end drag events */
-  app.svg.addEventListener('dragover', app.handlerDragOver, true);
-  app.svg.addEventListener('dragenter', app.handlerDragEnter, true);
-  app.svg.addEventListener('dragleave', app.handlerDragLeave, true);
-  app.svg.addEventListener('drop', app.handlerDrop, true);
-  app.svg.addEventListener('dragend', app.handlerDragEnd, true);
+  Draw.svg.addEventListener('dragover', app.handlerDragOver, true);
+  Draw.svg.addEventListener('dragenter', app.handlerDragEnter, true);
+  Draw.svg.addEventListener('dragleave', app.handlerDragLeave, true);
+  Draw.svg.addEventListener('drop', app.handlerDrop, true);
+  Draw.svg.addEventListener('dragend', app.handlerDragEnd, true);
   /* end drag events */
 
   /* page init  (impostazioni inziali per la pagina, alcune sono necessarie per essere catturate dal mutationObserve)*/
@@ -220,12 +190,6 @@
 
   /*onclick events*/
 
-  app.handlerTest = () => {
-    const c = document.querySelector('div[data-id="card-struct"]');
-    let copy = c.cloneNode(true);
-    const hier = document.getElementById('h');
-    h.appendChild(copy);
-  }
   /* end onclick events*/
 
   /* mouse events */
