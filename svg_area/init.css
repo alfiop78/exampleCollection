@@ -138,28 +138,47 @@ ul > li:hover{
   transform: translateY(50px);
 }
 
-svg path{
+path{
   fill: transparent;
-  stroke: darkgoldenrod;
-  stroke-width: 4;
+  stroke: darkgray;
+  stroke-width: 3.5;
   stroke-linecap: round;
   /* transform: translateY(50px); */
 }
 
-.table-rect{
-  fill: gainsboro;
-  stroke: #494949;
-  stroke-width: 1;
-  width: 170px;
-  height: 35px;
-  padding: .5em;
-  /* filter: url(#shadow); */
-  rx: 4;
-  /* x: 450px; */
+path:hover{
+  cursor: pointer;
+  fill: transparent;
+  stroke: brown;
+  stroke-width: 4;
+  stroke-linecap: round;
 }
 
-.table-rect text{
-  fill: #494949;
+g.table:hover {
+  cursor: pointer;
+}
+
+g.table > rect{
+  fill: gainsboro;
+  stroke: #494949;
+  stroke-width: 0.2;
+  width: 180px;
+  height: 35px;
+  rx: 2;
+}
+
+g.table text{
+  fill: '#494949';
+}
+
+g.table:hover rect{
+  fill: darkred;
+  stroke: #e2e2e2;
+  stroke-width: 0.4;
+}
+
+g.table:hover text{
+  fill: white;
 }
 
 #coords{

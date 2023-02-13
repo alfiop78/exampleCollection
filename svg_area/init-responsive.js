@@ -13,7 +13,8 @@
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
     svg: document.getElementById('svg'),
-    currentLine: null
+    currentLine: null,
+    coordsRef: document.getElementById('coords')
   }
 
   // Callback function to execute when mutations are observed
@@ -59,45 +60,44 @@
     e.dataTransfer.setData('text/plain', e.target.id);
     // creo la linea
     if (app.svg.querySelectorAll('.table').length > 0) {
-      console.log('create line');
       app.currentLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      app.currentLine.dataset.id = app.svg.querySelectorAll('rect').length;
+      app.currentLine.dataset.id = app.svg.querySelectorAll('g.table').length;
       app.svg.appendChild(app.currentLine);
-      /* app.letsdraw = {
-        x: 0,
-        y: 0
-      } */
-
     }
     console.log(e.dataTransfer);
     e.dataTransfer.effectAllowed = "copy";
   }
 
-  app.handlerDragOverH = (e) => {
+  app.handlerDragOver = (e) => {
     e.preventDefault();
-    // console.log('dragOver:', e.target);
     if (e.target.classList.contains('dropzone')) {
       e.dataTransfer.dropEffect = "copy";
-      app.letsdraw = {
-        x: e.offsetX,
-        y: e.offsetY
-      }
-      // cerco le card con left minore della posizione corrente del mouse
-      let prevPosition;
-      app.svg.querySelectorAll('.table').forEach(tbl => {
-        if (tbl.dataset.x < e.offsetX) {
-          prevPosition = { x: +tbl.dataset.x + tbl.offsetWidth + 10, y: +tbl.dataset.y + (tbl.offsetHeight / 2) };
+      app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
+      if (app.svg.querySelectorAll('.table').length > 0) {
+        let joinTable;
+        app.svg.querySelectorAll('g.table').forEach(table => {
+          // console.log(table);
+          if ((+table.dataset.x + 40) < e.offsetX && (+table.dataset.y - 40) < e.offsetY) {
+            const rectBounding = table.getBoundingClientRect();
+            joinTable = { table, x: +table.dataset.x + rectBounding.width + 10, y: +table.dataset.y + (rectBounding.height / 2) };
+            console.log(`joinTable : ${joinTable}`);
+            app.from = { x: joinTable.x, y: joinTable.y };
+            app.lastFrom = app.from;
+          } else {
+            app.from = app.lastFrom;
+          }
+        });
+        let d;
+        if (app.currentLine && joinTable) {
+          // dx1, dy1 dx2, dy2 dx, dy
+          // linea con una tabella trovata a cui collegarla
+          d = `M${joinTable.x},${joinTable.y} C${joinTable.x + 80},${joinTable.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
+        } else {
+          // linea senza la tabella a cui collegarla ma in base a lastFrom la posizione di start della linea inizia dall'ultima tableJoin trovata
+          d = `M${app.from.x},${app.from.y} C${app.from.x + 80},${app.from.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
         }
-      });
-      console.log(prevPosition);
-      // console.log(app.letsdraw);
-      // if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
-      // if (app.l && prevPosition) app.l.setAttribute('d', 'M ' + prevPosition.x + ' ' + prevPosition.y + ' Q ' + (prevPosition.x + 70) + ' ' + prevPosition.y + ', ' + e.offsetX + ' ' + (e.offsetY - 80) + ' T ' + e.offsetX + ' ' + (e.offsetY + 100));
-      if (app.currentLine && prevPosition) {
-        const d = `M${prevPosition.x},${prevPosition.y} C${prevPosition.x + 100},${prevPosition.y} ${e.offsetX - 180},${e.offsetY} ${e.offsetX - app.dragElementPosition.x - 5},${e.offsetY - (app.dragElementPosition.y)}`;
-        if (app.l && prevPosition) app.l.setAttribute('d', d);
+        app.currentLine.setAttribute('d', d);
       }
-      // if (app.l) app.l.setAttribute('d', 'M ' + app.letsdraw.x + ' ' + app.letsdraw.y + ' L ' + (e.offsetX - app.dragElementPosition.x) + ' ' + (e.offsetY - app.dragElementPosition.y));
     } else {
       e.dataTransfer.dropEffect = "none";
     }
@@ -107,7 +107,7 @@
     console.log('dragEnter Card');
   }
 
-  app.handlerDragEnterH = (e) => {
+  app.handlerDragEnter = (e) => {
     console.log('handlerDragEnter :', e.target);
     e.preventDefault();
     if (e.target.classList.contains('dropzone')) {
@@ -115,11 +115,11 @@
       // e.dataTransfer.dropEffect = "copy";
       // coloro il border differente per la dropzone
       e.target.classList.add('dropping');
-      const breakLine = document.getElementById('break-line-1');
+      /* const breakLine = document.getElementById('break-line-1');
       console.log(e.offsetX, +breakLine.getAttribute('x1'));
       if (e.offsetX > breakLine.getAttribute('x1')) {
         console.log('level 2');
-      }
+      } */
       /* app.letsdraw = {
         x: ,
         y: 
@@ -133,7 +133,7 @@
     }
   }
 
-  app.handlerDragLeaveH = (e) => {
+  app.handlerDragLeave = (e) => {
     console.log('dragLeave : ', e.target);
     e.preventDefault();
     e.target.classList.remove('dropping');
@@ -143,7 +143,7 @@
     e.preventDefault();
   }
 
-  app.handlerDragEndH = (e) => {
+  app.handlerDragEnd = (e) => {
     debugger;
     e.preventDefault();
     app.svg.style['z-index'] = 1;
@@ -155,96 +155,62 @@
     }
   }
 
-  app.handlerDropH = (e) => {
+  app.createTable = (element, id, coords) => {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.id = `svg-data-${id}`;
+    g.dataset.id = `data-${id}`;
+    g.classList.add('table');
+    g.dataset.table = element.dataset.label;
+    g.dataset.schema = element.dataset.schema;
+    g.setAttribute('x', coords.x);
+    g.setAttribute('y', coords.y);
+    g.dataset.x = coords.x;
+    g.dataset.y = coords.y;
+    app.svg.appendChild(g);
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', coords.x);
+    rect.setAttribute('y', coords.y);
+    g.appendChild(rect);
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.innerHTML = element.dataset.label;
+    text.setAttribute('x', coords.x + 24);
+    text.setAttribute('y', coords.y + 17.5);
+    // text.setAttribute('fill', '#494949');
+    // text.setAttribute('text-anchor', 'start');
+    text.setAttribute('dominant-baseline', 'middle');
+    g.appendChild(text);
+  }
+
+  app.handlerDrop = (e) => {
     e.preventDefault();
     e.target.classList.replace('dropping', 'dropped');
     if (!e.target.classList.contains('dropzone')) return;
-    app.svg.style['z-index'] = 1;
     console.log(app.letsdraw);
     // const elementId = e.dataTransfer.getData('text/plain');
-    // console.log(elementId);
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
-    console.log(liElement);
     liElement.classList.remove('dragging');
-    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    use.setAttribute('x', e.offsetX);
-    use.setAttribute('y', e.offsetY);
-    use.setAttribute('href', '#table');
-    app.svg.appendChild(use);
-    /* let table = document.createElement('div');
-    table.classList.add('table');
-    table.innerHTML = liElement.dataset.label;
-    table.style.left = app.letsdraw.x + 'px';
-    table.style.top = app.letsdraw.y + 'px';
-    table.dataset.x = app.letsdraw.x;
-    table.dataset.y = app.letsdraw.y;
-    app.svg.appendChild(table); */
-    /* const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    marker.id = "mark1";
-    marker.setAttribute('markerWidth', 5);
-    marker.setAttribute('markerHeight', 5);
-    marker.setAttribute('refX', 5);
-    marker.setAttribute('refY', 5);
-    marker.setAttribute('viewBox', '0 0 10 10');
-    circle.setAttribute('cx', 5);
-    circle.setAttribute('cy', 5);
-    circle.setAttribute('r', 5);
-    circle.setAttribute('fill', 'blue');
-    marker.appendChild(circle);
-    app.svg.appendChild(marker); */
-    /* <marker
-      id="dot"
-      viewBox="0 0 10 10"
-      refX="5"
-      refY="5"
-      markerWidth="5"
-      markerHeight="5">
-      <circle cx="5" cy="5" r="5" fill="red" />
-    </marker> */
-    /* const svgTable = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    const svgTableText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-
-    svgTable.id = liElement.id;
-    svgTable.setAttribute('class', 'table-rect');
-    svgTable.setAttribute('x', app.letsdraw.x);
-    svgTable.setAttribute('y', app.letsdraw.y);
-    svgTableText.setAttribute('x', app.letsdraw.x + 20);
-    svgTableText.setAttribute('y', app.letsdraw.y + 24);
-    svgTableText.innerHTML = liElement.dataset.label;
-    app.svg.appendChild(svgTable);
-    app.svg.appendChild(svgTableText); */
-
-    /* span.innerHTML = liElement.dataset.label;
-    card.dataset.label = liElement.dataset.label;
-    card.dataset.schema = liElement.dataset.schema;
-    card.dataset.level = app.hierarchy.childElementCount;
-    e.target.appendChild(card); */
-    /* if (app.l) {
-      span.dataset.lineId = app.l.dataset.id;
-      app.l.dataset.level = app.hierarchy.childElementCount;
-      // let span = card.querySelector('span');
-      app.hierarchy.querySelectorAll(".card-area[data-level='" + app.hierarchy.childElementCount + "']").forEach(card => {
-        const line = app.svg.querySelector("path[data-level='" + app.hierarchy.childElementCount + "'][data-id='" + span.dataset.lineId + "']");
-        line.setAttribute('stroke', 'orange');
-        line.setAttribute('d', 'M ' + app.letsdraw.x + ' ' + app.letsdraw.y + ' L ' + card.querySelector('.table').offsetParent.offsetLeft + ' ' + (card.querySelector('.table').offsetParent.offsetTop + (span.offsetParent.offsetHeight / 2)));
-      });
-    } */
+    const tableId = +app.svg.querySelectorAll('g.table').length;
+    let coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
+    if (app.svg.querySelectorAll('g.table').length === 0) coords = { x: 40, y: 60 };
+    app.createTable(liElement, tableId, coords);
   }
 
   /* drag events */
-
 
   document.querySelectorAll('li').forEach(el => {
     el.ondragstart = app.handlerDragStart;
   });
 
+  app.svg.addEventListener('mousemove', (e) => {
+    app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
+  }, true);
+
   /* end drag events */
-  app.svg.addEventListener('dragover', app.handlerDragOverH, true);
-  app.svg.addEventListener('dragenter', app.handlerDragEnterH, true);
-  app.svg.addEventListener('dragleave', app.handlerDragLeaveH, true);
-  app.svg.addEventListener('drop', app.handlerDropH, true);
-  app.svg.addEventListener('dragend', app.handlerDragEndH, true);
+  app.svg.addEventListener('dragover', app.handlerDragOver, true);
+  app.svg.addEventListener('dragenter', app.handlerDragEnter, true);
+  app.svg.addEventListener('dragleave', app.handlerDragLeave, true);
+  app.svg.addEventListener('drop', app.handlerDrop, true);
+  app.svg.addEventListener('dragend', app.handlerDragEnd, true);
   /* end drag events */
 
   /* page init  (impostazioni inziali per la pagina, alcune sono necessarie per essere catturate dal mutationObserve)*/
