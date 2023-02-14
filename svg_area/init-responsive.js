@@ -13,7 +13,6 @@ var Draw = new DrawSVG('svg');
     body: document.getElementById('body'),
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
-    currentLine: null,
     coordsRef: document.getElementById('coords')
   }
 
@@ -60,9 +59,10 @@ var Draw = new DrawSVG('svg');
     e.dataTransfer.setData('text/plain', e.target.id);
     // creo la linea
     if (Draw.svg.querySelectorAll('.table').length > 0) {
-      app.currentLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      app.currentLine.dataset.id = Draw.svg.querySelectorAll('g.table').length;
-      Draw.svg.appendChild(app.currentLine);
+      Draw.currentLineRef = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      Draw.currentLineRef.dataset.id = Draw.svg.querySelectorAll('g.table').length;
+      Draw.currentLineRef.id = `line-${Draw.svg.querySelectorAll('g.table').length}`;
+      Draw.svg.appendChild(Draw.currentLineRef);
     }
     console.log(e.dataTransfer);
     e.dataTransfer.effectAllowed = "copy";
@@ -78,30 +78,43 @@ var Draw = new DrawSVG('svg');
           // console.log(table);
           if ((+table.dataset.x + 40) < e.offsetX && (+table.dataset.y - 40) < e.offsetY) {
             const rectBounding = table.getBoundingClientRect();
-            Draw.tableJoin = { table, x: +table.dataset.x + rectBounding.width + 10, y: +table.dataset.y + (rectBounding.height / 2) };
+            Draw.tableJoin = {
+              table,
+              x: +table.dataset.x + rectBounding.width + 10,
+              y: +table.dataset.y + (rectBounding.height / 2),
+              joins: +table.dataset.joins
+            };
             app.from = { x: Draw.tableJoin.x, y: Draw.tableJoin.y };
             app.lastFrom = app.from;
           } else {
             app.from = app.lastFrom;
             // se è presente una sola tabella, la join verrà fatta con quella, cioè la prima tabella aggiunta al canvas
             if (Draw.svg.querySelectorAll('g.table').length === 1) {
-              const firstTable = Draw.querySelector("g.table[id='data-0']");
+              const firstTable = Draw.svg.querySelector("g.table[data-id='data-0']");
               Draw.tableJoin = { table: firstTable, x: +firstTable.dataset.x, y: +firstTable.dataset.y };
             }
           }
         });
         // console.log('joinTable :', Draw.tableJoin);
         console.log('tableJoin :', Draw.tableJoin.table.id);
-        let d;
-        if (app.currentLine && Draw.tableJoin) {
-          // dx1, dy1 dx2, dy2 dx, dy
+        if (Draw.currentLineRef && Draw.tableJoin) {
+          Draw.joinLines = {
+            id: Draw.currentLineRef.id, properties: {
+              id: Draw.currentLineRef.dataset.id,
+              key: Draw.currentLineRef.id,
+              from: Draw.tableJoin.table.id,
+              to: { x: (e.offsetX - app.dragElementPosition.x - 10), y: (e.offsetY - app.dragElementPosition.y + 17.5) } // in questo caso non c'è l'id della tabella perchè questa deve essere ancora droppata, metto le coordinate e.offsetX, e.offsetY
+            }
+          };
+          Draw.currentLine = Draw.joinLines.get(Draw.currentLineRef.id);
           // linea con una tabella trovata a cui collegarla
-          d = `M${Draw.tableJoin.x},${Draw.tableJoin.y} C${Draw.tableJoin.x + 80},${Draw.tableJoin.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
+          // d = `M${Draw.tableJoin.x},${Draw.tableJoin.y} C${Draw.tableJoin.x + 80},${Draw.tableJoin.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
         } else {
           // linea senza la tabella a cui collegarla ma in base a lastFrom la posizione di start della linea inizia dall'ultima tableJoin trovata
-          d = `M${app.from.x},${app.from.y} C${app.from.x + 80},${app.from.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
+          // d = `M${app.from.x},${app.from.y} C${app.from.x + 80},${app.from.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
         }
-        app.currentLine.setAttribute('d', d);
+        // Draw.currentLineRef.setAttribute('d', d);
+        Draw.drawLine();
       }
     } else {
       e.dataTransfer.dropEffect = "none";
@@ -131,54 +144,102 @@ var Draw = new DrawSVG('svg');
     e.preventDefault();
   }
 
-  app.createTable = (element, id, coords) => {
-    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    g.id = `svg-data-${id}`;
-    g.dataset.id = `data-${id}`;
-    g.classList.add('table');
-    g.dataset.table = element.dataset.label;
-    g.dataset.schema = element.dataset.schema;
-    g.setAttribute('x', coords.x);
-    g.setAttribute('y', coords.y);
-    g.dataset.x = coords.x;
-    g.dataset.y = coords.y;
-    Draw.svg.appendChild(g);
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('x', coords.x);
-    rect.setAttribute('y', coords.y);
-    g.appendChild(rect);
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.innerHTML = element.dataset.label;
-    text.setAttribute('x', coords.x + 24);
-    text.setAttribute('y', coords.y + 17.5);
-    // text.setAttribute('fill', '#494949');
-    // text.setAttribute('text-anchor', 'start');
-    text.setAttribute('dominant-baseline', 'middle');
-    g.appendChild(text);
-  }
-
   app.handlerDrop = (e) => {
     e.preventDefault();
-    console.clear();
+    // console.clear();
     e.currentTarget.classList.replace('dropping', 'dropped');
     if (!e.currentTarget.classList.contains('dropzone')) return;
     // const elementId = e.dataTransfer.getData('text/plain');
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
     liElement.classList.remove('dragging');
     const tableId = Draw.svg.querySelectorAll('g.table').length;
-    let coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
+    // let coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
+    let coords;
     // se non è presente una tableJoin significa che sto aggiungendo la prima tabella
     if (!Draw.tableJoin) {
       coords = { x: 40, y: 60 };
+      Draw.tables = {
+        id: `svg-data-${tableId}`, properties: {
+          id: tableId,
+          key: `svg-data-${tableId}`,
+          x: coords.x,
+          y: coords.y,
+          line: {
+            from: { x: coords.x + 180, y: coords.y + 15 },
+            to: { x: coords.x - 10, y: coords.y + 15 }
+          },
+          table: liElement.dataset.label,
+          schema: liElement.dataset.schema,
+          join: null,
+          joins: 0
+        }
+      };
     } else {
-      Draw.tableJoin.joins = (Draw.tableJoin.hasOwnProperty('joins')) ? ++Draw.tableJoin.joins : 1;
-      Draw.svg.querySelector(`g.table[id="${Draw.tableJoin.table.id}"]`).dataset.joins = Draw.tableJoin.joins;
+      // è presente una tableJoin
+      // imposto data.joins anche sull'elemento SVG
+      Draw.svg.querySelector(`g.table[id="${Draw.tableJoin.table.id}"]`).dataset.joins = ++Draw.tableJoin.joins;
+      // ... lo imposto anche nell'oggetto Map() tables
+      Draw.tables.get(Draw.tableJoin.table.id).joins = Draw.tableJoin.joins;
+      console.log(Draw.tableJoin);
+      console.log(Draw.tables);
       // la tabella che sto aggiungendo ha la stessa y di tableJoin
-      debugger;
-      coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: +Draw.tableJoin.table.dataset.y };
+      // coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: +Draw.tableJoin.table.dataset.y };
+      coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: (60 * Draw.tableJoin.joins) };
+      const currentTableY = (60 * Draw.tableJoin.joins);
+      Draw.tables = {
+        id: `svg-data-${tableId}`, properties: {
+          id: tableId,
+          key: `svg-data-${tableId}`,
+          x: coords.x,
+          y: currentTableY,
+          // y: coords.y,
+          line: {
+            // from: { x: coords.x + 180, y: coords.y + 15 },
+            // to: { x: coords.x - 10, y: coords.y + 15 }
+            from: { x: coords.x + 180, y: currentTableY + 15 },
+            to: { x: coords.x - 10, y: currentTableY + 15 }
+          },
+          table: liElement.dataset.label,
+          schema: liElement.dataset.schema,
+          joins: 0,
+          join: Draw.tableJoin.table.id
+        }
+      };
+      if (Draw.tableJoin.joins > 1) {
+        let totalY = 0;
+        // la tabella corrente è legata a una tabella (Draw.tableJoin) che ha x (Draw.tableJoin.joins) tabelle già collegate
+        for (const [key, value] of Draw.tables) {
+          // if (props.level === +Canvas.currentLevel.dataset.levelId) {
+          // solo le tabelle legate a Draw.tableJoin vanno sommate a totalY
+          if (value.join === Draw.tableJoin.table.id) {
+            totalY += value.y;
+          }
+          // }
+        }
+        Draw.tableJoin.y = (totalY / Draw.tableJoin.joins); // centro (y) del level, riferito al level successivo
+        Draw.tables.get(Draw.tableJoin.table.id).y = (totalY / Draw.tableJoin.joins);
+        Draw.tables.get(Draw.tableJoin.table.id).line.from.y = (totalY / Draw.tableJoin.joins) + 15;
+        Draw.tables.get(Draw.tableJoin.table.id).line.to.y = (totalY / Draw.tableJoin.joins) + 15;
+      }
+      // modifico y di Draw.currentTable perchè sono già presenti tabelle collegate a Draw.tableJoin
+      Draw.tables.get(`svg-data-${tableId}`).y = currentTableY;
+      Draw.tables.get(`svg-data-${tableId}`).line.from.y = currentTableY + 15;
+      Draw.tables.get(`svg-data-${tableId}`).line.to.y = currentTableY + 15;
+      Draw.joinLines = {
+        id: Draw.currentLineRef.id, properties: {
+          id: Draw.currentLineRef.dataset.id,
+          key: Draw.currentLineRef.id,
+          from: Draw.tableJoin.table.id,
+          to: `svg-data-${tableId}`
+        }
+      };
     }
-    console.log(Draw.tableJoin);
-    app.createTable(liElement, tableId, coords);
+    // Draw.currentLine = Draw.joinLines.get(Draw.currentLineRef.id);
+    // console.log('currentline : ', Draw.currentLine);
+    console.log('tableJoin : ', Draw.tableJoin);
+    Draw.currentTable = Draw.tables.get(`svg-data-${tableId}`);
+    Draw.drawTable();
+    Draw.redraw();
   }
 
   /* drag events */
@@ -192,11 +253,11 @@ var Draw = new DrawSVG('svg');
   }, true);
 
   /* end drag events */
-  Draw.svg.addEventListener('dragover', app.handlerDragOver, true);
-  Draw.svg.addEventListener('dragenter', app.handlerDragEnter, true);
-  Draw.svg.addEventListener('dragleave', app.handlerDragLeave, true);
-  Draw.svg.addEventListener('drop', app.handlerDrop, true);
-  Draw.svg.addEventListener('dragend', app.handlerDragEnd, true);
+  Draw.svg.addEventListener('dragover', app.handlerDragOver, false);
+  Draw.svg.addEventListener('dragenter', app.handlerDragEnter, false);
+  Draw.svg.addEventListener('dragleave', app.handlerDragLeave, false);
+  Draw.svg.addEventListener('drop', app.handlerDrop, false);
+  Draw.svg.addEventListener('dragend', app.handlerDragEnd, false);
   /* end drag events */
 
   /* page init  (impostazioni inziali per la pagina, alcune sono necessarie per essere catturate dal mutationObserve)*/
