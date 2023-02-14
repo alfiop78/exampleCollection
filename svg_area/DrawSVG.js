@@ -2,26 +2,31 @@ class DrawSVG {
   #tables = new Map();
   #joinLines = new Map();
   #levels = new Map();
+  #currentLineRef; // ref
 
   constructor(element) {
     this.svg = document.getElementById(element);
     // consente di spostarmi, durante il drag&drop anche oltre (-x, -y) le tables già presenti nel Canvas
     this.lastFromLineCoords = {};
     this.currentLevel;
-    this.currentLineRef; // ref
+    // this.currentLineRef; // ref
     this.currentTable = {}, this.currentLine = {};
   }
 
   set tables(value) {
     this.#tables.set(value.id, value.properties);
-    console.log(this.tables);
   }
 
   get tables() { return this.#tables; }
 
+  set currentLineRef(value) {
+    this.#currentLineRef = this.svg.querySelector(`#${value}`);
+  }
+
+  get currentLineRef() { return this.#currentLineRef; }
+
   set joinLines(value) {
     this.#joinLines.set(value.id, value.properties);
-    console.log(this.#joinLines);
   }
 
   get joinLines() { return this.#joinLines; }
@@ -35,7 +40,6 @@ class DrawSVG {
 
   drawTable() {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    console.log(this.currentTable);
     g.id = this.currentTable.key;
     g.dataset.id = `data-${this.currentTable.id}`;
     g.classList.add('table');
@@ -59,12 +63,10 @@ class DrawSVG {
     // text.setAttribute('text-anchor', 'start');
     text.setAttribute('dominant-baseline', 'middle');
     g.appendChild(text);
-    // console.log(this.currentLine.get(`line-${this.currentTable.key}`));
-    console.log(this.joinLines.get(`line-${this.currentTable.id}`));
   }
 
   drawLine() {
-    console.log(this.currentLine.from, this.currentLine.to);
+    // console.log(this.currentLine.from, this.currentLine.to);
     const coordsFrom = {
       x: this.tables.get(this.currentLine.from).line.from.x,
       y: this.tables.get(this.currentLine.from).line.from.y
@@ -91,18 +93,17 @@ class DrawSVG {
       y2: coordsTo.y
     };
     const d = `M${this.line.x1},${this.line.y1} C${this.line.p1x},${this.line.p1y} ${this.line.p2x},${this.line.p2y} ${this.line.x2},${this.line.y2}`;
-    this.currentLineRef = this.svg.querySelector(`#${this.currentLine.key}`);
-    console.log(this.currentLineRef);
+    this.currentLineRef = this.currentLine.key;
     this.currentLineRef.setAttribute('d', d);
   }
 
   // riposiziona gli elementi
   redraw() {
+    console.info('redraw');
     for (const [key, table] of this.tables) {
       const tableRef = this.svg.querySelector(`#${key}`);
       const rect = this.svg.querySelector(`#${key} rect`);
       const text = this.svg.querySelector(`#${key} text`);
-      console.log(tableRef);
       tableRef.setAttribute('y', table.y);
       rect.setAttribute('y', table.y);
       text.setAttribute('y', table.y + 16);

@@ -55,16 +55,17 @@ var Draw = new DrawSVG('svg');
     console.log('e.target : ', e.target.id);
     e.target.classList.add('dragging');
     app.dragElementPosition = { x: e.offsetX, y: e.offsetY };
-    console.log(app.dragElementPosition);
+    // console.log(app.dragElementPosition);
     e.dataTransfer.setData('text/plain', e.target.id);
     // creo la linea
     if (Draw.svg.querySelectorAll('.table').length > 0) {
-      Draw.currentLineRef = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      Draw.currentLineRef.dataset.id = Draw.svg.querySelectorAll('g.table').length;
-      Draw.currentLineRef.id = `line-${Draw.svg.querySelectorAll('g.table').length}`;
-      Draw.svg.appendChild(Draw.currentLineRef);
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      line.id = `line-${Draw.svg.querySelectorAll('g.table').length}`;
+      line.dataset.id = Draw.svg.querySelectorAll('g.table').length;
+      Draw.svg.appendChild(line);
+      Draw.currentLineRef = line.id;
     }
-    console.log(e.dataTransfer);
+    // console.log(e.dataTransfer);
     e.dataTransfer.effectAllowed = "copy";
   }
 
@@ -72,6 +73,8 @@ var Draw = new DrawSVG('svg');
     e.preventDefault();
     if (e.currentTarget.classList.contains('dropzone')) {
       e.dataTransfer.dropEffect = "copy";
+      if (e.target.nodeName === 'rect') Draw.currentLevel = +e.target.dataset.levelId;
+      console.log(Draw.currentLevel);
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
       if (Draw.svg.querySelectorAll('.table').length > 0) {
         Draw.svg.querySelectorAll('g.table').forEach(table => {
@@ -96,7 +99,7 @@ var Draw = new DrawSVG('svg');
           }
         });
         // console.log('joinTable :', Draw.tableJoin);
-        console.log('tableJoin :', Draw.tableJoin.table.id);
+        // console.log('tableJoin :', Draw.tableJoin.table.id);
         if (Draw.currentLineRef && Draw.tableJoin) {
           Draw.joinLines = {
             id: Draw.currentLineRef.id, properties: {
@@ -113,7 +116,6 @@ var Draw = new DrawSVG('svg');
           // linea senza la tabella a cui collegarla ma in base a lastFrom la posizione di start della linea inizia dall'ultima tableJoin trovata
           // d = `M${app.from.x},${app.from.y} C${app.from.x + 80},${app.from.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
         }
-        // Draw.currentLineRef.setAttribute('d', d);
         Draw.drawLine();
       }
     } else {
@@ -125,13 +127,16 @@ var Draw = new DrawSVG('svg');
     e.preventDefault();
     if (e.currentTarget.classList.contains('dropzone')) {
       console.info('DROPZONE');
+      // console.log(e.currentTarget, e.target);
+      if (e.target.nodeName === 'rect') Draw.currentLevel = +e.target.dataset.levelId;
+      // Draw.currentLevel = e.targe
       // e.dataTransfer.dropEffect = "copy";
       // coloro il border differente per la dropzone
       e.currentTarget.classList.add('dropping');
     } else {
       console.warn('non in dropzone');
       // TODO: se non sono in una dropzone modifico l'icona del drag&drop (icona "non consentito")
-      // e.dataTransfer.dropEffect = "none";
+      e.dataTransfer.dropEffect = "none";
     }
   }
 
@@ -180,12 +185,15 @@ var Draw = new DrawSVG('svg');
       Draw.svg.querySelector(`g.table[id="${Draw.tableJoin.table.id}"]`).dataset.joins = ++Draw.tableJoin.joins;
       // ... lo imposto anche nell'oggetto Map() tables
       Draw.tables.get(Draw.tableJoin.table.id).joins = Draw.tableJoin.joins;
-      console.log(Draw.tableJoin);
-      console.log(Draw.tables);
+      // console.log(Draw.tableJoin);
+      // console.log(Draw.tables);
       // la tabella che sto aggiungendo ha la stessa y di tableJoin
-      // coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: +Draw.tableJoin.table.dataset.y };
-      coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: (60 * Draw.tableJoin.joins) };
-      const currentTableY = (60 * Draw.tableJoin.joins);
+      coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: +Draw.tableJoin.table.dataset.y };
+      // const currentTableY = (60 * Draw.tableJoin.joins);
+      const currentTableY = (Draw.tableJoin.y + 60);
+      /* if (Draw.tableJoin.joins > 1) {
+        coords.y = (Draw.tableJoin.y + Draw.tableJoin.joins);
+      } */
       Draw.tables = {
         id: `svg-data-${tableId}`, properties: {
           id: tableId,
@@ -234,9 +242,7 @@ var Draw = new DrawSVG('svg');
         }
       };
     }
-    // Draw.currentLine = Draw.joinLines.get(Draw.currentLineRef.id);
-    // console.log('currentline : ', Draw.currentLine);
-    console.log('tableJoin : ', Draw.tableJoin);
+    // console.log('tableJoin : ', Draw.tableJoin);
     Draw.currentTable = Draw.tables.get(`svg-data-${tableId}`);
     Draw.drawTable();
     Draw.redraw();
