@@ -212,6 +212,7 @@ var Draw = new DrawSVG('svg');
             Draw.tables.get(table.id).y += 60;
             Draw.tables.get(table.id).line.from.y += 60;
             Draw.tables.get(table.id).line.to.y += 60;
+            debugger;
             // riposiziono tutte le tabelle ricorsivamente
             let t = (joinTable, lvlId) => {
               // tabella in join con table.id
@@ -237,6 +238,22 @@ var Draw = new DrawSVG('svg');
             t(table.id);
           }
         });
+        // nel livello della tableJoin faccio la stessa verifica fatta qui sopra
+        let test = (tableId) => {
+          // proprietà della tableId
+          const prop = Draw.tables.get(tableId);
+          if (prop) {
+            Draw.svg.querySelectorAll(`g.table[data-level-id='${prop.levelId}']`).forEach(table => {
+              if (+table.dataset.y >= prop.y) {
+                Draw.tables.get(table.id).y += 60;
+                Draw.tables.get(table.id).line.from.y += 60;
+                Draw.tables.get(table.id).line.to.y += 60;
+              }
+              test(Draw.tables.get(table.id));
+            });
+          }
+        }
+        test(Draw.tableJoin.table.id);
       }
       Draw.tables = {
         id: `svg-data-${tableId}`, properties: {
