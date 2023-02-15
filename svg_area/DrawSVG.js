@@ -46,6 +46,7 @@ class DrawSVG {
     g.dataset.table = this.currentTable.table;
     g.dataset.schema = this.currentTable.schema;
     g.dataset.joins = this.currentTable.joins;
+    g.dataset.tableJoin = this.currentTable.join;
     g.setAttribute('x', this.currentTable.x);
     g.setAttribute('y', this.currentTable.y);
     g.dataset.x = this.currentTable.x;
@@ -99,13 +100,14 @@ class DrawSVG {
   }
 
   // riposiziona gli elementi
-  redraw() {
-    console.info('redraw');
+  repositioning() {
+    console.info('repositioning');
     for (const [key, table] of this.tables) {
       const tableRef = this.svg.querySelector(`#${key}`);
       const rect = this.svg.querySelector(`#${key} rect`);
       const text = this.svg.querySelector(`#${key} text`);
       tableRef.setAttribute('y', table.y);
+      tableRef.dataset.y = table.y;
       rect.setAttribute('y', table.y);
       text.setAttribute('y', table.y + 16);
       // ri-posizionamento line
