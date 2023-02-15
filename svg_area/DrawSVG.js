@@ -50,6 +50,7 @@ class DrawSVG {
     g.setAttribute('y', this.currentTable.y);
     g.dataset.x = this.currentTable.x;
     g.dataset.y = this.currentTable.y;
+    g.dataset.levelId = this.currentTable.levelId;
     Draw.svg.appendChild(g);
     const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
     rect.setAttribute('x', this.currentTable.x);

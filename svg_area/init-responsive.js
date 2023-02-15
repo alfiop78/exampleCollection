@@ -73,8 +73,6 @@ var Draw = new DrawSVG('svg');
     e.preventDefault();
     if (e.currentTarget.classList.contains('dropzone')) {
       e.dataTransfer.dropEffect = "copy";
-      if (e.target.nodeName === 'rect') Draw.currentLevel = +e.target.dataset.levelId;
-      console.log(Draw.currentLevel);
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
       if (Draw.svg.querySelectorAll('.table').length > 0) {
         Draw.svg.querySelectorAll('g.table').forEach(table => {
@@ -85,7 +83,8 @@ var Draw = new DrawSVG('svg');
               table,
               x: +table.dataset.x + rectBounding.width + 10,
               y: +table.dataset.y + (rectBounding.height / 2),
-              joins: +table.dataset.joins
+              joins: +table.dataset.joins,
+              levelId: +table.dataset.levelId
             };
             app.from = { x: Draw.tableJoin.x, y: Draw.tableJoin.y };
             app.lastFrom = app.from;
@@ -94,7 +93,7 @@ var Draw = new DrawSVG('svg');
             // se è presente una sola tabella, la join verrà fatta con quella, cioè la prima tabella aggiunta al canvas
             if (Draw.svg.querySelectorAll('g.table').length === 1) {
               const firstTable = Draw.svg.querySelector("g.table[data-id='data-0']");
-              Draw.tableJoin = { table: firstTable, x: +firstTable.dataset.x, y: +firstTable.dataset.y };
+              Draw.tableJoin = { table: firstTable, x: +firstTable.dataset.x, y: +firstTable.dataset.y, levelId: 0 };
             }
           }
         });
@@ -176,7 +175,8 @@ var Draw = new DrawSVG('svg');
           table: liElement.dataset.label,
           schema: liElement.dataset.schema,
           join: null,
-          joins: 0
+          joins: 0,
+          levelId: 0
         }
       };
     } else {
@@ -185,32 +185,35 @@ var Draw = new DrawSVG('svg');
       Draw.svg.querySelector(`g.table[id="${Draw.tableJoin.table.id}"]`).dataset.joins = ++Draw.tableJoin.joins;
       // ... lo imposto anche nell'oggetto Map() tables
       Draw.tables.get(Draw.tableJoin.table.id).joins = Draw.tableJoin.joins;
-      // console.log(Draw.tableJoin);
-      // console.log(Draw.tables);
-      // la tabella che sto aggiungendo ha la stessa y di tableJoin
-      coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: +Draw.tableJoin.table.dataset.y };
-      // const currentTableY = (60 * Draw.tableJoin.joins);
-      const currentTableY = (Draw.tableJoin.y + 60);
-      /* if (Draw.tableJoin.joins > 1) {
-        coords.y = (Draw.tableJoin.y + Draw.tableJoin.joins);
-      } */
+      // livello che sto aggiungendo
+      const levelId = Draw.tableJoin.levelId + 1;
+      console.log(`currentlevel ${levelId}`);
+      // quante tabelle ci sono per il livello corrente
+      const tableInLevel = Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}']`).length;
+      console.log(tableInLevel);
+      let coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: +Draw.tableJoin.table.dataset.y };
+      // tabella aggiunta per questo livello, la imposto nella stessa y di tableJoin
+      if (tableInLevel !== 0) {
+        // sono presenti altre tabelle per questo livello
+        // recupero la posizione di tableJoin.y e incremento la posizione della tabella corrente (quindi partendo da tableJoin.y)
+        coords.y += +Draw.tableJoin.table.dataset.y;
+      }
+      console.log(coords);
       Draw.tables = {
         id: `svg-data-${tableId}`, properties: {
           id: tableId,
           key: `svg-data-${tableId}`,
           x: coords.x,
-          y: currentTableY,
-          // y: coords.y,
+          y: coords.y,
           line: {
-            // from: { x: coords.x + 180, y: coords.y + 15 },
-            // to: { x: coords.x - 10, y: coords.y + 15 }
-            from: { x: coords.x + 180, y: currentTableY + 15 },
-            to: { x: coords.x - 10, y: currentTableY + 15 }
+            from: { x: coords.x + 180, y: coords.y + 15 },
+            to: { x: coords.x - 10, y: coords.y + 15 }
           },
           table: liElement.dataset.label,
           schema: liElement.dataset.schema,
           joins: 0,
-          join: Draw.tableJoin.table.id
+          join: Draw.tableJoin.table.id,
+          levelId
         }
       };
       if (Draw.tableJoin.joins > 1) {
@@ -230,9 +233,9 @@ var Draw = new DrawSVG('svg');
         Draw.tables.get(Draw.tableJoin.table.id).line.to.y = (totalY / Draw.tableJoin.joins) + 15;
       }
       // modifico y di Draw.currentTable perchè sono già presenti tabelle collegate a Draw.tableJoin
-      Draw.tables.get(`svg-data-${tableId}`).y = currentTableY;
+      /* Draw.tables.get(`svg-data-${tableId}`).y = currentTableY;
       Draw.tables.get(`svg-data-${tableId}`).line.from.y = currentTableY + 15;
-      Draw.tables.get(`svg-data-${tableId}`).line.to.y = currentTableY + 15;
+      Draw.tables.get(`svg-data-${tableId}`).line.to.y = currentTableY + 15; */
       Draw.joinLines = {
         id: Draw.currentLineRef.id, properties: {
           id: Draw.currentLineRef.dataset.id,
