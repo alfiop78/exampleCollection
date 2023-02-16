@@ -11,6 +11,7 @@ class DrawSVG {
     this.currentLevel;
     // this.currentLineRef; // ref
     this.currentTable = {}, this.currentLine = {};
+    this.arrayLevels = [];
   }
 
   set tables(value) {
@@ -97,6 +98,16 @@ class DrawSVG {
     const d = `M${this.line.x1},${this.line.y1} C${this.line.p1x},${this.line.p1y} ${this.line.p2x},${this.line.p2y} ${this.line.x2},${this.line.y2}`;
     this.currentLineRef = this.currentLine.key;
     this.currentLineRef.setAttribute('d', d);
+  }
+
+  autoPosition() {
+    const tableRef = this.svg.querySelector(`#${this.currentTable.key}`);
+    const rect = tableRef.querySelector('rect');
+    const text = tableRef.querySelector('text');
+    tableRef.setAttribute('y', this.currentTable.y);
+    tableRef.dataset.y = this.currentTable.y;
+    rect.setAttribute('y', this.currentTable.y);
+    text.setAttribute('y', this.currentTable.y + 16);
   }
 
   // riposiziona gli elementi

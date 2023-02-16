@@ -187,6 +187,8 @@ var Draw = new DrawSVG('svg');
       Draw.tables.get(Draw.tableJoin.table.id).joins = Draw.tableJoin.joins;
       // livello che sto aggiungendo
       const levelId = Draw.tableJoin.levelId + 1;
+      // creo un array dei livelli, ordinato in reverse per poter fare un ciclo dal penultimo livello fino al primo ed effettuare il posizionamento automatico
+      if (!Draw.arrayLevels.includes(Draw.tableJoin.levelId)) Draw.arrayLevels.splice(0, 0, Draw.tableJoin.levelId);
       Draw.svg.dataset.level = (Draw.svg.dataset.level < levelId) ? levelId : Draw.svg.dataset.level;
       // quante tabelle ci sono per il livello corrente che appartengono alla stessa tableJoin
       const tableRelated = Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}'][data-table-join='${Draw.tableJoin.table.id}']`);
@@ -204,10 +206,11 @@ var Draw = new DrawSVG('svg');
       // tabella aggiunta per questo livello, la imposto nella stessa y di tableJoin
       if (tableInLevel !== 0) {
         // sono presenti altre tabelle per questo livello
-        // recupero la posizione di tableJoin.y e incremento la posizione della tabella corrente (quindi partendo da tableJoin.y)
+        // recupero la posizione dell'ultima tabella relativa a questa join, aggiungo la tabella corrente a +60y dopo l'ultima tabella trovata
+        // lastTableInLevel è ricavata da tableRelated (tabelle con tableJoin uguale a quella che sto droppando)
         coords.y = +lastTableInLevel.dataset.y + 60;
         // recupero altre tabelle presenti in questo livello > coords.y per spostarle 60 y più in basso
-        Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}']`).forEach(table => {
+        /* Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}']`).forEach(table => {
           if (+table.dataset.y >= coords.y) {
             Draw.tables.get(table.id).y += 60;
             Draw.tables.get(table.id).line.from.y += 60;
@@ -235,25 +238,27 @@ var Draw = new DrawSVG('svg');
                 t(tbl, lvlId - 1);
               }
             }
-            t(table.id);
+            t(table.id, levelId - 1);
           }
-        });
+        }); */
         // nel livello della tableJoin faccio la stessa verifica fatta qui sopra
-        let test = (tableId) => {
-          // proprietà della tableId
-          const prop = Draw.tables.get(tableId);
-          if (prop) {
-            Draw.svg.querySelectorAll(`g.table[data-level-id='${prop.levelId}']`).forEach(table => {
-              if (+table.dataset.y >= prop.y) {
-                Draw.tables.get(table.id).y += 60;
-                Draw.tables.get(table.id).line.from.y += 60;
-                Draw.tables.get(table.id).line.to.y += 60;
+        // per ogni livello, partendo dall'ultimo, reimposto le posizioni di tutte le tabelle
+        Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}']`).forEach(table => {
+          // table : prima tabella trovata nel livello corrente (esclusa la tabella che sto droppando perchè non ancora aggiunta al DOM)
+          let test = (id) => {
+            if (Draw.tables.has(id)) {
+              const tableRef = Draw.svg.querySelector(`g.table[id='${id}']`);
+              // debugger;
+              if (+tableRef.dataset.y >= coords.y) {
+                Draw.tables.get(tableRef.id).y += 60;
+                Draw.tables.get(tableRef.id).line.from.y += 60;
+                Draw.tables.get(tableRef.id).line.to.y += 60;
+                test(Draw.tables.get(tableRef.id).join);
               }
-              test(Draw.tables.get(table.id));
-            });
+            }
           }
-        }
-        test(Draw.tableJoin.table.id);
+          test(table.id);
+        });
       }
       Draw.tables = {
         id: `svg-data-${tableId}`, properties: {
@@ -272,34 +277,27 @@ var Draw = new DrawSVG('svg');
           levelId
         }
       };
-      if (Draw.tableJoin.joins > 1) {
-        // a questa tableJoin sono legate più di una tabella. Riposiziono la tableJoin per metterla al centro rispetto il numero di join ad essa legate
-        let totalY = 0;
-        // la tabella corrente è legata a una tabella (Draw.tableJoin) che ha x (Draw.tableJoin.joins) tabelle già collegate
-        for (const [key, value] of Draw.tables) {
-          // solo le tabelle legate a Draw.tableJoin vanno sommate a totalY
-          if (value.join === Draw.tableJoin.table.id) {
-            totalY += value.y;
+      // a questa tableJoin sono legate più di una tabella. Riposiziono la tableJoin per metterla al centro rispetto il numero di join ad essa legate
+      // recupero tutte le tabelle con data-joins > 1 partendo dal livello più alto (l'ultimo)
+      // ciclo dal penultimo livello fino a 0 per riposizionare tutti gli elementi che hanno più di 1 join con altre tabelle
+      Draw.arrayLevels.forEach((levelId, index) => {
+        // il primo ciclo recupera le tabelle del penultimo level (le tabelle dell'ultimo level non hanno altre tabelle collegate ad esse)
+        Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}']:not([data-joins='1'], [data-joins='0'])`).forEach(table => {
+          let y = 0;
+          // verifico la posizione y delle tabelle legate in join con quella in ciclo
+          for (const [key, value] of Draw.tables) {
+            // tabelle legate a quella in ciclo
+            if (value.join === table.id) {
+              y += value.y;
+            }
           }
-        }
-        Draw.tableJoin.y = (totalY / Draw.tableJoin.joins); // centro (y) del level, riferito al level successivo
-        Draw.tables.get(Draw.tableJoin.table.id).y = (totalY / Draw.tableJoin.joins);
-        Draw.tables.get(Draw.tableJoin.table.id).line.from.y = (totalY / Draw.tableJoin.joins) + 15;
-        Draw.tables.get(Draw.tableJoin.table.id).line.to.y = (totalY / Draw.tableJoin.joins) + 15;
-        // TODO: quando sposto la tableJoin devo verificare se, nello stesso livello, ci sono altre tabelle, in questo caso devo spostarle tutte in riferimento alla y di tableJoin
-        // recupero le tabelle presenti sullo stesso livello di tableJoin
-        /* const tablesInLevel = Draw.svg.querySelectorAll(`g.table[data-level-id='${+Draw.tableJoin.table.dataset.levelId}']`);
-        // const lastLevel = Draw.svg.querySelectorAll(``);
-        for (let i = +Draw.svg.dataset.level; i >= 0; i--) {
-          console.log(i);
-          debugger;
-          // TODO: centro le tabelle del livello precedente a i
-          const tablesInLevel = Draw.svg.querySelectorAll(`g.table[data-level-id='${i}']`);
-          tablesInLevel.forEach(table => {
-            console.log(table);
-          });
-        } */
-      }
+          Draw.tables.get(table.id).y = (y / table.dataset.joins);
+          Draw.tables.get(table.id).line.from.y = (y / table.dataset.joins) + 15;
+          Draw.tables.get(table.id).line.to.y = (y / table.dataset.joins) + 15;
+          Draw.currentTable = Draw.tables.get(table.id);
+          Draw.autoPosition();
+        });
+      });
       Draw.joinLines = {
         id: Draw.currentLineRef.id, properties: {
           id: Draw.currentLineRef.dataset.id,
