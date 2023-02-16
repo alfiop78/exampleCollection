@@ -70,6 +70,7 @@ class DrawSVG {
 
   drawLine() {
     // console.log(this.currentLine.from, this.currentLine.to);
+    if (Object.keys(this.currentLine).length === 0) return;
     const coordsFrom = {
       x: this.tables.get(this.currentLine.from).line.from.x,
       y: this.tables.get(this.currentLine.from).line.from.y
@@ -100,6 +101,30 @@ class DrawSVG {
     this.currentLineRef.setAttribute('d', d);
   }
 
+  joinTablePositioning() {
+    // recupero tutte le tabelle con data-joins > 1 partendo dal livello più alto (l'ultimo)
+    // ciclo dal penultimo livello fino a 0 per riposizionare tutti gli elementi che hanno più di 1 join con altre tabelle
+    this.arrayLevels.forEach(levelId => {
+      // il primo ciclo recupera le tabelle del penultimo level (le tabelle dell'ultimo level non hanno altre tabelle collegate ad esse)
+      this.svg.querySelectorAll(`g.table[data-level-id='${levelId}']:not([data-joins='1'], [data-joins='0'])`).forEach(table => {
+        let y = 0;
+        // verifico la posizione y delle tabelle legate in join con quella in ciclo
+        for (let properties of this.tables.values()) {
+          if (properties.join === table.id) y += properties.y;
+        }
+        // la tabella in ciclo verrà riposizionata in base a y calcolato.
+        // Se sono presenti due tabelle in join con 'table' (in ciclo) le posizioni y di queste tabelle vengono sommate (nel for) e 
+        // ...poi divise per il numero di tabelle join, in questo modo la tabella in ciclo viene posizionata al centro 
+        this.tables.get(table.id).y = (y / table.dataset.joins);
+        this.tables.get(table.id).line.from.y = (y / table.dataset.joins) + 15;
+        this.tables.get(table.id).line.to.y = (y / table.dataset.joins) + 15;
+        this.currentTable = this.tables.get(table.id);
+        this.autoPosition();
+      });
+    });
+    this.autoPositionLine();
+  }
+
   autoPosition() {
     const tableRef = this.svg.querySelector(`#${this.currentTable.key}`);
     const rect = tableRef.querySelector('rect');
@@ -110,22 +135,11 @@ class DrawSVG {
     text.setAttribute('y', this.currentTable.y + 16);
   }
 
-  // riposiziona gli elementi
-  repositioning() {
-    console.info('repositioning');
-    for (const [key, table] of this.tables) {
-      const tableRef = this.svg.querySelector(`#${key}`);
-      const rect = this.svg.querySelector(`#${key} rect`);
-      const text = this.svg.querySelector(`#${key} text`);
-      tableRef.setAttribute('y', table.y);
-      tableRef.dataset.y = table.y;
-      rect.setAttribute('y', table.y);
-      text.setAttribute('y', table.y + 16);
-      // ri-posizionamento line
-      if (this.joinLines.has(`line-${table.id}`)) {
-        this.currentLine = this.joinLines.get(`line-${table.id}`);
-        this.drawLine();
-      }
+  autoPositionLine() {
+    for (const [key, properties] of this.joinLines) {
+      this.currentLine = properties;
+      this.drawLine();
     }
   }
+
 }
