@@ -76,8 +76,11 @@ var Draw = new DrawSVG('svg');
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
       if (Draw.svg.querySelectorAll('.table').length > 0) {
         Draw.svg.querySelectorAll('g.table').forEach(table => {
-          // console.log(table);
+          // TODO: recupero la x di tutte le tabelle posizionate
+          // TODO: recupero la y di tutte le tabelle posizionate
+
           if ((+table.dataset.x + 40) < e.offsetX && (+table.dataset.y - 25) < e.offsetY) {
+            console.log(table.id);
             const rectBounding = table.getBoundingClientRect();
             Draw.tableJoin = {
               table,
@@ -89,7 +92,7 @@ var Draw = new DrawSVG('svg');
             app.from = { x: Draw.tableJoin.x, y: Draw.tableJoin.y };
             app.lastFrom = app.from;
           } else {
-            app.from = app.lastFrom;
+            // app.from = app.lastFrom;
             // se è presente una sola tabella, la join verrà fatta con quella, cioè la prima tabella aggiunta al canvas
             if (Draw.svg.querySelectorAll('g.table').length === 1) {
               const firstTable = Draw.svg.querySelector("g.table[data-id='data-0']");
@@ -97,7 +100,7 @@ var Draw = new DrawSVG('svg');
             }
           }
         });
-        // console.log('joinTable :', Draw.tableJoin);
+        console.log('joinTable :', Draw.tableJoin);
         // console.log('tableJoin :', Draw.tableJoin.table.id);
         if (Draw.currentLineRef && Draw.tableJoin) {
           Draw.joinLines = {
@@ -109,8 +112,6 @@ var Draw = new DrawSVG('svg');
             }
           };
           Draw.currentLine = Draw.joinLines.get(Draw.currentLineRef.id);
-          // linea con una tabella trovata a cui collegarla
-          // d = `M${Draw.tableJoin.x},${Draw.tableJoin.y} C${Draw.tableJoin.x + 80},${Draw.tableJoin.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
         } else {
           // linea senza la tabella a cui collegarla ma in base a lastFrom la posizione di start della linea inizia dall'ultima tableJoin trovata
           // d = `M${app.from.x},${app.from.y} C${app.from.x + 80},${app.from.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
@@ -205,7 +206,7 @@ var Draw = new DrawSVG('svg');
       });
       let coords = { x: +Draw.tableJoin.table.dataset.x + 275, y: +Draw.tableJoin.table.dataset.y };
       // tabella aggiunta per questo livello, la imposto nella stessa y di tableJoin
-      if (tableInLevel !== 0) {
+      if (lastTableInLevel) {
         // sono presenti altre tabelle per questo livello
         // recupero la posizione dell'ultima tabella relativa a questa join, aggiungo la tabella corrente a +60y dopo l'ultima tabella trovata
         // lastTableInLevel è ricavata da tableRelated (tabelle con tableJoin uguale a quella che sto droppando)
@@ -230,6 +231,31 @@ var Draw = new DrawSVG('svg');
           });
         });
       }
+      /* if (tableInLevel !== 0) {
+        // sono presenti altre tabelle per questo livello
+        // recupero la posizione dell'ultima tabella relativa a questa join, aggiungo la tabella corrente a +60y dopo l'ultima tabella trovata
+        // lastTableInLevel è ricavata da tableRelated (tabelle con tableJoin uguale a quella che sto droppando)
+        coords.y = +lastTableInLevel.dataset.y + 60;
+        // recupero altre tabelle presenti in questo livello > coords.y per spostarle 60 y più in basso
+        Draw.arrayLevels.forEach(levelId => {
+          // incremento il levelId perchè, in questo caso (a differenza di joinTablePositioning()) devo iniziare dall'ultimo levelId
+          levelId++;
+          // per ogni livello, partendo dall'ultimo
+          console.log(levelId);
+          // se sono presenti, in questo livello, tabelle con y > di quella che sto droppando le devo spostare y+60
+          Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}']`).forEach(table => {
+            // console.log(`Livello ${levelId}`);
+            // console.log(`tabelle ${table.id}`);
+            if (+table.dataset.y >= coords.y) {
+              Draw.tables.get(table.id).y += 60;
+              Draw.tables.get(table.id).line.from.y += 60;
+              Draw.tables.get(table.id).line.to.y += 60;
+              Draw.currentTable = Draw.tables.get(table.id);
+              Draw.autoPosition();
+            }
+          });
+        });
+      } */
       Draw.tables = {
         id: `svg-data-${tableId}`, properties: {
           id: tableId,
