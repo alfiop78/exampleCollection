@@ -75,12 +75,40 @@ var Draw = new DrawSVG('svg');
       e.dataTransfer.dropEffect = "copy";
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
       if (Draw.svg.querySelectorAll('.table').length > 0) {
+        let difference = {};
+        let p = [...Draw.svg.querySelectorAll('g.table')].filter((table, index) => {
+          // difference[table.id] = Math.abs(+table.dataset.x - e.offsetX);
+          difference[table.id] = { x: Math.abs(+table.dataset.x - e.offsetX), y: Math.abs(+table.dataset.y - e.offsetY) };
+        });
+        // console.log(difference);
+        // let min = Object.entries(difference).reduce((min, entry) => entry[1] <= min[1] ? entry : min, [0, +Infinity]);
+        /* let min = Object.entries(difference).reduce((min, entry) => {
+          // console.log(min, entry);
+          // min : [tableid, x]
+          // entry : [tableId, x]
+          return (entry[1] <= min[1]) ? entry : min;
+        });
+        console.log(min[0]); */
+        let min_ = Object.entries(difference).reduce((min, entry) => {
+          console.log(min);
+          let prevA;
+          let prevB;
+          if (min) {
+            [prevA, prevB] = min;
+            // prevA = min[0];
+            // prevB = min[1];
+          }
+          // const [prevA, prevB] = min;
+          const [a, b] = entry;
+          console.log(a, b, b.x);
+          console.log(prevA, prevB, prevB.x);
+          return (b.x <= min[1].x) ? { a, b } : { prevA, prevB };
+        });
+        console.log(min_);
+        // return;
         Draw.svg.querySelectorAll('g.table').forEach(table => {
-          // TODO: recupero la x di tutte le tabelle posizionate
-          // TODO: recupero la y di tutte le tabelle posizionate
-
           if ((+table.dataset.x + 40) < e.offsetX && (+table.dataset.y - 25) < e.offsetY) {
-            console.log(table.id);
+            // console.log(table.id);
             const rectBounding = table.getBoundingClientRect();
             Draw.tableJoin = {
               table,
@@ -100,7 +128,7 @@ var Draw = new DrawSVG('svg');
             }
           }
         });
-        console.log('joinTable :', Draw.tableJoin);
+        // console.log('joinTable :', Draw.tableJoin);
         // console.log('tableJoin :', Draw.tableJoin.table.id);
         if (Draw.currentLineRef && Draw.tableJoin) {
           Draw.joinLines = {
