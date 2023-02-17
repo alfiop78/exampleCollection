@@ -75,37 +75,32 @@ var Draw = new DrawSVG('svg');
       e.dataTransfer.dropEffect = "copy";
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
       if (Draw.svg.querySelectorAll('.table').length > 0) {
-        let difference = {};
-        let p = [...Draw.svg.querySelectorAll('g.table')].filter((table, index) => {
+        /* let p = [...Draw.svg.querySelectorAll('g.table')].filter((table, index) => {
           // difference[table.id] = Math.abs(+table.dataset.x - e.offsetX);
           difference[table.id] = { x: Math.abs(+table.dataset.x - e.offsetX), y: Math.abs(+table.dataset.y - e.offsetY) };
+          // diffSet.set(table.id, { x: Math.abs(+table.dataset.x - e.offsetX), y: Math.abs(+table.dataset.y - e.offsetY) });
+        }); */
+        // console.log(p);
+        /* let xx = [...Draw.svg.querySelectorAll('g.table')].reduce((prev, current) => {
+          return (Math.abs((+current.dataset.x + 170) - e.offsetX) < Math.abs((+prev.dataset.x + 170) - e.offsetX)) ? current : prev;
         });
-        // console.log(difference);
-        // let min = Object.entries(difference).reduce((min, entry) => entry[1] <= min[1] ? entry : min, [0, +Infinity]);
-        /* let min = Object.entries(difference).reduce((min, entry) => {
-          // console.log(min, entry);
-          // min : [tableid, x]
-          // entry : [tableId, x]
-          return (entry[1] <= min[1]) ? entry : min;
+        console.log(xx.id); */
+        // tabelle con x maggiore di xx.dataset.x
+        let r = [...Draw.svg.querySelectorAll('g.table')].filter((table, index) => {
+          return (+table.dataset.x < e.offsetX);
+        }).reduce((prev, current) => {
+          return (Math.abs((+current.dataset.y + 15) - e.offsetY) < Math.abs((+prev.dataset.y + 15) - e.offsetY)) ? current : prev;
         });
-        console.log(min[0]); */
-        let min_ = Object.entries(difference).reduce((min, entry) => {
-          console.log(min);
-          let prevA;
-          let prevB;
-          if (min) {
-            [prevA, prevB] = min;
-            // prevA = min[0];
-            // prevB = min[1];
-          }
-          // const [prevA, prevB] = min;
-          const [a, b] = entry;
-          console.log(a, b, b.x);
-          console.log(prevA, prevB, prevB.x);
-          return (b.x <= min[1].x) ? { a, b } : { prevA, prevB };
-        });
-        console.log(min_);
-        // return;
+        console.log(r.id);
+        /* console.log(r);
+        if (r.length !== 0) {
+          let y = [...r].reduce((prev, current) => {
+            return (Math.abs((+current.dataset.y + 15) - e.offsetY) < Math.abs((+prev.dataset.y + 15) - e.offsetY)) ? current : prev;
+          });
+          console.log(y.id);
+
+        } */
+
         Draw.svg.querySelectorAll('g.table').forEach(table => {
           if ((+table.dataset.x + 40) < e.offsetX && (+table.dataset.y - 25) < e.offsetY) {
             // console.log(table.id);
