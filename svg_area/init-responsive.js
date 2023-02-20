@@ -81,25 +81,10 @@ var Draw = new DrawSVG('svg');
           // diffSet.set(table.id, { x: Math.abs(+table.dataset.x - e.offsetX), y: Math.abs(+table.dataset.y - e.offsetY) });
         }); */
         // console.log(p);
-        /* let xx = [...Draw.svg.querySelectorAll('g.table')].reduce((prev, current) => {
-          return (Math.abs((+current.dataset.x + 170) - e.offsetX) < Math.abs((+prev.dataset.x + 170) - e.offsetX)) ? current : prev;
+        let xx = [...Draw.svg.querySelectorAll('g.table')].reduce((prev, current) => {
+          return (Math.hypot(e.offsetX - (+current.dataset.x + 180), e.offsetY - (+current.dataset.y + 15)) < Math.hypot(e.offsetX - (+prev.dataset.x + 180), e.offsetY - (+prev.dataset.y + 15))) ? current : prev;
         });
-        console.log(xx.id); */
-        // tabelle con x maggiore di xx.dataset.x
-        let r = [...Draw.svg.querySelectorAll('g.table')].filter((table, index) => {
-          return (+table.dataset.x < e.offsetX);
-        }).reduce((prev, current) => {
-          return (Math.abs((+current.dataset.y + 15) - e.offsetY) < Math.abs((+prev.dataset.y + 15) - e.offsetY)) ? current : prev;
-        });
-        console.log(r.id);
-        /* console.log(r);
-        if (r.length !== 0) {
-          let y = [...r].reduce((prev, current) => {
-            return (Math.abs((+current.dataset.y + 15) - e.offsetY) < Math.abs((+prev.dataset.y + 15) - e.offsetY)) ? current : prev;
-          });
-          console.log(y.id);
-
-        } */
+        console.log(xx.id);
 
         Draw.svg.querySelectorAll('g.table').forEach(table => {
           if ((+table.dataset.x + 40) < e.offsetX && (+table.dataset.y - 25) < e.offsetY) {
