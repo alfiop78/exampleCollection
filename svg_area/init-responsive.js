@@ -77,7 +77,7 @@ var Draw = new DrawSVG('svg');
       if (Draw.svg.querySelectorAll('.table').length > 0) {
         // TODO: da commentare
         let nearestTable = [...Draw.svg.querySelectorAll('g.table')].reduce((prev, current) => {
-          return (Math.hypot(e.offsetX - (+current.dataset.lineFromX), e.offsetY - (+current.dataset.lineFromY)) < Math.hypot(e.offsetX - (+prev.dataset.lineFromX), e.offsetY - (+prev.dataset.lineFromY))) ? current : prev;
+          return (Math.hypot(e.offsetX - (+current.dataset.x + 180), e.offsetY - (+current.dataset.y + 15)) < Math.hypot(e.offsetX - (+prev.dataset.x + 180), e.offsetY - (+prev.dataset.y + 15))) ? current : prev;
         });
         console.log(nearestTable.id);
         const rectBounding = nearestTable.getBoundingClientRect();

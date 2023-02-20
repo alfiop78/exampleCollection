@@ -1,7 +1,6 @@
 class DrawSVG {
   #tables = new Map();
   #joinLines = new Map();
-  #levels = new Map();
   #currentLineRef; // ref
 
   constructor(element) {
@@ -32,13 +31,6 @@ class DrawSVG {
 
   get joinLines() { return this.#joinLines; }
 
-  set levels(value) {
-    // this.#levels.set(`level-${this.#levels.size}`, { x: value.x, y: value.y, x1: value.x1 });
-    this.#levels.set(value.id, { id: value.id, x: value.x, y: value.y, width: value.width });
-  }
-
-  get levels() { return this.#levels; }
-
   drawTable() {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.id = this.currentTable.key;
@@ -50,9 +42,6 @@ class DrawSVG {
     g.dataset.tableJoin = this.currentTable.join;
     g.setAttribute('x', this.currentTable.x);
     g.setAttribute('y', this.currentTable.y);
-    // posizione start ('from') della linea di join
-    g.dataset.lineFromX = this.currentTable.line.from.x;
-    g.dataset.lineFromY = this.currentTable.line.from.y;
     g.dataset.x = this.currentTable.x;
     g.dataset.y = this.currentTable.y;
     g.dataset.levelId = this.currentTable.levelId;
@@ -61,6 +50,12 @@ class DrawSVG {
     rect.setAttribute('x', this.currentTable.x);
     rect.setAttribute('y', this.currentTable.y);
     g.appendChild(rect);
+    const rectAnimate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    rectAnimate.setAttribute('attributeName', 'y');
+    // animateAttr.setAttribute('to', this.currentTable.y);
+    // rectAnimate.setAttribute('dur', '4s');
+    rectAnimate.setAttribute('fill', 'freeze');
+    rect.appendChild(rectAnimate);
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.innerHTML = this.currentTable.table;
     text.setAttribute('x', this.currentTable.x + 24);
@@ -69,6 +64,11 @@ class DrawSVG {
     // text.setAttribute('text-anchor', 'start');
     text.setAttribute('dominant-baseline', 'middle');
     g.appendChild(text);
+    const textAnimate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    textAnimate.setAttribute('attributeName', 'y');
+    textAnimate.setAttribute('dur', '300ms');
+    textAnimate.setAttribute('fill', 'freeze');
+    text.appendChild(textAnimate);
   }
 
   drawLine() {
@@ -131,7 +131,15 @@ class DrawSVG {
   autoPosition() {
     const tableRef = this.svg.querySelector(`#${this.currentTable.key}`);
     const rect = tableRef.querySelector('rect');
+    const animate = rect.querySelector('animate');
     const text = tableRef.querySelector('text');
+    const animateText = text.querySelector('animate');
+    animateText.setAttribute('from', text.getAttribute('y'));
+    animateText.setAttribute('to', this.currentTable.y + 16);
+
+    animate.beginElement();
+    animateText.beginElement();
+
     tableRef.setAttribute('y', this.currentTable.y);
     tableRef.dataset.y = this.currentTable.y;
     rect.setAttribute('y', this.currentTable.y);

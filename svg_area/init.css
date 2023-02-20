@@ -159,11 +159,13 @@ g.table > rect{
   width: 170px;
   height: 30px;
   rx: 2;
+  transition: y 300ms;
 }
 
 g.table text{
   fill: #494949;
   font: 0.9rem Barlow;
+  /* transition: y 300ms; */
 }
 
 g.table:hover rect{
