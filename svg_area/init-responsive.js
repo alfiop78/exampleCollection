@@ -75,39 +75,19 @@ var Draw = new DrawSVG('svg');
       e.dataTransfer.dropEffect = "copy";
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
       if (Draw.svg.querySelectorAll('.table').length > 0) {
-        /* let p = [...Draw.svg.querySelectorAll('g.table')].filter((table, index) => {
-          // difference[table.id] = Math.abs(+table.dataset.x - e.offsetX);
-          difference[table.id] = { x: Math.abs(+table.dataset.x - e.offsetX), y: Math.abs(+table.dataset.y - e.offsetY) };
-          // diffSet.set(table.id, { x: Math.abs(+table.dataset.x - e.offsetX), y: Math.abs(+table.dataset.y - e.offsetY) });
-        }); */
-        // console.log(p);
-        let xx = [...Draw.svg.querySelectorAll('g.table')].reduce((prev, current) => {
-          return (Math.hypot(e.offsetX - (+current.dataset.x + 180), e.offsetY - (+current.dataset.y + 15)) < Math.hypot(e.offsetX - (+prev.dataset.x + 180), e.offsetY - (+prev.dataset.y + 15))) ? current : prev;
+        // TODO: da commentare
+        let nearestTable = [...Draw.svg.querySelectorAll('g.table')].reduce((prev, current) => {
+          return (Math.hypot(e.offsetX - (+current.dataset.lineFromX), e.offsetY - (+current.dataset.lineFromY)) < Math.hypot(e.offsetX - (+prev.dataset.lineFromX), e.offsetY - (+prev.dataset.lineFromY))) ? current : prev;
         });
-        console.log(xx.id);
-
-        Draw.svg.querySelectorAll('g.table').forEach(table => {
-          if ((+table.dataset.x + 40) < e.offsetX && (+table.dataset.y - 25) < e.offsetY) {
-            // console.log(table.id);
-            const rectBounding = table.getBoundingClientRect();
-            Draw.tableJoin = {
-              table,
-              x: +table.dataset.x + rectBounding.width + 10,
-              y: +table.dataset.y + (rectBounding.height / 2),
-              joins: +table.dataset.joins,
-              levelId: +table.dataset.levelId
-            };
-            app.from = { x: Draw.tableJoin.x, y: Draw.tableJoin.y };
-            app.lastFrom = app.from;
-          } else {
-            // app.from = app.lastFrom;
-            // se è presente una sola tabella, la join verrà fatta con quella, cioè la prima tabella aggiunta al canvas
-            if (Draw.svg.querySelectorAll('g.table').length === 1) {
-              const firstTable = Draw.svg.querySelector("g.table[data-id='data-0']");
-              Draw.tableJoin = { table: firstTable, x: +firstTable.dataset.x, y: +firstTable.dataset.y, levelId: 0 };
-            }
-          }
-        });
+        console.log(nearestTable.id);
+        const rectBounding = nearestTable.getBoundingClientRect();
+        Draw.tableJoin = {
+          table: nearestTable,
+          x: +nearestTable.dataset.x + rectBounding.width + 10,
+          y: +nearestTable.dataset.y + (rectBounding.height / 2),
+          joins: +nearestTable.dataset.joins,
+          levelId: +nearestTable.dataset.levelId
+        }
         // console.log('joinTable :', Draw.tableJoin);
         // console.log('tableJoin :', Draw.tableJoin.table.id);
         if (Draw.currentLineRef && Draw.tableJoin) {
@@ -120,9 +100,6 @@ var Draw = new DrawSVG('svg');
             }
           };
           Draw.currentLine = Draw.joinLines.get(Draw.currentLineRef.id);
-        } else {
-          // linea senza la tabella a cui collegarla ma in base a lastFrom la posizione di start della linea inizia dall'ultima tableJoin trovata
-          // d = `M${app.from.x},${app.from.y} C${app.from.x + 80},${app.from.y} ${e.offsetX - 80},${e.offsetY - app.dragElementPosition.y + 17.5} ${e.offsetX - app.dragElementPosition.x - 10},${e.offsetY - app.dragElementPosition.y + 17.5}`;
         }
         Draw.drawLine();
       }

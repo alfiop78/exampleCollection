@@ -50,6 +50,9 @@ class DrawSVG {
     g.dataset.tableJoin = this.currentTable.join;
     g.setAttribute('x', this.currentTable.x);
     g.setAttribute('y', this.currentTable.y);
+    // posizione start ('from') della linea di join
+    g.dataset.lineFromX = this.currentTable.line.from.x;
+    g.dataset.lineFromY = this.currentTable.line.from.y;
     g.dataset.x = this.currentTable.x;
     g.dataset.y = this.currentTable.y;
     g.dataset.levelId = this.currentTable.levelId;
