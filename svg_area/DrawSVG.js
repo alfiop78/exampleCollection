@@ -48,6 +48,11 @@ class DrawSVG {
     rect.setAttribute('x', this.currentTable.x);
     rect.setAttribute('y', this.currentTable.y);
     g.appendChild(rect);
+    const aRect = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    aRect.setAttribute('attributeName', 'y');
+    aRect.setAttribute('dur', '.15s');
+    aRect.setAttribute('fill', 'freeze');
+    rect.appendChild(aRect);
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     text.innerHTML = this.currentTable.table;
     text.setAttribute('x', this.currentTable.x + 24);
@@ -56,8 +61,11 @@ class DrawSVG {
     // text.setAttribute('text-anchor', 'start');
     text.setAttribute('dominant-baseline', 'middle');
     g.appendChild(text);
-    // this.svg.querySelector("#stackerCurrentSectBorder").setAttribute("y", "0%")
-    // this.svg.querySelector("#stackerCurrentSectCurrShift").setAttribute("y", "10%")
+    const a = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    a.setAttribute('attributeName', 'y');
+    a.setAttribute('dur', '.15s');
+    a.setAttribute('fill', 'freeze');
+    text.appendChild(a);
   }
 
   drawLine() {
@@ -91,6 +99,11 @@ class DrawSVG {
     const d = `M${this.line.x1},${this.line.y1} C${this.line.p1x},${this.line.p1y} ${this.line.p2x},${this.line.p2y} ${this.line.x2},${this.line.y2}`;
     this.currentLineRef = this.currentLine.key;
     this.currentLineRef.setAttribute('d', d);
+    if (this.currentLineRef.hasChildNodes()) {
+      const animLine = this.currentLineRef.querySelector('animate');
+      animLine.setAttribute('to', d);
+      animLine.beginElement();
+    }
   }
 
   joinTablePositioning() {
@@ -120,7 +133,18 @@ class DrawSVG {
   autoPosition() {
     const tableRef = this.svg.querySelector(`#${this.currentTable.key}`);
     const rect = tableRef.querySelector('rect');
+    const animRect = rect.querySelector('animate');
     const text = tableRef.querySelector('text');
+    const animText = text.querySelector('animate');
+    // stabilisco la posizione di partenza, nel from
+    animRect.setAttribute('from', +tableRef.dataset.y);
+    animText.setAttribute('from', +tableRef.dataset.y + 16);
+
+    animText.setAttribute('to', this.currentTable.y + 16);
+    animText.beginElement();
+    animRect.setAttribute('to', this.currentTable.y);
+    animRect.beginElement();
+
     tableRef.dataset.y = this.currentTable.y;
     rect.setAttribute('y', this.currentTable.y);
     text.setAttribute('y', this.currentTable.y + 16);
@@ -129,6 +153,14 @@ class DrawSVG {
   autoPositionLine() {
     for (const [key, properties] of this.joinLines) {
       this.currentLine = properties;
+      this.currentLineRef = key;
+      // console.log(this.currentLineRef);
+      const animLine = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+      animLine.setAttribute('attributeName', 'd');
+      animLine.setAttribute('fill', 'freeze');
+      animLine.setAttribute('dur', '.15s');
+      animLine.setAttribute('from', this.currentLineRef.getAttribute('d'));
+      this.currentLineRef.replaceChildren(animLine);
       this.drawLine();
     }
   }

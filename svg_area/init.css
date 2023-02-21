@@ -159,13 +159,13 @@ g.table > rect{
   width: 170px;
   height: 30px;
   rx: 2;
-  transition: y 300ms;
+  /* transition: y 300ms; */
 }
 
 g.table text{
   fill: #494949;
   font: 0.9rem Barlow;
-  transition: transform 300ms;
+  /* transition: transform 300ms; */
 }
 
 g.table:hover rect{
@@ -183,7 +183,4 @@ g.table:hover text{
   background-color: #494949;
   color: white;
   bottom: 0px;
-}
-#stackerCurrentSect * {
-  transition: .5s ease;
 }
