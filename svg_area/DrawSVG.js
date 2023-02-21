@@ -57,6 +57,7 @@ class DrawSVG {
     g.dataset.schema = this.currentTable.schema;
     g.dataset.joins = this.currentTable.joins;
     g.dataset.tableJoin = this.currentTable.join;
+    g.dataset.fn = 'tableSelected';
     g.dataset.x = this.currentTable.x;
     g.dataset.y = this.currentTable.y;
     g.dataset.levelId = this.currentTable.levelId;
@@ -176,6 +177,9 @@ class DrawSVG {
     for (const [key, properties] of this.joinLines) {
       this.currentLine = properties;
       this.currentLineRef = key;
+      this.currentLineRef.dataset.fn = 'lineSelected';
+      this.currentLineRef.dataset.from = properties.from;
+      this.currentLineRef.dataset.to = properties.to;
       // per ogni linea creo un'elemento <animation>
       const animLine = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
       animLine.setAttribute('attributeName', 'd');

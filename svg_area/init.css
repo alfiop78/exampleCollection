@@ -135,9 +135,9 @@ ul > li:hover{
 path{
   fill: transparent;
   stroke: darkgray;
-  stroke-width: 3.5;
+  /* stroke-width: 3.5; */
+  stroke-width: 4;
   stroke-linecap: round;
-  /* transform: translateY(50px); */
 }
 
 path:hover{
@@ -183,4 +183,29 @@ g.table:hover text{
   background-color: #494949;
   color: white;
   bottom: 0px;
+}
+
+
+#window-join[data-open="false"]{
+  position: absolute;
+  visibility: hidden;
+}
+
+#window-join[data-open="true"]{
+  visibility: visible;
+  background-color: gainsboro;
+  z-index: 300;
+  padding: 1em;
+  box-shadow: 0px 2px 5px 0px grey;
+  position: absolute;
+  top: 200px;
+  left: 350px;
+  width: 500px;
+  height: 400px;
+}
+
+#window-join[data-open="true"] > button{
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }

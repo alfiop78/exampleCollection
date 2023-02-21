@@ -13,7 +13,8 @@ var Draw = new DrawSVG('svg');
     body: document.getElementById('body'),
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
-    coordsRef: document.getElementById('coords')
+    coordsRef: document.getElementById('coords'),
+    windowJoin: document.getElementById('window-join')
   }
 
   // Callback function to execute when mutations are observed
@@ -45,9 +46,8 @@ var Draw = new DrawSVG('svg');
   const observerList = new MutationObserver(callback);
   // Start observing the target node for configured mutations
   // observerList.observe(targetNode, config);
-  // observerList.observe(document.getElementById('body'), config);
-  document.querySelectorAll('dialog').forEach(dialog => observerList.observe(dialog, config));
-  observerList.observe(app.body, config);
+  observerList.observe(document.getElementById('body'), config);
+  // observerList.observe(Draw.svg, config);
 
   /* drag events */
 
@@ -216,31 +216,6 @@ var Draw = new DrawSVG('svg');
           });
         });
       }
-      /* if (tableInLevel !== 0) {
-        // sono presenti altre tabelle per questo livello
-        // recupero la posizione dell'ultima tabella relativa a questa join, aggiungo la tabella corrente a +60y dopo l'ultima tabella trovata
-        // lastTableInLevel è ricavata da tableRelated (tabelle con tableJoin uguale a quella che sto droppando)
-        coords.y = +lastTableInLevel.dataset.y + 60;
-        // recupero altre tabelle presenti in questo livello > coords.y per spostarle 60 y più in basso
-        Draw.arrayLevels.forEach(levelId => {
-          // incremento il levelId perchè, in questo caso (a differenza di joinTablePositioning()) devo iniziare dall'ultimo levelId
-          levelId++;
-          // per ogni livello, partendo dall'ultimo
-          console.log(levelId);
-          // se sono presenti, in questo livello, tabelle con y > di quella che sto droppando le devo spostare y+60
-          Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}']`).forEach(table => {
-            // console.log(`Livello ${levelId}`);
-            // console.log(`tabelle ${table.id}`);
-            if (+table.dataset.y >= coords.y) {
-              Draw.tables.get(table.id).y += 60;
-              Draw.tables.get(table.id).line.from.y += 60;
-              Draw.tables.get(table.id).line.to.y += 60;
-              Draw.currentTable = Draw.tables.get(table.id);
-              Draw.autoPosition();
-            }
-          });
-        });
-      } */
       Draw.tables = {
         id: `svg-data-${tableId}`, properties: {
           id: tableId,
@@ -267,6 +242,8 @@ var Draw = new DrawSVG('svg');
           to: `svg-data-${tableId}`
         }
       };
+      console.info('create JOIN');
+      app.openJoinWindow();
     }
     Draw.currentTable = Draw.tables.get(`svg-data-${tableId}`);
     // creo nel DOM la tabella appena droppata
@@ -299,13 +276,32 @@ var Draw = new DrawSVG('svg');
   /* end page init */
 
   /*onclick events*/
+  app.tableSelected = (e) => {
+    console.log(`table selected ${e.currentTarget.dataset.table}`);
+  }
+
+  app.lineSelected = (e) => {
+    console.log(`line selected ${e.currentTarget.dataset.from} -> ${e.currentTarget.dataset.to}`);
+  }
+
+  app.openJoinWindow = () => {
+    app.windowJoin.dataset.open = 'true';
+    console.log(Draw.currentLineRef);
+    console.log(Draw.currentLineRef.id);
+    console.log(Draw.joinLines.get(Draw.currentLineRef.id));
+    const from = Draw.joinLines.get(Draw.currentLineRef.id).from;
+    const to = Draw.joinLines.get(Draw.currentLineRef.id).to;
+    debugger;
+    app.windowJoin.querySelector('span[data-table-from]').innerHTML = from;
+    app.windowJoin.querySelector('span[data-table-to]').innerHTML = to;
+  }
 
   /* end onclick events*/
 
   /* mouse events */
   document.querySelectorAll('.translate').forEach(el => {
     el.onmousedown = (e) => {
-      console.log(app.coords);
+      // console.log(app.coords);
       app.coords = { x: +e.currentTarget.dataset.translateX, y: +e.currentTarget.dataset.translateY };
       app.el = e.currentTarget;
     }
@@ -327,6 +323,23 @@ var Draw = new DrawSVG('svg');
       delete app.el;
     }
   });
+
+  app.windowJoin.onmousedown = (e) => {
+    app.coords = { x: +e.currentTarget.dataset.x, y: +e.currentTarget.dataset.y };
+    app.el = e.currentTarget;
+  }
+
+  app.windowJoin.onmousemove = (e) => {
+    if (app.el) {
+      app.coords.x += e.movementX;
+      app.coords.y += e.movementY;
+      e.currentTarget.style.transform = "translate(" + app.coords.x + "px, " + app.coords.y + "px)";
+      e.currentTarget.dataset.x = app.coords.x;
+      e.currentTarget.dataset.y = app.coords.y;
+    }
+  }
+
+  app.windowJoin.onmouseup = () => delete app.el;
 
   /* end mouse events */
 
