@@ -5,10 +5,9 @@ class DrawSVG {
 
   constructor(element) {
     this.svg = document.getElementById(element);
-    // consente di spostarmi, durante il drag&drop anche oltre (-x, -y) le tables già presenti nel Canvas
-    this.lastFromLineCoords = {};
+    this.svg.dataset.height = this.svg.parentElement.offsetHeight;
+    this.svg.dataset.width = this.svg.parentElement.offsetWidth;
     this.currentLevel;
-    // this.currentLineRef; // ref
     this.currentTable = {}, this.currentLine = {};
     this.arrayLevels = [];
   }
@@ -30,6 +29,24 @@ class DrawSVG {
   }
 
   get joinLines() { return this.#joinLines; }
+
+  checkResizeSVG() {
+    let maxHeightTable = [...this.svg.querySelectorAll('g.table')].reduce((prev, current) => {
+      return (+current.dataset.y > +prev.dataset.y) ? current : prev;
+    });
+    if (1 - (+maxHeightTable.dataset.y / +this.svg.dataset.height) < 0.30) {
+      this.svg.dataset.height = +this.svg.dataset.height + 60;
+      this.svg.style.height = `${+this.svg.dataset.height}px`;
+    }
+
+    let maxWidthTable = [...this.svg.querySelectorAll('g.table')].reduce((prev, current) => {
+      return (+current.dataset.x > +prev.dataset.x) ? current : prev;
+    });
+    if (1 - (+maxWidthTable.dataset.x / +this.svg.dataset.width) < 0.40) {
+      this.svg.dataset.width = +this.svg.dataset.width + 180;
+      this.svg.style.width = `${+this.svg.dataset.width}px`;
+    }
+  }
 
   drawTable() {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -66,6 +83,7 @@ class DrawSVG {
     a.setAttribute('dur', '.15s');
     a.setAttribute('fill', 'freeze');
     text.appendChild(a);
+    this.checkResizeSVG();
   }
 
   drawLine() {
@@ -136,6 +154,7 @@ class DrawSVG {
     const animRect = rect.querySelector('animate');
     const text = tableRef.querySelector('text');
     const animText = text.querySelector('animate');
+    // sposto le tabelle con <animation>
     // stabilisco la posizione di partenza, nel from
     animRect.setAttribute('from', +tableRef.dataset.y);
     animText.setAttribute('from', +tableRef.dataset.y + 16);
@@ -145,16 +164,19 @@ class DrawSVG {
     animRect.setAttribute('to', this.currentTable.y);
     animRect.beginElement();
 
+    // aggiorno i valori presenti nel DOM
     tableRef.dataset.y = this.currentTable.y;
     rect.setAttribute('y', this.currentTable.y);
     text.setAttribute('y', this.currentTable.y + 16);
+    // verifico la posizione del max x/y all'interno dell'svg per fare un resize di width/height dell'svg
+    this.checkResizeSVG();
   }
 
   autoPositionLine() {
     for (const [key, properties] of this.joinLines) {
       this.currentLine = properties;
       this.currentLineRef = key;
-      // console.log(this.currentLineRef);
+      // per ogni linea creo un'elemento <animation>
       const animLine = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
       animLine.setAttribute('attributeName', 'd');
       animLine.setAttribute('fill', 'freeze');
