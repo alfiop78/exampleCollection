@@ -58,6 +58,8 @@ class DrawSVG {
     g.dataset.joins = this.currentTable.joins;
     g.dataset.tableJoin = this.currentTable.join;
     g.dataset.fn = 'tableSelected';
+    g.dataset.enterFn = 'tableEnter';
+    g.dataset.leaveFn = 'tableLeave';
     g.dataset.x = this.currentTable.x;
     g.dataset.y = this.currentTable.y;
     g.dataset.levelId = this.currentTable.levelId;
@@ -122,6 +124,13 @@ class DrawSVG {
       const animLine = this.currentLineRef.querySelector('animate');
       animLine.setAttribute('to', d);
       animLine.beginElement();
+    }
+  }
+
+  deleteJoinLine(key) {
+    if (key) {
+      this.joinLines.delete(key);
+      this.svg.querySelector(`#${key}`).remove();
     }
   }
 

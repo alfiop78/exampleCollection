@@ -204,8 +204,33 @@ g.table:hover text{
   height: 400px;
 }
 
-#window-join[data-open="true"] > button{
+.wj-content{
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.wj-title > p{
+  margin: 0px;
+  padding: 1em;
+}
+
+.wj-title > p.title{
+  background-color: tan;
+}
+
+.wj-title > p.title:hover{
+  background-color: sienna;
+  color: white;
+  cursor: move;
+}
+
+.wj-title > button{
   position: absolute;
   right: 0px;
   top: 0px;
+}
+
+
+.responsive-content{
+  display: flex;
 }

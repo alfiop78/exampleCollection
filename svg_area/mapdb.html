@@ -11,13 +11,6 @@
 </head>
 
 <body class="antialiased">
-  <div id="window-join" data-x="0" data-y="0" data-open="false">
-    <button type="button" class="material-icons-round md-18">close</button>
-    <p>Join <span data-table-from=""></span> and <span data-table-to></span></p>
-    <section data-table-from></section>
-    <section data-table-to></section>
-  </div>
-
   <template id="tmpl-li">
     <li data-element-search data-label data-searchable="true"></li>
     <li data-element-search data-label data-searchable="true" draggable="true"></li>
@@ -28,11 +21,35 @@
     <div id="container">
       <div id="content">
         <div id="body">
+          <div id="window-join" data-x="0" data-y="0" data-open="false">
+            <section class="wj-content">
+              <section class="wj-title">
+                <p class="title">Creazione relazione tra <span data-table-from="" data-schema></span>&nbsp;e&nbsp;<span
+                    data-table-to data-schema></span></p>
+                <button type="button" data-fn="closeWindowJoin" class="material-icons-round md-18">close</button>
+              </section>
+              <div class="responsive-content">
+                <section data-table-from></section>
+                <section data-table-to></section>
+              </div>
+            </section>
+          </div>
 
           <section class="wrapper">
             <section id="canvas-area">
               <div id="translate" class="translate" data-translate-x="0" data-translate-y="0">
-                <svg id="svg" class="dropzone" data-level="0"></svg>
+                <svg id="svg" class="dropzone" data-level="0">
+                  <defs>
+                    <image id="backspace" href="backspace.svg" width="18" height="18"></image>
+                    <g id="tbl">
+                      <rect x="0" y="0" width="180" height="40" fill="brown" />
+                      <text x="15" y="25">prova</text>
+                    </g>
+                  </defs>
+                  <use x="30" y="30" href="#tbl">
+                    <animate attributeName="y" fill="freeze" from="0" to="90" dur="1s" begin="0s" />
+                  </use>
+                </svg>
                 <span id="coords"></span>
               </div>
             </section>
@@ -41,52 +58,42 @@
                 <section class="list-search">
                   <div class="relative-ul">
                     <ul id="ul-tables" class="custom-scrollbar">
-                      <li id="data-1" data-translate-x="0" data-translate-y="0" data-label="Azienda"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-1" data-label="Azienda" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>Azienda</span>
                       </li>
-                      <li id="data-2" data-translate-x="0" data-translate-y="0" data-label="CodSedeDealer"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-2" data-label="CodSedeDealer" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>CodSedeDealer</span>
                       </li>
-                      <li id="data-3" data-translate-x="0" data-translate-y="0" data-label="DocVenditaIntestazione"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-3" data-label="DocVenditaIntestazione" data-schema="automotive_bi_data"
+                        draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>DocVenditaIntestazione</span>
                       </li>
-                      <li id="data-4" data-translate-x="0" data-translate-y="0" data-label="DocVenditaDettaglio"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-4" data-label="DocVenditaDettaglio" data-schema="automotive_bi_data"
+                        draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>DocVenditaDettaglio</span>
                       </li>
-                      <li id="data-5" data-translate-x="0" data-translate-y="0" data-label="CodMarcaRicambi"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-5" data-label="CodMarcaRicambi" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>CodMarcaRicambi</span>
                       </li>
-                      <li id="data-6" data-translate-x="0" data-translate-y="0" data-label="TipoMovimento"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-6" data-label="TipoMovimento" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>TipoMovimento</span>
                       </li>
-                      <li id="data-7" data-translate-x="0" data-translate-y="0" data-label="Acquisti"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-7" data-label="Acquisti" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>Acquisti</span>
                       </li>
-                      <li id="data-8" data-translate-x="0" data-translate-y="0" data-label="Vendite"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-8" data-label="Vendite" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>Vendite</span>
                       </li>
-                      <li id="data-9" data-translate-x="0" data-translate-y="0" data-label="Stock"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-9" data-label="Stock" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>Stock</span>
                       </li>
-                      <li id="data-10" data-translate-x="0" data-translate-y="0" data-label="Nuovo"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-10" data-label="Nuovo" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>Nuovo</span>
                       </li>
-                      <li id="data-11" data-translate-x="0" data-translate-y="0" data-label="Usato"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-11" data-label="Usato" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>Usato</span>
                       </li>
-                      <li id="data-12" data-translate-x="0" data-translate-y="0" data-label="Alimentazione"
-                        data-schema="automotive_bi_data" draggable="true">
+                      <li id="data-12" data-label="Alimentazione" data-schema="automotive_bi_data" draggable="true">
                         <i class="material-icons-round md-18">drag_handle</i><span>Alimentazione</span>
                       </li>
                     </ul>

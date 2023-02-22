@@ -1,11 +1,6 @@
 var Draw = new DrawSVG('svg');
 (() => {
   var app = {
-    // templates
-    tmplList: document.getElementById('tmpl-li'),
-    tmplCard: document.getElementById('tmpl-card'),
-    // dialogs
-    dialogTables: document.getElementById('dlg-tables'),
     // buttons
     btnCreateDimension: document.getElementById('btn-create-dimension'),
     btnSelectSchema: document.getElementById('btn-select-schema'),
@@ -14,7 +9,8 @@ var Draw = new DrawSVG('svg');
     canvasArea: document.getElementById('canvas-area'),
     translate: document.getElementById('translate'),
     coordsRef: document.getElementById('coords'),
-    windowJoin: document.getElementById('window-join')
+    windowJoin: document.getElementById('window-join'),
+    wjTitle: document.querySelector('#window-join .wj-title')
   }
 
   // Callback function to execute when mutations are observed
@@ -33,12 +29,18 @@ var Draw = new DrawSVG('svg');
             if (node.hasAttribute('data-fn')) node.addEventListener('click', app[node.dataset.fn]);
             if (node.hasChildNodes()) {
               node.querySelectorAll('*[data-fn]').forEach(element => element.addEventListener('click', app[element.dataset.fn]));
+              node.querySelectorAll('*[data-enter-fn]').forEach(element => element.addEventListener('mouseenter', app[element.dataset.enterFn]));
+              node.querySelectorAll('*[data-leave-fn]').forEach(element => element.addEventListener('mouseleave', app[element.dataset.leaveFn]));
             }
           }
         });
       } else if (mutation.type === 'attributes') {
         // console.log(`The ${mutation.attributeName} attribute was modified.`);
-        if (mutation.target.hasChildNodes()) mutation.target.querySelectorAll('*[data-fn]').forEach(element => element.addEventListener('click', app[element.dataset.fn]));
+        if (mutation.target.hasChildNodes()) {
+          mutation.target.querySelectorAll('*[data-fn]').forEach(element => element.addEventListener('click', app[element.dataset.fn]));
+          mutation.target.querySelectorAll('*[data-enter-fn]').forEach(element => element.addEventListener('mouseenter', app[element.dataset.enterFn]));
+          mutation.target.querySelectorAll('*[data-leave-fn]').forEach(element => element.addEventListener('mouseleave', app[element.dataset.leaveFn]));
+        }
       }
     }
   };
@@ -270,30 +272,35 @@ var Draw = new DrawSVG('svg');
   Draw.svg.addEventListener('dragend', app.handlerDragEnd, false);
   /* end drag events */
 
-  /* page init  (impostazioni inziali per la pagina, alcune sono necessarie per essere catturate dal mutationObserve)*/
-  // TODO: da implementare
-  // app.dialogConnection.showModal();
-  /* end page init */
-
   /*onclick events*/
   app.tableSelected = (e) => {
     console.log(`table selected ${e.currentTarget.dataset.table}`);
   }
 
   app.lineSelected = (e) => {
-    console.log(`line selected ${e.currentTarget.dataset.from} -> ${e.currentTarget.dataset.to}`);
+    // console.log(`line selected ${e.currentTarget.dataset.from} -> ${e.currentTarget.dataset.to}`);
+    Draw.currentLineRef = e.target.id;
+    app.openJoinWindow();
   }
 
   app.openJoinWindow = () => {
     app.windowJoin.dataset.open = 'true';
-    console.log(Draw.currentLineRef);
-    console.log(Draw.currentLineRef.id);
-    console.log(Draw.joinLines.get(Draw.currentLineRef.id));
-    const from = Draw.joinLines.get(Draw.currentLineRef.id).from;
-    const to = Draw.joinLines.get(Draw.currentLineRef.id).to;
-    debugger;
-    app.windowJoin.querySelector('span[data-table-from]').innerHTML = from;
-    app.windowJoin.querySelector('span[data-table-to]').innerHTML = to;
+    // console.log(Draw.currentLineRef);
+    // console.log(Draw.currentLineRef.id);
+    // console.log(Draw.joinLines.get(Draw.currentLineRef.id));
+    const from = Draw.tables.get(Draw.joinLines.get(Draw.currentLineRef.id).from);
+    const to = Draw.tables.get(Draw.joinLines.get(Draw.currentLineRef.id).to);
+
+    app.windowJoin.querySelector('span[data-table-from]').innerHTML = from.table;
+    app.windowJoin.querySelector('span[data-table-from]').dataset.schema = from.schema;
+    app.windowJoin.querySelector('span[data-table-to]').innerHTML = to.table;
+    app.windowJoin.querySelector('span[data-table-to]').dataset.schema = to.schema;
+    // TODO: recupero le colonne delle due tabelle da mettere in relazione
+  }
+
+  app.closeWindowJoin = () => {
+    // chiusura windowJoin
+    app.windowJoin.dataset.open = 'false';
   }
 
   /* end onclick events*/
@@ -326,7 +333,7 @@ var Draw = new DrawSVG('svg');
 
   app.windowJoin.onmousedown = (e) => {
     app.coords = { x: +e.currentTarget.dataset.x, y: +e.currentTarget.dataset.y };
-    app.el = e.currentTarget;
+    if (e.target.classList.contains('title')) app.el = e.target;
   }
 
   app.windowJoin.onmousemove = (e) => {
@@ -341,6 +348,45 @@ var Draw = new DrawSVG('svg');
 
   app.windowJoin.onmouseup = () => delete app.el;
 
+  // visualizzo l'icona delete utilizzando <use> in svg
+  app.tableEnter = (e) => {
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('x', +e.target.dataset.x + 170 - 18);
+    use.setAttribute('y', +e.target.dataset.y);
+    use.dataset.table = e.target.dataset.table;
+    use.dataset.schema = e.target.dataset.schema;
+    use.dataset.id = e.target.id;
+    use.setAttribute('href', '#backspace');
+    use.dataset.fn = 'removeTable';
+    e.currentTarget.appendChild(use);
+  }
+
+  // rimozione tabella dal draw SVG
+  app.removeTable = (e) => {
+    // tabella in join con e.currentTarget
+    const tableJoin = Draw.tables.get(e.currentTarget.dataset.id).join;
+    const tableJoinRef = Draw.svg.querySelector(`#${tableJoin}`);
+    // se è presente una tabella legata a currentTarget, in join, sto eliminando una tabella nella prop 'to' della joinLines
+    const joinLineKey = () => {
+      for (const [key, value] of Draw.joinLines) {
+        if ((value.to === e.currentTarget.dataset.id && value.from === tableJoin) || (value.from === e.currentTarget.dataset.id && value.to === tableJoin)) {
+          // console.log(`linea da eliminare ${key}`);
+          return key;
+        }
+      }
+    }
+    Draw.deleteJoinLine(joinLineKey());
+    if (tableJoin) {
+      // decremento dataset.joins della tabella legata a questa
+      tableJoinRef.dataset.joins--;
+    }
+    // lo rimuovo dal DOM
+    Draw.svg.querySelector(`#${e.currentTarget.dataset.id}`).remove();
+    Draw.tables.delete(e.currentTarget.dataset.id); // svg-data-x
+    console.log(Draw.tables);
+  }
+
+  app.tableLeave = (e) => e.currentTarget.querySelector('use').remove();
   /* end mouse events */
 
 })();
