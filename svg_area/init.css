@@ -148,34 +148,30 @@ path:hover{
   stroke-linecap: round;
 }
 
-g.table:hover {
+/* use.table:hover {
   cursor: pointer;
-}
+} */
 
-g.table > rect{
-  fill: gainsboro;
-  stroke: #494949;
-  stroke-width: 0.2;
+#table-struct > rect {
+  /* fill: lightblue; */
+  rx : 2.5;
   width: 170px;
   height: 30px;
-  rx: 2;
-  /* transition: y 300ms; */
+  stroke: #494949;
+  stroke-width: 0.2;
 }
 
-g.table text{
+#table-struct > text {
   fill: #494949;
-  font: 0.9rem Barlow;
-  /* transition: transform 300ms; */
 }
 
-g.table:hover rect{
-  fill: darkred;
-  stroke: #e2e2e2;
-  stroke-width: 0.4;
+use{
+  fill: red;
 }
 
-g.table:hover text{
-  fill: white;
+use:hover{
+  cursor: pointer;
+  fill: green;
 }
 
 #coords{
@@ -184,7 +180,6 @@ g.table:hover text{
   color: white;
   bottom: 0px;
 }
-
 
 #window-join[data-open="false"]{
   position: absolute;
@@ -229,7 +224,6 @@ g.table:hover text{
   right: 0px;
   top: 0px;
 }
-
 
 .responsive-content{
   display: flex;

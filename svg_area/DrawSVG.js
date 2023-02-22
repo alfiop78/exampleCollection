@@ -49,6 +49,28 @@ class DrawSVG {
   }
 
   drawTable() {
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', '#table-struct');
+    this.svg.querySelector('#table-struct > text').innerHTML = this.currentTable.table;
+    use.id = this.currentTable.key;
+    use.classList.add('table');
+    use.dataset.id = `data-${this.currentTable.id}`;
+    use.dataset.table = this.currentTable.table;
+    use.dataset.schema = this.currentTable.schema;
+    use.dataset.joins = this.currentTable.joins;
+    use.dataset.tableJoin = this.currentTable.join;
+    /* use.dataset.fn = 'tableSelected';
+    use.dataset.enterFn = 'tableEnter';
+    use.dataset.leaveFn = 'tableLeave'; */
+    use.dataset.x = this.currentTable.x;
+    use.dataset.y = this.currentTable.y;
+    use.dataset.levelId = this.currentTable.levelId;
+    use.setAttribute('x', this.currentTable.x);
+    use.setAttribute('y', this.currentTable.y);
+    Draw.svg.appendChild(use);
+  }
+
+  /* drawTable() {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.id = this.currentTable.key;
     g.dataset.id = `data-${this.currentTable.id}`;
@@ -87,7 +109,7 @@ class DrawSVG {
     a.setAttribute('fill', 'freeze');
     text.appendChild(a);
     this.checkResizeSVG();
-  }
+  } */
 
   drawLine() {
     // console.log(this.currentLine.from, this.currentLine.to);
