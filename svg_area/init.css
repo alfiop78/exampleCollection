@@ -147,14 +147,6 @@ path:hover{
   stroke-linecap: round;
 }
 
-/* .struct > image{
-  display: none;
-}
-
-use:hover > image{
-  display: block;
-} */
-
 .struct > rect {
   /* fill: lightblue; */
   rx : 2.5;
@@ -168,11 +160,6 @@ use:hover > image{
   fill: #494949;
   font-weight: normal;
 }
-
-/* .struct > text:hover{
-  fill: white;
-  font-weight: normal;
-} */
 
 use.table{
   fill: #dcdcdca1;

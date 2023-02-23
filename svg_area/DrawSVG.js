@@ -83,47 +83,6 @@ class DrawSVG {
     use.appendChild(animate);
   }
 
-  /* drawTable() {
-    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    g.id = this.currentTable.key;
-    g.dataset.id = `data-${this.currentTable.id}`;
-    g.classList.add('table');
-    g.dataset.table = this.currentTable.table;
-    g.dataset.schema = this.currentTable.schema;
-    g.dataset.joins = this.currentTable.joins;
-    g.dataset.tableJoin = this.currentTable.join;
-    g.dataset.fn = 'tableSelected';
-    g.dataset.enterFn = 'tableEnter';
-    g.dataset.leaveFn = 'tableLeave';
-    g.dataset.x = this.currentTable.x;
-    g.dataset.y = this.currentTable.y;
-    g.dataset.levelId = this.currentTable.levelId;
-    Draw.svg.appendChild(g);
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('x', this.currentTable.x);
-    rect.setAttribute('y', this.currentTable.y);
-    g.appendChild(rect);
-    const aRect = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-    aRect.setAttribute('attributeName', 'y');
-    aRect.setAttribute('dur', '.15s');
-    aRect.setAttribute('fill', 'freeze');
-    rect.appendChild(aRect);
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.innerHTML = this.currentTable.table;
-    text.setAttribute('x', this.currentTable.x + 24);
-    text.setAttribute('y', this.currentTable.y + 16);
-    // text.setAttribute('fill', '#494949');
-    // text.setAttribute('text-anchor', 'start');
-    text.setAttribute('dominant-baseline', 'middle');
-    g.appendChild(text);
-    const a = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-    a.setAttribute('attributeName', 'y');
-    a.setAttribute('dur', '.15s');
-    a.setAttribute('fill', 'freeze');
-    text.appendChild(a);
-    this.checkResizeSVG();
-  } */
-
   drawLine() {
     // console.log(this.currentLine.from, this.currentLine.to);
     if (Object.keys(this.currentLine).length === 0) return;
