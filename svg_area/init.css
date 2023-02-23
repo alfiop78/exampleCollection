@@ -135,7 +135,6 @@ ul > li:hover{
 path{
   fill: transparent;
   stroke: darkgray;
-  /* stroke-width: 3.5; */
   stroke-width: 4;
   stroke-linecap: round;
 }
@@ -148,11 +147,15 @@ path:hover{
   stroke-linecap: round;
 }
 
-/* use.table:hover {
-  cursor: pointer;
+/* .struct > image{
+  display: none;
+}
+
+use:hover > image{
+  display: block;
 } */
 
-#table-struct > rect {
+.struct > rect {
   /* fill: lightblue; */
   rx : 2.5;
   width: 170px;
@@ -161,17 +164,26 @@ path:hover{
   stroke-width: 0.2;
 }
 
-#table-struct > text {
+.struct > text {
   fill: #494949;
+  font-weight: normal;
 }
 
-use{
-  fill: red;
+/* .struct > text:hover{
+  fill: white;
+  font-weight: normal;
+} */
+
+use.table{
+  fill: #dcdcdca1;
+  font-weight: normal;
 }
 
-use:hover{
+use.table:hover{
   cursor: pointer;
-  fill: green;
+  fill: #d9d7d7;
+  stroke: #494949;
+  stroke-width: 0.3;
 }
 
 #coords{

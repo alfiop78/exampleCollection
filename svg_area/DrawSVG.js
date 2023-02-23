@@ -31,7 +31,7 @@ class DrawSVG {
   get joinLines() { return this.#joinLines; }
 
   checkResizeSVG() {
-    let maxHeightTable = [...this.svg.querySelectorAll('g.table')].reduce((prev, current) => {
+    let maxHeightTable = [...this.svg.querySelectorAll('use.table')].reduce((prev, current) => {
       return (+current.dataset.y > +prev.dataset.y) ? current : prev;
     });
     if (1 - (+maxHeightTable.dataset.y / +this.svg.dataset.height) < 0.30) {
@@ -39,7 +39,7 @@ class DrawSVG {
       this.svg.style.height = `${+this.svg.dataset.height}px`;
     }
 
-    let maxWidthTable = [...this.svg.querySelectorAll('g.table')].reduce((prev, current) => {
+    let maxWidthTable = [...this.svg.querySelectorAll('use.table')].reduce((prev, current) => {
       return (+current.dataset.x > +prev.dataset.x) ? current : prev;
     });
     if (1 - (+maxWidthTable.dataset.x / +this.svg.dataset.width) < 0.40) {
@@ -49,9 +49,16 @@ class DrawSVG {
   }
 
   drawTable() {
+    const clonedStruct = this.svg.querySelector('#table-struct').cloneNode(true);
+    // assegno l'id e il testo (nome tabella) all'elemento clonato
+    clonedStruct.id = `struct-${this.currentTable.key}`;
+    clonedStruct.classList.add('struct');
+    clonedStruct.querySelector('text').innerHTML = this.currentTable.table;
+    clonedStruct.querySelector('image').dataset.id = this.currentTable.key;
+    // lo aggiungo al defs
+    this.svg.querySelector('defs').appendChild(clonedStruct);
     const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    use.setAttribute('href', '#table-struct');
-    this.svg.querySelector('#table-struct > text').innerHTML = this.currentTable.table;
+    use.setAttribute('href', `#${clonedStruct.id}`);
     use.id = this.currentTable.key;
     use.classList.add('table');
     use.dataset.id = `data-${this.currentTable.id}`;
@@ -59,15 +66,21 @@ class DrawSVG {
     use.dataset.schema = this.currentTable.schema;
     use.dataset.joins = this.currentTable.joins;
     use.dataset.tableJoin = this.currentTable.join;
-    /* use.dataset.fn = 'tableSelected';
+    use.dataset.fn = 'tableSelected';
     use.dataset.enterFn = 'tableEnter';
-    use.dataset.leaveFn = 'tableLeave'; */
+    use.dataset.leaveFn = 'tableLeave';
     use.dataset.x = this.currentTable.x;
     use.dataset.y = this.currentTable.y;
     use.dataset.levelId = this.currentTable.levelId;
     use.setAttribute('x', this.currentTable.x);
     use.setAttribute('y', this.currentTable.y);
     Draw.svg.appendChild(use);
+    // <animate> tag
+    const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    animate.setAttribute('attributeName', 'y');
+    animate.setAttribute('dur', '.15s');
+    animate.setAttribute('fill', 'freeze');
+    use.appendChild(animate);
   }
 
   /* drawTable() {
@@ -161,7 +174,7 @@ class DrawSVG {
     // ciclo dal penultimo livello fino a 0 per riposizionare tutti gli elementi che hanno più di 1 join con altre tabelle
     this.arrayLevels.forEach(levelId => {
       // il primo ciclo recupera le tabelle del penultimo level (le tabelle dell'ultimo level non hanno altre tabelle collegate ad esse)
-      this.svg.querySelectorAll(`g.table[data-level-id='${levelId}']:not([data-joins='1'], [data-joins='0'])`).forEach(table => {
+      this.svg.querySelectorAll(`use.table[data-level-id='${levelId}']:not([data-joins='1'], [data-joins='0'])`).forEach(table => {
         let y = 0;
         // verifico la posizione y delle tabelle legate in join con quella in ciclo
         for (let properties of this.tables.values()) {
@@ -181,25 +194,16 @@ class DrawSVG {
   }
 
   autoPosition() {
-    const tableRef = this.svg.querySelector(`#${this.currentTable.key}`);
-    const rect = tableRef.querySelector('rect');
-    const animRect = rect.querySelector('animate');
-    const text = tableRef.querySelector('text');
-    const animText = text.querySelector('animate');
+    const use = this.svg.querySelector(`#${this.currentTable.key}`);
+    const animate = use.querySelector('animate');
     // sposto le tabelle con <animation>
     // stabilisco la posizione di partenza, nel from
-    animRect.setAttribute('from', +tableRef.dataset.y);
-    animText.setAttribute('from', +tableRef.dataset.y + 16);
-
-    animText.setAttribute('to', this.currentTable.y + 16);
-    animText.beginElement();
-    animRect.setAttribute('to', this.currentTable.y);
-    animRect.beginElement();
+    animate.setAttribute('from', +use.dataset.y);
+    animate.setAttribute('to', this.currentTable.y);
+    animate.beginElement();
 
     // aggiorno i valori presenti nel DOM
-    tableRef.dataset.y = this.currentTable.y;
-    rect.setAttribute('y', this.currentTable.y);
-    text.setAttribute('y', this.currentTable.y + 16);
+    use.dataset.y = this.currentTable.y;
     // verifico la posizione del max x/y all'interno dell'svg per fare un resize di width/height dell'svg
     this.checkResizeSVG();
   }

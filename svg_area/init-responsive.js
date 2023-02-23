@@ -60,10 +60,10 @@ var Draw = new DrawSVG('svg');
     // console.log(app.dragElementPosition);
     e.dataTransfer.setData('text/plain', e.target.id);
     // creo la linea
-    if (Draw.svg.querySelectorAll('.table').length > 0) {
+    if (Draw.svg.querySelectorAll('use.table').length > 0) {
       const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      line.id = `line-${Draw.svg.querySelectorAll('g.table').length}`;
-      line.dataset.id = Draw.svg.querySelectorAll('g.table').length;
+      line.id = `line-${Draw.svg.querySelectorAll('use.table').length}`;
+      line.dataset.id = Draw.svg.querySelectorAll('use.table').length;
       Draw.svg.appendChild(line);
       Draw.currentLineRef = line.id;
     }
@@ -76,9 +76,9 @@ var Draw = new DrawSVG('svg');
     if (e.currentTarget.classList.contains('dropzone')) {
       e.dataTransfer.dropEffect = "copy";
       app.coordsRef.innerHTML = `<small>x ${e.offsetX}</small><br /><small>y ${e.offsetY}</small>`;
-      if (Draw.svg.querySelectorAll('.table').length > 0) {
+      if (Draw.svg.querySelectorAll('use.table').length > 0) {
         // TODO: da commentare
-        let nearestTable = [...Draw.svg.querySelectorAll('g.table')].reduce((prev, current) => {
+        let nearestTable = [...Draw.svg.querySelectorAll('use.table')].reduce((prev, current) => {
           return (Math.hypot(e.offsetX - (+current.dataset.x + 180), e.offsetY - (+current.dataset.y + 15)) < Math.hypot(e.offsetX - (+prev.dataset.x + 180), e.offsetY - (+prev.dataset.y + 15))) ? current : prev;
         });
         console.log(nearestTable.id);
@@ -115,7 +115,7 @@ var Draw = new DrawSVG('svg');
     if (e.currentTarget.classList.contains('dropzone')) {
       console.info('DROPZONE');
       // console.log(e.currentTarget, e.target);
-      if (e.target.nodeName === 'rect') Draw.currentLevel = +e.target.dataset.levelId;
+      if (e.target.nodeName === 'use') Draw.currentLevel = +e.target.dataset.levelId;
       // Draw.currentLevel = e.targe
       // e.dataTransfer.dropEffect = "copy";
       // coloro il border differente per la dropzone
@@ -144,7 +144,7 @@ var Draw = new DrawSVG('svg');
     // const elementId = e.dataTransfer.getData('text/plain');
     const liElement = document.getElementById(e.dataTransfer.getData('text/plain'));
     liElement.classList.remove('dragging');
-    const tableId = Draw.svg.querySelectorAll('g.table').length;
+    const tableId = Draw.svg.querySelectorAll('use.table').length;
     // let coords = { x: e.offsetX - app.dragElementPosition.x, y: e.offsetY - app.dragElementPosition.y }
     let coords;
     // se non è presente una tableJoin significa che sto aggiungendo la prima tabella
@@ -170,7 +170,7 @@ var Draw = new DrawSVG('svg');
     } else {
       // è presente una tableJoin
       // imposto data.joins anche sull'elemento SVG
-      Draw.svg.querySelector(`g.table[id="${Draw.tableJoin.table.id}"]`).dataset.joins = ++Draw.tableJoin.joins;
+      Draw.svg.querySelector(`use.table[id="${Draw.tableJoin.table.id}"]`).dataset.joins = ++Draw.tableJoin.joins;
       // ... lo imposto anche nell'oggetto Map() tables
       Draw.tables.get(Draw.tableJoin.table.id).joins = Draw.tableJoin.joins;
       // livello che sto aggiungendo
@@ -180,7 +180,7 @@ var Draw = new DrawSVG('svg');
       // if (!Draw.arrayLevels.includes(levelId)) Draw.arrayLevels.splice(0, 0, levelId);
       Draw.svg.dataset.level = (Draw.svg.dataset.level < levelId) ? levelId : Draw.svg.dataset.level;
       // quante tabelle ci sono per il livello corrente che appartengono alla stessa tableJoin
-      const tableRelated = Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}'][data-table-join='${Draw.tableJoin.table.id}']`);
+      const tableRelated = Draw.svg.querySelectorAll(`use.table[data-level-id='${levelId}'][data-table-join='${Draw.tableJoin.table.id}']`);
       const tableInLevel = tableRelated.length;
       let lastTableInLevel;
       // recupero la posizione dell'ultima tabella appartenete al livello corrente e legata alla stessa tableJoin
@@ -205,7 +205,7 @@ var Draw = new DrawSVG('svg');
           // per ogni livello, partendo dall'ultimo
           console.log(levelId);
           // se sono presenti, in questo livello, tabelle con y > di quella che sto droppando le devo spostare y+60
-          Draw.svg.querySelectorAll(`g.table[data-level-id='${levelId}']`).forEach(table => {
+          Draw.svg.querySelectorAll(`use.table[data-level-id='${levelId}']`).forEach(table => {
             // console.log(`Livello ${levelId}`);
             // console.log(`tabelle ${table.id}`);
             if (+table.dataset.y >= coords.y) {
@@ -245,7 +245,7 @@ var Draw = new DrawSVG('svg');
         }
       };
       console.info('create JOIN');
-      app.openJoinWindow();
+      // app.openJoinWindow();
     }
     Draw.currentTable = Draw.tables.get(`svg-data-${tableId}`);
     // creo nel DOM la tabella appena droppata
@@ -258,6 +258,7 @@ var Draw = new DrawSVG('svg');
 
   document.querySelectorAll('li').forEach(el => {
     el.ondragstart = app.handlerDragStart;
+    el.ondragend = app.handlerDragEnd;
   });
 
   Draw.svg.addEventListener('mousemove', (e) => {
@@ -274,6 +275,7 @@ var Draw = new DrawSVG('svg');
 
   /*onclick events*/
   app.tableSelected = (e) => {
+    debugger;
     console.log(`table selected ${e.currentTarget.dataset.table}`);
   }
 
@@ -350,15 +352,10 @@ var Draw = new DrawSVG('svg');
 
   // visualizzo l'icona delete utilizzando <use> in svg
   app.tableEnter = (e) => {
-    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    use.setAttribute('x', +e.target.dataset.x + 170 - 18);
-    use.setAttribute('y', +e.target.dataset.y);
-    use.dataset.table = e.target.dataset.table;
-    use.dataset.schema = e.target.dataset.schema;
-    use.dataset.id = e.target.id;
-    use.setAttribute('href', '#backspace');
-    use.dataset.fn = 'removeTable';
-    e.currentTarget.appendChild(use);
+    // debugger;
+    // const deleteIcon = Draw.svg.querySelector(`${e.currentTarget.href.baseVal} > image`);
+    // deleteIcon.setAttribute('y', -18);
+    // deleteIcon.dataset.fn = 'removeTable';
   }
 
   // rimozione tabella dal draw SVG
@@ -383,10 +380,17 @@ var Draw = new DrawSVG('svg');
     // lo rimuovo dal DOM
     Draw.svg.querySelector(`#${e.currentTarget.dataset.id}`).remove();
     Draw.tables.delete(e.currentTarget.dataset.id); // svg-data-x
+    delete Draw.tableJoin;
     console.log(Draw.tables);
+    // rimuovo anche il <g> all'interno di <defs>
+    Draw.svg.querySelector(`g#struct-${e.currentTarget.dataset.id}`).remove();
   }
 
-  app.tableLeave = (e) => e.currentTarget.querySelector('use').remove();
+  app.tableLeave = (e) => {
+    // debugger;
+    // e.currentTarget.remove();
+    // TODO: rimuovo anche l'elemento <g> in <defs> relativo a questa tabella
+  }
   /* end mouse events */
 
 })();
