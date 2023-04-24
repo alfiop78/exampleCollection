@@ -1,0 +1,15 @@
+body {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 64px);
+  background: antiquewhite;
+  margin: 0;
+}
+
+body > section {
+  display: grid;
+  width: 350px;
+  grid-template-rows: auto;
+  height: 100%;
+  overflow: auto;
+}
