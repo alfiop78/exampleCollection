@@ -5,13 +5,13 @@
   <title>Struct con grid</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="index.css" rel="stylesheet">
+  <link href="index.css" rel="stylesheet" />
 </head>
 
 <body>
-  <section>
-    <div id="div-1">
-      <p>workbooks</p>
+  <section data-section-active="1">
+    <p>workbooks</p>
+    <div id="div-1" data-section="1">
       <ul>
         <li>item 1</li>
         <li>item 2</li>
@@ -21,8 +21,45 @@
         <li>item 6</li>
       </ul>
     </div>
-    <div id="div-2">
-      <p>Campi</p>
+    <p>Campi</p>
+    <div id="div-2" data-section="2">
+      <ul>
+        <li>item 1</li>
+        <li>item 2</li>
+        <li>item 3</li>
+        <li>item 4</li>
+        <li>item 5</li>
+        <li>item 6</li>
+        <li>item 1</li>
+        <li>item 2</li>
+        <li>item 3</li>
+        <li>item 4</li>
+        <li>item 5</li>
+        <li>item 6</li>
+        <li>item 6</li>
+        <li>item 1</li>
+        <li>item 2</li>
+        <li>item 3</li>
+        <li>item 4</li>
+        <li>item 5</li>
+        <li>item 6</li>
+        <li>item 6</li>
+        <li>item 1</li>
+        <li>item 2</li>
+        <li>item 3</li>
+        <li>item 4</li>
+        <li>item 5</li>
+        <li>item 6</li>
+        <li>item 1</li>
+        <li>item 2</li>
+        <li>item 3</li>
+        <li>item 4</li>
+        <li>item 5</li>
+        <li>item 6</li>
+      </ul>
+    </div>
+    <p>Metriche</p>
+    <div id="div-3" data-section="3">
       <ul>
         <li>item 1</li>
         <li>item 2</li>
@@ -32,19 +69,8 @@
         <li>item 6</li>
       </ul>
     </div>
-    <div id="div-3">
-      <p>Metriche</p>
-      <ul>
-        <li>item 1</li>
-        <li>item 2</li>
-        <li>item 3</li>
-        <li>item 4</li>
-        <li>item 5</li>
-        <li>item 6</li>
-      </ul>
-    </div>
-    <div id="div-4">
-      <p>filtri</p>
+    <p>filtri</p>
+    <div id="div-4" data-section="4">
       <ul>
         <li>item 1</li>
         <li>item 2</li>
@@ -57,6 +83,7 @@
 
   </section>
 
+  <script type="text/javascript" src="init.js"></script>
 </body>
 
 </html>

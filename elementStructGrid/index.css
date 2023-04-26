@@ -12,4 +12,27 @@ body > section {
   grid-template-rows: auto;
   height: 100%;
   overflow: auto;
+  background-color: lightcyan;
+  transition: grid-template-rows .2s;
+}
+
+section > div{
+  overflow: auto;
+  border: solid thin black;
+}
+
+section[data-section-active="1"] {
+  grid-template-rows: .5fr 2fr .5fr 4fr .5fr 1fr .5fr 1fr;
+}
+
+section[data-section-active="2"] {
+  grid-template-rows: .5fr 1fr .5fr 4fr .5fr 2fr .5fr 1fr;
+}
+
+section[data-section-active="3"] {
+  grid-template-rows: .5fr 1fr .5fr 1fr .5fr 4fr .5fr 2fr;
+}
+
+section[data-section-active="4"] {
+  grid-template-rows: .5fr 1fr .5fr 1fr .5fr 2fr .5fr 4fr;
 }
