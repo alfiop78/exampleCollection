@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title></title>
+</head>
+<style>
+    .wrapper.flex {
+        width: 500px;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 1em;
+    }
+
+    .wrapper>div {
+        background-color: lightcyan;
+        border: solid thin gray;
+    }
+
+    .wrapper.flex>div {
+        flex: 1 1 150px;
+    }
+
+    .wrapper.grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .wrapper.flex-alignment {
+        display: flex;
+        align-items: flex-end;
+        min-height: 200px;
+    }
+
+    .wrapper.flex-alignment>.box1 {
+        align-self: stretch;
+    }
+
+    .wrapper.flex-alignment>.box2 {
+        align-self: flex-start;
+    }
+
+    .wrapper.grid-alignment {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: end;
+        grid-auto-rows: 200px;
+    }
+
+    .wrapper.grid-alignment>.box1 {
+        align-self: stretch;
+    }
+
+    .wrapper.grid-alignment>.box2 {
+        align-self: start;
+    }
+
+    .wrapper.auto-fill {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 200px);
+        border: solid thin red;
+    }
+
+    .wrapper.auto-fit {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        border: solid thin red;
+    }
+
+    .wrapper.position {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 200px;
+        gap: 20px;
+        position: relative;
+    }
+
+    .wrapper.position .box3 {
+        grid-column-start: 2;
+        grid-column-end: 4;
+        grid-row-start: 1;
+        grid-row-end: 3;
+        position: absolute;
+        top: 40px;
+        left: 40px;
+    }
+
+    .wrapper.grid-area-relative {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: 200px;
+        gap: 20px;
+    }
+
+    .wrapper.grid-area-relative .box3 {
+        grid-column-start: 2;
+        grid-column-end: 4;
+        grid-row-start: 1;
+        grid-row-end: 3;
+        position: relative;
+    }
+
+    .wrapper.grid-area-relative .abspos {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        background-color: rgb(255 255 255 / 50%);
+        border: 1px solid rgb(0 0 0 / 50%);
+        color: #000;
+        padding: 10px;
+    }
+
+    .wrapper.display-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: minmax(100px, auto);
+    }
+
+    .wrapper.display-content .box1 {
+        grid-column-start: 1;
+        grid-column-end: 4;
+        display: contents;
+    }
+</style>
+
+<body>
+
+    <p>Differenza con flex layout</p>
+    <p>Gli elementi della seconda ariga non sono allineati con la prima riga</p>
+    <div class="wrapper flex">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+    </div>
+
+    <p>Grid layout</p>
+    <div class="wrapper grid">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+    </div>
+
+    <p>Box alignment (allineamento con display flex)</p>
+    <p>Box 1 e Box 2 sovrascrivono l'allineamento impostato su wrapper : flex-end</p>
+    <div class="wrapper flex-alignment">
+        <div class="box1">One</div>
+        <div class="box2">Two</div>
+        <div class="box3">Three</div>
+    </div>
+
+    <p>Box alignment (allineamento con display grid)</p>
+    <p>Stesso allineamento di sopra con grid</p>
+    <div class="wrapper grid-alignment">
+        <div class="box1">One</div>
+        <div class="box2">Two</div>
+        <div class="box3">Three</div>
+    </div>
+
+    <p>auto-fill</p>
+    <div class="wrapper auto-fill">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+    </div>
+
+    <p>auto-fit con minmax</p>
+    <div class="wrapper auto-fit">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+    </div>
+
+    <p>posizionamento absolute</p>
+    <div class="wrapper position">
+        <div class="box1">One</div>
+        <div class="box2">Two</div>
+        <div class="box3">
+            This block is absolutely positioned. In this example the grid container is
+            the containing block and so the absolute positioning offset values are
+            calculated in from the outer edges of the area it has been placed into.
+        </div>
+        <div class="box4">Four</div>
+    </div>
+
+    <p>grid area position: relative</p>
+    <div class="wrapper grid-area-relative">
+        <div class="box1">One</div>
+        <div class="box2">Two</div>
+        <div class="box3">
+            Three
+            <div class="abspos">
+                This block is absolutely positioned. In this example the grid area is the
+                containing block and so the absolute positioning offset values are
+                calculated in from the outer edges of the grid area.
+            </div>
+        </div>
+        <div class="box4">Four</div>
+    </div>
+
+    <p>Display: content </p>
+    <div class="wrapper display-content">
+        <div class="box box1">
+            <div class="nested">a</div>
+            <div class="nested">b</div>
+            <div class="nested">c</div>
+        </div>
+        <div class="box box2">Two</div>
+        <div class="box box3">Three</div>
+        <div class="box box4">Four</div>
+        <div class="box box5">Five</div>
+    </div>
+
+
+
+</body>
+
+</html>

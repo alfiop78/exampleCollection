@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title></title>
+</head>
+<style>
+    .header {
+        grid-area: hd;
+    }
+
+    .footer {
+        grid-area: ft;
+    }
+
+    .content {
+        grid-area: main;
+    }
+
+    .sidebar {
+        grid-area: sd;
+    }
+
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        grid-auto-rows: minmax(100px, auto);
+        grid-gap: 1em;
+        grid-template-areas:
+            "hd hd hd hd   hd   hd   hd   hd   hd"
+            "sd sd main main main main main main main"
+            "ft ft ft ft   ft   ft   ft   ft   ft";
+    }
+
+    .wrapper>div {
+        background-color: lightcoral;
+    }
+</style>
+
+<body>
+
+    <div class="wrapper">
+        <div class="header">Header</div>
+        <div class="sidebar">Sidebar</div>
+        <div class="content">Content</div>
+        <div class="footer">Footer</div>
+    </div>
+
+
+
+</body>
+
+</html>

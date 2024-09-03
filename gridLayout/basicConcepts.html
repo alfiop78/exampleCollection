@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title></title>
+</head>
+<style>
+    .wrapper {
+        display: grid;
+        grid-template-columns: 200px 200px 200px;
+        margin: 1em;
+    }
+
+    .wrapper>div {
+        background-color: lightcyan;
+        border: solid thin gray;
+        /* height: 50px; */
+    }
+
+    .wrapper.fr {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* repeat produce lo stesso effetto qui*/
+        /* grid-template-columns: repeat(3, 1fr); */
+    }
+
+    .wrapper.fr.unequal {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+    }
+
+    .wrapper.fr.mixing {
+        display: grid;
+        grid-template-columns: 500px 1fr 2fr;
+    }
+
+    .wrapper.repeat {
+        display: grid;
+        grid-template-columns: 20px repeat(6, 1fr) 20px;
+    }
+
+    .wrapper.repeat.pattern {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr 2fr);
+    }
+
+    .wrapper.autorow {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 50px;
+    }
+
+    .wrapper.minmax {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: minmax(50px, auto);
+    }
+
+    .wrapper.start-end {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 100px;
+    }
+
+    /* attivando il grid-inspector posso vedere il numero di linea */
+    .box1 {
+        /*Il box1 viene effettuato uno span tramite l'utilizzo di grid-column-start: grid-column-end: grid-row-start: grid-row-end:*/
+        /* nella prima riga faccio iniziare l'elemento dalla colonna 1 e termina alla colonna 4, quindi prende tutto il contenuto della riga */
+        grid-column-start: 1;
+        grid-column-end: 4;
+        /* abbreviazione per grid-column-start e grid-column-end */
+        /* grid-column: 1 / 4; grid-column-start / grid-column-end */
+
+        /* inizio dalla riga 1 fino alla riga 3 */
+        grid-row-start: 1;
+        grid-row-end: 3;
+        /* abbreviazione per grid-row-start e grid-row-end */
+        /* grid-row: 1 / 3; grid-row-start / grid-row-end */
+    }
+
+    .box2 {
+        /* default grid-column-end: 1 in questo caso */
+        grid-column-start: 1;
+        /* abbreviazione per grid-column-start e grid-column-end  */
+        /* grid-column: 1; */
+
+        /* il box2 inizia dalla riga 3 e termina all'ultima riga, 5 */
+        grid-row-start: 3;
+        grid-row-end: 5;
+        /* abbreviazione */
+        /* grid-row: 3 / 5; grid-row-start / grid-row-end */
+    }
+
+    .wrapper.gap {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 10px;
+        row-gap: 1em;
+    }
+
+    .wrapper.nesting {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 100px;
+    }
+
+    .wrapper.nesting .nested {
+        background-color: white;
+        margin: .5em;
+    }
+
+    .box {
+        border: 2px solid #ffa94d;
+        border-radius: 5px;
+        background-color: #ffd8a8;
+        padding: 1em;
+        color: #d9480f;
+    }
+
+    .box1-grid {
+        grid-column: 1 / 4;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        /* subgrid usa la stessa definizione del parent grid, in questo caso ha lo stesso effetto di repeat(3, 1fr) qui sopra */
+        /* grid-template-columns: subgrid; */
+    }
+
+    .wrapper.overlapping {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 100px;
+    }
+
+    .box1-ol {
+        grid-column: 1 / 4;
+        grid-row: 1 / 3;
+        /* z-index: 2; */
+    }
+
+    .box2-ol {
+        grid-column: 1;
+        grid-row: 2 / 4;
+        /* z-index: 1; */
+    }
+</style>
+
+<body>
+
+    <p>dimensioni fisse</p>
+    <div class="wrapper">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+    </div>
+
+    <p>utilizzo di fr (free space)</p>
+    <div class="wrapper fr">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+    </div>
+
+    <p>dimensioni diverse</p>
+    <div class="wrapper fr unequal">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+    </div>
+
+    <p>unità dinmesioni differenti</p>
+    <div class="wrapper fr mixing">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+    </div>
+
+    <p>repeat</p>
+    <div class="wrapper repeat">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+        <div>Six</div>
+        <div>Seven</div>
+        <div>Eight</div>
+    </div>
+    <p>repeat pattern</p>
+    <div class="wrapper repeat pattern">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+        <div>Six</div>
+        <div>Seven</div>
+        <div>Eight</div>
+        <div>Nine</div>
+        <div>Ten</div>
+    </div>
+
+    <p>grid-auto-row</p>
+    <div class="wrapper autorow">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+    </div>
+
+    <p> minmax height</p>
+    <div class="wrapper minmax">
+        <div>One</div>
+        <div>Two
+            <p>Ho qualche contenuto in più</p>
+            <p>questo rende il div più alto di 100px</p>
+        </div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+    </div>
+
+    <p>grid-column and grid-row start / end</p>
+    <div class="wrapper start-end">
+        <div class="box1">One</div>
+        <div class="box2">Two</div>
+        <div class="box3">Three</div>
+        <div class="box4">Four</div>
+        <div class="box5">Five</div>
+    </div>
+
+    <p>column-gap row-gap e gap</p>
+    <div class="wrapper gap">
+        <div>One</div>
+        <div>Two</div>
+        <div>Three</div>
+        <div>Four</div>
+        <div>Five</div>
+    </div>
+
+    <p>nesting grids</p>
+    <p>In questo caso il box1 NON è un display: grid. Gli elementi a,b,c vengono posizionati in base al normale
+        flusso del documento</p>
+    <div class="wrapper nesting">
+        <div class="box1">
+            <div class="nested">a</div>
+            <div class="nested">b</div>
+            <div class="nested">c</div>
+        </div>
+        <div class="box2">Two</div>
+        <div class="box3">Three</div>
+        <div class="box4">Four</div>
+        <div class="box5">Five</div>
+    </div>
+
+    <p>nesting without subgrid In questo caso il box1 è un display: grid. Gli elementi a,b,c vengono
+        posizionati in base a grid-template-columns
+    </p>
+    <div class="wrapper nesting">
+        <div class="box box1-grid">
+            <div class="nested">a</div>
+            <div class="nested">b</div>
+            <div class="nested">c</div>
+        </div>
+        <div class="box box2-grid">Two</div>
+        <div class="box box3">Three</div>
+        <div class="box box4">Four</div>
+        <div class="box box5">Five</div>
+    </div>
+
+    <p>overlapping senza z-index</p>
+    <div class="wrapper overlapping">
+        <div class="box box1-ol">One</div>
+        <div class="box box2-ol">Two</div>
+        <div class="box box4-ol">Three</div>
+        <div class="box box4-ol">Four</div>
+        <div class="box box5-ol">Five</div>
+    </div>
+
+
+</body>
+
+</html>
