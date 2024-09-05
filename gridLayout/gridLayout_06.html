@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	<title></title>
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20,400,1,0" />
+</head>
+<style>
+	* {
+		box-sizing: border-box;
+	}
+
+	body {
+		display: grid;
+		height: 100vh;
+		grid-template: 85px 1fr auto / auto 1fr auto;
+		margin: 0px;
+		grid-gap: 1em;
+		transition: grid-template 250ms;
+	}
+
+	header {
+		background: lightpink;
+		padding: 2rem;
+		grid-column: 1 / 4;
+		padding: 0 36px 0 16px;
+		z-index: 1001;
+		-webkit-font-smoothing: antialiased;
+		background: lightpink;
+		box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.left-sidebar {
+		background: lightblue;
+		grid-column: 1 / 2;
+	}
+
+	.nav-button {
+		display: flex;
+		align-items: center;
+		flex-grow: 0;
+		flex-shrink: 0;
+	}
+
+	.nav-button #menu {
+		display: flex;
+		text-decoration: none;
+		color: #3C4043;
+		width: 40px;
+		height: 40px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	header h1 {
+		font-size: 1.4rem;
+		font-weight: 400;
+		margin: 0 8px;
+		flex-grow: 1;
+		flex-shrink: 1;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		width: 0;
+	}
+
+	main {
+		display: flex;
+		position: relative;
+		background: coral;
+		grid-column: 2 / 3;
+	}
+
+	.right-sidebar {
+		/* background: yellow; */
+		grid-column: 3 / 4;
+	}
+
+	footer {
+		background: wheat;
+		padding: 2rem;
+		text-align: center;
+		grid-column: 1 / 4;
+	}
+
+	body {
+		font-family: system-ui, sans-serif;
+	}
+
+	.left-sidebar,
+	.right-sidebar {
+		padding: 1rem;
+	}
+
+	#content {
+		display: block;
+		width: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		overflow-y: auto;
+		overflow-x: hidden;
+		background: var(--main-bg-color);
+		transition: all 500ms;
+	}
+
+	.wrapper {
+		display: grid;
+		grid-gap: 2em;
+		grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+	}
+
+	.autofit {
+		grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+	}
+
+	.box {
+		height: 300px;
+		background-color: firebrick;
+	}
+
+	.autofit .box1 {
+		grid-column: 1;
+	}
+
+	.autofit .box2 {
+		grid-column: span 2;
+	}
+</style>
+
+<body>
+	<header>
+		<div class="nav-button">
+			<a href="#" id="menu"><i class="material-symbols-rounded">menu</i></a>
+		</div>
+		<h1 class="title">Gaia-BI</h1>
+	</header>
+	<div class="left-sidebar">Left Sidebar</div>
+	<main>
+		<div id="content">
+			<div class="wrapper">
+				<div class="box box1">box 1</div>
+				<div class="box box2">box 2</div>
+				<div class="box box3">box 3</div>
+				<div class="box box4">box 4</div>
+				<div class="box box5">box 5</div>
+				<div class="box box6">box 6</div>
+				<div class="box box7">box 7</div>
+				<div class="box box8">box 8</div>
+			</div>
+			<div class="wrapper autofit">
+				<div class="box box1">box 1</div>
+				<div class="box box2">box 2</div>
+			</div>
+		</div>
+
+	</main>
+	<div class="right-sidebar">Right Sidebar</div>
+	<footer>footer</footer>
+
+</body>
+
+</html>
