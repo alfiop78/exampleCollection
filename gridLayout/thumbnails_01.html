@@ -15,7 +15,7 @@
 
     .thumbnails {
         display: grid;
-        gap: 20px;
+        gap: 10px;
         height: 400px;
         width: 500px;
         grid-template-rows: 50px 1fr 30px;
@@ -25,28 +25,26 @@
         grid-template-areas:
             "filters"
             "chart"
-            "settings-1";
+            "footer";
     }
 
     /* 1 colonna */
     .thumbnails.lyt-2 {
-        grid-template-rows: 50px 1fr 30px 1fr 30px;
+        grid-template-rows: 50px 1fr 1fr 30px;
         grid-template-areas:
             "filters"
             "chart-1"
-            "settings-1"
             "chart-2"
-            "settings-2";
+            "footer";
     }
 
     .thumbnails.lyt-3 {
-        grid-template-rows: 50px 1fr 30px 1fr 30px;
+        grid-template-rows: 50px 1fr 1fr 30px;
         grid-template-areas:
             "filters"
             "chart-1"
-            "settings-1"
             "chart-2"
-            "settings-2";
+            "footer";
     }
 
     /* layout 1 colonna */
@@ -54,7 +52,7 @@
         display: grid;
         height: 400px;
         width: 500px;
-        grid-template: 50px repeat(2, 1fr) auto / 1fr;
+        grid-template: 50px repeat(2, 1fr) 30px / 1fr;
         grid-template-areas:
             "flt"
             "leftmain"
@@ -91,6 +89,47 @@
         background-color: lightskyblue;
     }
 
+    .lyt-5 {
+        display: grid;
+        height: 400px;
+        width: 500px;
+        grid-template: 50px repeat(2, 1fr) 30px / 1fr;
+        grid-template-areas:
+            "flt"
+            "leftmain"
+            "rightmain"
+            "fo";
+    }
+
+    .lyt-5 .flt {
+        grid-column: 1 / 4;
+        background-color: lightcoral;
+        grid-area: flt;
+    }
+
+    .lyt-5 .footer {
+        grid-column: 1 / 4;
+        background-color: lightcoral;
+        grid-area: fo;
+    }
+
+    .lyt-5 .left {
+        grid-column: 1 / 2;
+        background-color: lightcyan;
+        grid-area: leftmain;
+    }
+
+    .lyt-5 .right {
+        grid-column: 2 / 4;
+        background-color: lightgreen;
+        grid-area: rightmain;
+    }
+
+    .lyt-5 .r {
+        grid-column: 3 / 4;
+        background-color: lightskyblue;
+    }
+
     /* 2colonne */
     @media (min-width: 700px) {
         .thumbnails.lyt-2 {
@@ -99,7 +138,7 @@
             grid-template-areas:
                 "filters filters"
                 "chart-1 chart-2"
-                "settings-1 settings-2";
+                "footer footer";
         }
 
         .thumbnails.lyt-3 {
@@ -108,15 +147,35 @@
             grid-template-areas:
                 "filters filters filters"
                 "chart-1 chart-1 chart-2"
-                "settings-1 settings-1 settings-2";
+                "footer footer footer";
         }
 
         .lyt-4 {
-            grid-template: 50px 1fr 20px / 1fr 1fr;
+            grid-template: 50px 1fr 30px / 1fr 1fr;
+            grid-gap: 10px;
             grid-template-areas:
                 "flt flt"
                 "leftmain rightmain"
                 "fo fo";
+        }
+
+        .lyt-5 {
+            grid-template: 50px 1fr 30px / 1fr 1fr;
+            grid-gap: 10px;
+            grid-template-areas:
+                "flt flt"
+                "leftmain rightmain"
+                "fo fo";
+        }
+
+        .lyt-5>.right {
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            grid-row-gap: 10px;
+        }
+
+        #chart1 {
+            background-color: red;
         }
 
     }
@@ -145,8 +204,8 @@
         color: black;
     }
 
-    .settings-1 {
-        grid-area: settings-1;
+    .footer {
+        grid-area: footer;
         background-color: darkblue;
         color: white;
     }
@@ -164,29 +223,37 @@
         <div class="thumbnails lyt-1">
             <section class="filters">filters</section>
             <section class="chart">chart</section>
-            <section class="settings-1">settings</section>
+            <section class="footer">footer</section>
         </div>
 
         <div class="thumbnails lyt-2">
             <section class="filters">filters</section>
             <section class="chart-1">chart-1</section>
-            <section class="settings-1">settings</section>
             <section class="chart-2">chart-2</section>
-            <section class="settings-2">settings</section>
+            <section class="footer">footer</section>
         </div>
 
         <div class="thumbnails lyt-3">
             <section class="filters">filters</section>
             <section class="chart-1">chart-1</section>
-            <section class="settings-1">settings</section>
             <section class="chart-2">chart-2</section>
-            <section class="settings-2">settings</section>
+            <section class="footer">footer</section>
         </div>
 
         <div class="lyt-4">
             <div class="flt">Filtri dashboard</div>
-            <div class="left">sezione left</div>
-            <div class="right">sezione right</div>
+            <div class="left">chart 1</div>
+            <div class="right">chart 2</div>
+            <div class="footer">footer</div>
+        </div>
+
+        <div class="lyt-5">
+            <div class="flt">Filtri dashboard</div>
+            <div class="left">chart 1</div>
+            <div class="right">
+                <div id="chart1">chart1</div>
+                <div id="chart2">chart2</div>
+            </div>
             <div class="footer">footer</div>
         </div>
 
