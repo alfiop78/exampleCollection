@@ -78,11 +78,10 @@ customElem.addEventListener('keydown', function(e) {
     // const sel = document.getSelection();
     // console.log(sel);
     // const caretPosition = sel.anchorOffset;
-    if (!['Tab', 'ArrowRight'].includes(e.key)) return;
+    if (!['Tab'].includes(e.key)) return;
     e.preventDefault();
     switch (e.key) {
         case 'Tab':
-        case 'ArrowRight':
             e.target.firstChild.textContent += e.target.querySelector('span').textContent;
             e.target.querySelector('span').textContent = '';
             popup.classList.remove('open');
