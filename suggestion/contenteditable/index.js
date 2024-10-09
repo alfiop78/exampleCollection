@@ -1,5 +1,8 @@
 let customElem = document.getElementById("textarea");
-var suggestions = ['CodAziendaSid', 'id_Azienda', 'CodMarcaRicambi', 'Codice', 'versioneDMS'];
+var suggestionsTables = ['Azienda', 'DocVenditaDettaglio', 'CodMarcaVeicolo', 'CodMarcaRicambi', 'TipoMovimento'];
+var suggestionsColumns = ['id', 'codice', 'Descrizione', 'id_casaMadre', 'zonaVenditaCM'];
+const sel = document.getSelection();
+const popup = document.getElementById('popupSuggestions');
 
 const findIndexOfCurrentWord = (textarea, caretPosition) => {
     // ottengo il valore corrente e la posizione del cursore
@@ -18,33 +21,51 @@ const findIndexOfCurrentWord = (textarea, caretPosition) => {
 };
 
 customElem.addEventListener('input', (e) => {
-    const sel = document.getSelection();
     // console.log(sel);
+    // console.log(sel.baseNode.textContent);
     if (!e.target.firstChild) return;
-    const startIndex = findIndexOfCurrentWord(e.target, sel.anchorOffset);
-    const currentWord = e.target.firstChild.textContent.substring(startIndex + 1);
-    console.log(`current word : ${currentWord}`);
+    const caretPosition = sel.anchorOffset;
+    const startIndex = findIndexOfCurrentWord(e.target, caretPosition);
+    let currentWord = e.target.firstChild.textContent.substring(startIndex + 1);
+    console.info(`current word : ${currentWord}`);
     if (currentWord.length > 0) {
+        // se il carattere che interrompe la parola (trovato dal egex) è un punto allora devo cercare nell'array delle Colonne, altrimenti in quello delle Tabelle
+        const chartAt = e.target.firstChild.textContent.at(startIndex);
+        // console.log(`chartAt : ${chartAt}`);
+        console.info(`current word : ${currentWord}`);
         let regex = new RegExp(`^${currentWord}.*`, 'i');
-        const match = suggestions.find(value => value.match(regex));
+        const match = (chartAt === '.') ? suggestionsColumns.find(value => value.match(regex)) : suggestionsTables.find(value => value.match(regex));
+        console.log(`match ${match}`);
         if (match) {
-            // console.log(match);
             const span = document.createElement('span');
             span.textContent = match.slice(currentWord.length, match.length);
+            span.dataset.text = match.slice(currentWord.length, match.length);
             (e.target.querySelector('span')) ? e.target.replaceChild(span, e.target.querySelector('span')) : e.target.appendChild(span);
+            console.log(e.target.querySelector('span'));
+            popup.classList.add('open');
+            popup.style.left = `${e.target.querySelector('span').offsetLeft}px`;
+            popup.style.top = `${e.target.querySelector('span').offsetTop + 25}px`;
         } else {
-            if (e.target.querySelector('span')) e.target.querySelector('span').textContent = '';
+            if (e.target.querySelector('span')) {
+                e.target.querySelector('span').textContent = '';
+                popup.classList.remove('open');
+                delete e.target.querySelector('span').dataset.text;
+            }
         }
     }
 });
 
 customElem.addEventListener('keyup', (e) => {
-    const sel = document.getSelection();
-    console.log(sel);
+    // const sel = document.getSelection();
+    // console.log(sel);
     const caretPosition = sel.anchorOffset;
-    console.log(caretPosition);
+    // console.log(`caretPosition : ${caretPosition}`);
     if (e.code === 'Space') {
-        if (e.target.querySelector('span')) e.target.querySelector('span').textContent = '';
+        if (e.target.querySelector('span')) {
+            e.target.querySelector('span').textContent = '';
+            popup.classList.remove('open');
+            delete e.target.querySelector('span').dataset.text;
+        }
     }
 });
 
@@ -54,8 +75,8 @@ customElem.addEventListener('click', (e) => {
 });
 
 customElem.addEventListener('keydown', function(e) {
-    const sel = document.getSelection();
-    console.log(sel);
+    // const sel = document.getSelection();
+    // console.log(sel);
     // const caretPosition = sel.anchorOffset;
     if (!['Tab', 'ArrowRight'].includes(e.key)) return;
     e.preventDefault();
@@ -64,6 +85,8 @@ customElem.addEventListener('keydown', function(e) {
         case 'ArrowRight':
             e.target.firstChild.textContent += e.target.querySelector('span').textContent;
             e.target.querySelector('span').textContent = '';
+            popup.classList.remove('open');
+            delete e.target.querySelector('span').dataset.text;
             // posiziono il cursore alla fine della stringa
             sel.setPosition(e.target.firstChild, e.target.firstChild.length);
             break;

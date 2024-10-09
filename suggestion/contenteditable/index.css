@@ -2,6 +2,7 @@
     width: 400px;
     height: 350px;
     border: solid thin gray;
+    padding: 8px;
 }
 
 .textarea_container>div {
@@ -11,8 +12,33 @@
 
 #textarea {
     color: black;
+    outline: none;
 }
 
-#textarea>span{
+#textarea>span {
     color: gray;
+}
+
+#textarea>span[data-text]::after {
+    content: 'Tab';
+    background-color: gainsboro;
+    color: #494949;
+    border-radius: 2px;
+    margin-left: 4px;
+    padding: 0px 6px;
+    border: solid thin lightgray;
+}
+
+#popupSuggestions {
+    display: none;
+}
+
+#popupSuggestions.open {
+    display: block;
+    position: absolute;
+    background-color: #494949;
+    width: 200px;
+    height: 150px;
+    color: gainsboro;
+    transition: left 250ms;
 }
