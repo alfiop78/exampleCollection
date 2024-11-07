@@ -1,0 +1,61 @@
+/* .parent {
+    width: 100%;
+    height: 100%;
+    background: lime;
+    display: flex;
+    align-items: center;
+}
+
+.child {
+    width: 50px;
+    height: 50px;
+    position: relative;
+}
+
+.one {
+    background: red;
+}
+
+.two {
+    background: blue;
+}
+
+.three {
+    background: brown;
+}
+
+.four {
+    background: pink;
+} */
+
+/* TEST: */
+.parent {
+    width: 100%;
+    height: 250px;
+    /* background: lime; */
+    display: flex;
+    border: solid thin gainsboro;
+    align-items: center;
+}
+
+.child {
+    width: 50px;
+    height: 50px;
+    position: relative;
+}
+
+.one {
+    background: red;
+}
+
+.two {
+    background: blue;
+}
+
+.three {
+    background: brown;
+}
+
+.four {
+    background: pink;
+}
