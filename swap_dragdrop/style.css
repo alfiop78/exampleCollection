@@ -9,9 +9,28 @@ body {
 }
 
 .container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    /* grid-template-columns: repeat(5, 1fr); */
+    flex-wrap: wrap;
+    background-color: lightcoral;
+    align-items: center;
     gap: 10px;
+    height: 350px
+}
+
+.el {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    background-color: lightseagreen;
+    margin: .5em;
+    cursor: move;
+}
+
+.mark {
+    background-color: red;
+    height: 100px;
+    width: 1px;
 }
 
 .box {
@@ -21,12 +40,19 @@ body {
     padding: 10px;
     cursor: move;
     position: relative;
+    height: 100px;
+    width: 300px;
     left: 0px;
-    transition: left 250ms;
+    transition: left 150ms;
 }
 
 .box.over {
     border: 3px dotted #666;
+    left: 20px;
+}
+
+.box.diff {
+    left: 20px;
 }
 
 [draggable] {
