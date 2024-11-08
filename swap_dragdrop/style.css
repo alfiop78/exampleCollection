@@ -28,9 +28,9 @@ body {
 }
 
 .mark {
-    background-color: red;
+    background-color: black;
     height: 100px;
-    width: 1px;
+    width: 2px;
 }
 
 .box {

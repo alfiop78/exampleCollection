@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     var dragSrcEl = null;
     var elementAt = null;
     const span = document.createElement('span');
-    var test;
+    var subsequentElements;
     span.className = 'mark';
 
     function handleDragStart(e) {
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
         // console.log(this);
         elementAt = document.elementFromPoint(e.clientX, e.clientY);
-        test = document.elementFromPoint(e.clientX, e.clientY);
+        subsequentElements = document.elementFromPoint(e.clientX, e.clientY);
         // console.log(elementAt);
 
         // TEST: logica funzionante con un marcatore PRIMA di elementAt (elemento su cui è posizionato il mouse)
@@ -29,10 +29,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // .box
             // console.log('drop prima di ', elementAt);
             // elementAt.style.left = '10px';
-            // fino a quando elementAt ha un elemento successivo, sposto tutti di 10px left
-            while (test.nextElementSibling) {
-                test.nextElementSibling.classList.add('diff');
-                test = test.nextElementSibling;
+            // fino a quando elementAt ha un elemento successivo, sposto tutti di 20px left con la cssClass .diff
+            if (dragSrcEl !== elementAt) {
+                while (subsequentElements.nextElementSibling) {
+                    subsequentElements.nextElementSibling.classList.add('diff');
+                    subsequentElements = subsequentElements.nextElementSibling;
+                }
             }
 
             // se il mouse si trova sullo stesso elemento (elementAt === dragSrcEl) non visualizzo lo span
@@ -46,30 +48,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             // this.appendChild(dragSrcEl);
         }
         // TEST: logica funzionante con un marcatore PRIMA di elementAt (elemento su cui è posizionato il mouse)
-        /* if (elementAt === dragSrcEl) return;
-        if (elementAt.classList.contains('container')) {
-            this.appendChild(dragSrcEl);
-        } else {
-            // console.clear();
-            // console.log('dragSrc : ', dragSrcEl.offsetLeft);
-            // console.log('elementAt before : ', elementAt.offsetLeft);
-            // console.log('diff : ', dragSrcEl.offsetLeft - elementAt.offsetLeft);
-            // console.log('width / 2: ', dragSrcEl.offsetWidth / 2);
-            if (dragSrcEl.offsetLeft - elementAt.offsetLeft <= (dragSrcEl.offsetWidth / 2)) {
-                // console.log(elementAt);
-                // elementAt.style.left = '-100%';
-                // const val = dragSrcEl.offsetLeft - elementAt.offsetLeft;
-                // elementAt.style.left = `-${dragSrcEl.offsetWidth}px`;
-                // dragSrcEl.style.left = '514px';
-                elementAt.after(dragSrcEl);
-            } else {
-                // elementAt.style.left = `${dragSrcEl.offsetWidth}px`;
-                // elementAt.style.left = '100%';
-                // dragSrcEl.style.left = '-514px';
-                elementAt.before(dragSrcEl);
-            }
-        } */
-        // span.remove();
 
         e.dataTransfer.dropEffect = 'move';
 
@@ -78,7 +56,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function handleDragEnter(e) {
         console.log('drageneter');
-        this.classList.add('over');
+        console.log(this, dragSrcEl);
+        // this.classList.add('over');
+        if (this !== dragSrcEl) this.classList.add('over');
     }
 
     function handleDragLeave(e) {
