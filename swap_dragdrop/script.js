@@ -16,9 +16,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function handleDragOver(e) {
-        if (e.preventDefault) {
-            e.preventDefault();
-        }
+        if (e.preventDefault) e.preventDefault();
         // console.log(this);
         elementAt = document.elementFromPoint(e.clientX, e.clientY);
         subsequentElements = document.elementFromPoint(e.clientX, e.clientY);
@@ -87,6 +85,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
 
+    // elementi all'interno del .container, possono essere spostati tra di loro nel container
     let items = document.querySelectorAll('.container .box');
     items.forEach(function(item) {
         item.addEventListener('dragstart', handleDragStart, false);
@@ -94,6 +93,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         item.addEventListener('dragleave', handleDragLeave, false);
         item.addEventListener('dragend', handleDragEnd, false);
     });
+    // elementi esterni al .container che possono essere droppati nel container
     let elements = document.querySelectorAll('.el');
     elements.forEach(function(item) {
         item.addEventListener('dragstart', handleDragStart, false);
