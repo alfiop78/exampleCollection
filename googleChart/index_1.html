@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard con due DataTable differenti</title>
+    <!-- <link href="css/style.css" rel="stylesheet"> -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        // Load the Visualization API and the controls package.
+        google.charts.load('current', {'packages': ['corechart', 'controls']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawDashboard);
+
+        // Callback that creates and populates a data table,
+        // instantiates a dashboard, a range slider and a pie chart,
+        // passes in the data and draws it.
+        function drawDashboard() {
+
+            // Create our data table.
+            var data = google.visualization.arrayToDataTable([
+                ['azienda', 'venduto'],
+                ['autostar', 5],
+                ['GLM', 7],
+                ['Iperauto', 3],
+                ['BISSON', 2],
+                ['AUTO2', 6]
+            ]);
+
+
+            // Create a dashboard.
+            var dashboard = new google.visualization.Dashboard(
+                document.getElementById('dashboard_div'));
+
+            // Create a range slider, passing some options
+            var donutRangeSlider = new google.visualization.ControlWrapper({
+                'controlType': 'NumberRangeFilter',
+                'containerId': 'filter_div',
+                'options': {
+                    'filterColumnLabel': 'venduto'
+                }
+            });
+
+            var nameFilter = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'filter_div2',
+                'options': {
+                    'filterColumnLabel': 'azienda'
+                }
+            });
+
+            // Create a pie chart, passing some options
+            var pieChart = new google.visualization.ChartWrapper({
+                'chartType': 'PieChart',
+                'containerId': 'chart_div',
+                'options': {
+                    'width': 500,
+                    'height': 700,
+                    'pieSliceText': 'value',
+                    'legend': 'right'
+                }
+            });
+            google.visualization.events.addListener(nameFilter, 'statechange', dealerSelected);
+            function dealerSelected(e) {
+                console.log(e);
+                // console.log(e.getState());
+                const value = e.getState().selectedValues;
+                // console.log(value);
+                nfilter.setState({selectedValues: [value]});
+                console.log(nfilter);
+                nfilter.draw();
+                console.log(nfilter);
+                // dashboard_2.bind(nfilter, table);
+                // dashboard_2.draw(data_2);
+            }
+
+
+            // Establish dependencies, declaring that 'filter' drives 'pieChart',
+            // so that the pie chart will only display entries that are let through
+            // given the chosen slider range.
+            // dashboard.bind(donutRangeSlider, pieChart);
+            // dashboard.bind(donutRangeSlider, pieChart_2);
+            // dashboard.bind(donutRangeSlider, [pieChart, table]).bind(nameFilter, [pieChart, table]);
+            // dashboard.bind([donutRangeSlider, nameFilter], [pieChart, table]);
+            dashboard.bind(donutRangeSlider, nameFilter).bind(nameFilter, [pieChart]);
+
+            // Draw the dashboard.
+            dashboard.draw(data);
+
+            var dashboard_2 = new google.visualization.Dashboard(
+                document.getElementById('chart_div2'));
+            /* var nfilter = new google.visualization.ControlWrapper({
+                'controlType': 'CategoryFilter',
+                'containerId': 'flt',
+                'options': {
+                    'filterColumnLabel': 'azienda'
+                }
+            }); */
+            nfilter = nameFilter.clone();
+            nfilter.setContainerId('flt');
+            console.log(nfilter);
+            var data_2 = google.visualization.arrayToDataTable([
+                ['azienda', 'costo'],
+                ['autostar', 8],
+                ['BISSON', 5],
+                ['AUTO2', 10]
+            ]);
+            var table = new google.visualization.ChartWrapper({
+                'chartType': 'Table',
+                'containerId': 'chart2',
+                'options': {
+                    'width': 500,
+                    'height': 700
+                }
+            });
+            dashboard_2.bind(nfilter, table);
+
+            // Draw the dashboard.
+            dashboard_2.draw(data_2);
+            // table.draw();
+        }
+
+    </script>
+    <style>
+        /* #flt {
+            visibility: hidden;
+        } */
+    </style>
+</head>
+
+<body>
+
+    <p>test</p>
+    <!--Div that will hold the dashboard-->
+    <div id="dashboard_div">
+        <!--Divs that will hold each control and chart-->
+        <div id="filter_div"></div>
+        <div id="filter_div2"></div>
+        <div id="chart_div"></div>
+        <!-- <div id="chart_div2">
+            <div id="flt"></div>
+            <div id="chart2"></div>
+        </div> -->
+    </div>
+    <div id="chart_div2">
+        <div id="flt"></div>
+        <div id="chart2"></div>
+    </div>
+
+</body>
+
+</html>
