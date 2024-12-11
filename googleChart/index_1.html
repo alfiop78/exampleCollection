@@ -30,15 +30,13 @@
                 ['AUTO2', 6]
             ]);
 
-
             // Create a dashboard.
-            var dashboard = new google.visualization.Dashboard(
-                document.getElementById('dashboard_div'));
+            var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard-1'));
 
             // Create a range slider, passing some options
             var donutRangeSlider = new google.visualization.ControlWrapper({
                 'controlType': 'NumberRangeFilter',
-                'containerId': 'filter_div',
+                'containerId': 'filter-1',
                 'options': {
                     'filterColumnLabel': 'venduto'
                 }
@@ -46,7 +44,7 @@
 
             var nameFilter = new google.visualization.ControlWrapper({
                 'controlType': 'CategoryFilter',
-                'containerId': 'filter_div2',
+                'containerId': 'filter-2',
                 'options': {
                     'filterColumnLabel': 'azienda'
                 }
@@ -55,7 +53,7 @@
             // Create a pie chart, passing some options
             var pieChart = new google.visualization.ChartWrapper({
                 'chartType': 'PieChart',
-                'containerId': 'chart_div',
+                'containerId': 'chart-1',
                 'options': {
                     'width': 500,
                     'height': 700,
@@ -77,7 +75,6 @@
                 // dashboard_2.draw(data_2);
             }
 
-
             // Establish dependencies, declaring that 'filter' drives 'pieChart',
             // so that the pie chart will only display entries that are let through
             // given the chosen slider range.
@@ -90,8 +87,9 @@
             // Draw the dashboard.
             dashboard.draw(data);
 
-            var dashboard_2 = new google.visualization.Dashboard(
-                document.getElementById('chart_div2'));
+            var dashboard_2 = new google.visualization.Dashboard();
+            // var dashboard_2 = new google.visualization.Dashboard(document.getElementById('dashboard-2'));
+
             /* var nfilter = new google.visualization.ControlWrapper({
                 'controlType': 'CategoryFilter',
                 'containerId': 'flt',
@@ -108,19 +106,23 @@
                 ['BISSON', 5],
                 ['AUTO2', 10]
             ]);
+
             var table = new google.visualization.ChartWrapper({
                 'chartType': 'Table',
-                'containerId': 'chart2',
+                'containerId': 'chart-2',
+                // 'dataTable' : data_2,
                 'options': {
                     'width': 500,
                     'height': 700
                 }
             });
+
             dashboard_2.bind(nfilter, table);
 
             // Draw the dashboard.
             dashboard_2.draw(data_2);
-            // table.draw();
+            // oppure
+            // dashboard_2.draw(table.getDataTable());
         }
 
     </script>
@@ -135,20 +137,23 @@
 
     <p>test</p>
     <!--Div that will hold the dashboard-->
-    <div id="dashboard_div">
+    <div id="dashboard-1">
         <!--Divs that will hold each control and chart-->
-        <div id="filter_div"></div>
-        <div id="filter_div2"></div>
-        <div id="chart_div"></div>
-        <!-- <div id="chart_div2">
+        <div id="filters">
+            <div id="filter-1"></div>
+            <div id="filter-2"></div>
+        </div>
+        <div id="chart-1"></div>
+
+        <div id="dashboard-2">
             <div id="flt"></div>
-            <div id="chart2"></div>
-        </div> -->
+            <div id="chart-2"></div>
+        </div>
     </div>
-    <div id="chart_div2">
+    <!-- <div id="dashboard-2">
         <div id="flt"></div>
-        <div id="chart2"></div>
-    </div>
+        <div id="chart-2"></div>
+    </div> -->
 
 </body>
 
