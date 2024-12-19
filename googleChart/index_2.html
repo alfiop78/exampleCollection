@@ -46,7 +46,7 @@
             // Create a pie chart, passing some options
             var pieChart = new google.visualization.ChartWrapper({
                 'chartType': 'PieChart',
-                'containerId': 'chart-1',
+                'containerId': 'chart-2',
                 'options': {
                     'width': 500,
                     'height': 700,
@@ -58,7 +58,7 @@
 
             var table = new google.visualization.ChartWrapper({
                 'chartType': 'Table',
-                'containerId': 'chart-2',
+                'containerId': 'chart-1',
                 'options': {
                     'width': 500,
                     'height': 700
@@ -70,6 +70,44 @@
             // given the chosen slider range.
             dashboard.bind(nameFilter, [pieChart, table]);
 
+            // NOTE: esempio 1
+            google.visualization.events.addListener(table, 'ready', function () {
+                var graph = new google.visualization.PieChart(document.getElementById('chart-2'));
+                var dataGroup = google.visualization.data.group(
+                    table.getDataTable(),
+                    [0],
+                    [{
+                        "column": 2,
+                        "aggregation": google.visualization.data.sum,
+                        "type": "number"
+                    }]
+                );
+                graph.draw(dataGroup);
+            });
+            // NOTE: esempio 1
+
+            // NOTE: esempio 2
+            google.visualization.events.addListener(table, 'ready', function () {
+                var dataGroup = google.visualization.data.group(
+                    table.getDataTable(),
+                    [0],
+                    [{
+                        "column": 2,
+                        "aggregation": google.visualization.data.sum,
+                        "type": "number"
+                    }]
+                );
+                // ...con l'utilizzo del ChartWrapper
+                var chart = new google.visualization.ChartWrapper({
+                    chartType : 'ColumnChart',
+                    containerId : 'chart-3',
+                    dataTable : dataGroup
+                });
+                chart.draw();
+            });
+            // NOTE: esempio 2
+
+
             // Draw the dashboard.
             dashboard.draw(data);
         }
@@ -78,7 +116,7 @@
 
 <body>
 
-    <p>test</p>
+    <p>Dashboard con più oggetti grafici (stesso DataTable) ma con aggregazioni diverse</p>
     <!--Div that will hold the dashboard-->
     <div id="dashboard_div">
         <!--Divs that will hold each control and chart-->
@@ -88,6 +126,7 @@
         <!-- <div id="filter_div2"></div> -->
         <div id="chart-1"></div>
         <div id="chart-2"></div>
+        <div id="chart-3"></div>
     </div>
 
 </body>
