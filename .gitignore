@@ -1,0 +1,5 @@
+/node_modules
+/serviceWorker/node_modules
+/serviceWorker/package*
+/vendor
+npm-debug.log
