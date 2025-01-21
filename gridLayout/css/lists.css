@@ -1,0 +1,38 @@
+/* button dropdown */
+.btn-dropdown {
+  outline: none;
+  border: none;
+  padding: .5rem;
+  margin: .5rem;
+  /* min-width: 100px; */
+  /* max-width: 160px; */
+  opacity: .8;
+  font-size: medium;
+  background-color: var(--main-bg-color);
+  color: white;
+  border-radius: 4px;
+}
+
+.btn-dropdown>span {
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
+}
+
+.btn-dropdown:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+/* dropdown */
+.dropdown {
+  display: none;
+}
+
+.dropdown.show {
+  display: block;
+}
+
+li {
+  line-height: 2rem;
+}
