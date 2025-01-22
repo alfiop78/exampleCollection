@@ -182,12 +182,18 @@ nav ul {
   grid-column: 8 / span 4;
 }
 
+/* start dalla colonna 2 fino alla fine della riga */
 .grid>.row>.col-start-2 {
   grid-column: 2 / -1;
 }
 
+/* start dalla colonna 2 e si espande per 6 colonne */
 .grid>.row>.col-start-2.col-6 {
   grid-column: 2 / span 6;
+}
+
+.grid>.row>.col-start-3.col-3 {
+  grid-column: 3 / span 3;
 }
 
 .grid>.row>.col-5 {
