@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>GridSystem - 01</title>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/material-symbols.css">
+  <link rel="stylesheet" href="css/grid-layout.css">
+  <link rel="stylesheet" href="css/dropdown.css">
+  <link rel="stylesheet" href="css/lists.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- <header class="main-head">The header</header> -->
+    <header class="main-head">
+      <div class="nav-button">
+        <a href="#" id="menu" data-reference-id="main-nav"><i class="material-symbols-outlined md-white">menu</i></a>
+        <!-- esempio con fill <i class="material-symbols-outlined fill">home</i> -->
+      </div>
+      <h1 class="title">Application Title</h1>
+    </header>
+    <nav id="main-nav" class="main-nav show">
+      <ul>
+        <div>
+          <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
+          <button type="button" class="btn-dropdown" data-dropdown-id="dropdown-1">
+            <span>
+              <i class="material-symbols-outlined">search</i>
+              <span>Filter 1</span>
+            </span>
+          </button>
+
+          <div class="dropdown" id="dropdown-1">
+            <ul>
+              <li>item 1</li>
+              <li>item 2</li>
+              <li>item 3</li>
+            </ul>
+          </div>
+        </div>
+
+        <li><a href="#">Nav 2</a></li>
+        <li><a href="#">Nav 3</a></li>
+      </ul>
+    </nav>
+    <section class="wrapper">
+      <div class="item1">Start column line 1, span 3 column tracks.</div>
+      <div class="item2">
+        Start column line 6, span 4 column tracks. 2 row tracks.
+      </div>
+      <div class="item3">Start row 2 column line 2, span 2 column tracks.</div>
+      <div class="item4">
+        Start at column line 3, span to the end of the grid (-1).
+      </div>
+      <div class="item5">
+        item 5
+      </div>
+      <div class="item6">
+        <form class="grid">
+          <div class="row">
+            <div class="col col-3">
+                <p>Elemento col di 3 celle su 12</p>
+            </div>
+            <div class="col col-5">
+                <p>Elemento col di 5 celle su 12</p>
+            </div>
+            <div class="col col-4">
+                <p>Elemento col di 4 celle su 12</p>
+            </div>
+            <div class="col col-12">
+                <p>Elemento col con 12 colonne su 12</p>
+            </div>
+            <div class="col col-start-4 col-6">
+                <p>Elemento che inizia dalla cella 4 ed effettua uno span di 6 colonne</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col col-1">
+                <p>Elemento col di 1 celle su 12</p>
+            </div>
+            <div class="col col-8">
+                <p>Elemento col di 8 celle su 12</p>
+            </div>
+            <div class="col col-start-8 col-4">
+                <p>Elemento che inizia dalla cella 4 ed effettua uno span di 6 colonne</p>
+            </div>
+            <div class="col col-start-5">
+                <p>Elemento che inizia dalla colonna 5 fino alla fine (12)</p>
+            </div>
+            <div class="col col-start-2 col-6">
+                <p>Elemento che inizia dalla colonna 2 e si espande su <b>6</b> colonne</p>
+            </div>
+          </div>
+          <div class="row autofit">
+            <div class="col col-3">
+                <p>Elemento col di 3 celle su 12</p>
+            </div>
+            <div class="col col-5">
+                <p>Elemento col di 5 celle su 12</p>
+            </div>
+            <div class="col col-2">
+                <p>Elemento col di 2 celle su 12</p>
+            </div>
+          </div>
+          <div class="row autofill">
+            <div class="col col-3">
+                <p>Elemento col di 3 celle su 12</p>
+            </div>
+            <div class="col col-5">
+                <p>Elemento col di 5 celle su 12</p>
+            </div>
+            <div class="col col-2">
+                <p>Elemento col di 2 celle su 12</p>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </section>
+    <aside class="side">Sidebar area</aside>
+    <footer class="main-footer">The footer</footer>
+  </div>
+  <!-- <script src="js/components.js"></script> -->
+
+</body>
+
+</html>
