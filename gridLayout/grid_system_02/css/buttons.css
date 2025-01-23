@@ -1,0 +1,50 @@
+/* button dropdown */
+.btn-dropdown,
+.btn {
+  outline: none;
+  border: none;
+  padding: .6rem;
+  margin: .5rem;
+  opacity: .8;
+  font-size: medium;
+  background-color: var(--main-bg-color);
+  color: var(--main-fg-color);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  column-gap: 4px;
+}
+
+.btn-dropdown:not(:disabled):hover,
+.btn:not(:disabled):hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+/* dropdown */
+.dropdown {
+  display: none;
+}
+
+.dropdown.show {
+  display: block;
+}
+
+li {
+  line-height: 2rem;
+}
+
+/* buttons */
+
+.btn.btn-small {
+  padding: .4rem;
+}
+
+.btn.btn-large {
+  padding: .8rem;
+}
+
+.fg-white,
+.fg-white * {
+  color: white;
+}

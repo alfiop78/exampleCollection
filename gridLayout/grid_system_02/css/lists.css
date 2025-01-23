@@ -1,0 +1,11 @@
+li {
+  line-height: 2rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+li:hover {
+  cursor: pointer;
+  background-color: gainsboro;
+  color: var(--main-bg-color);
+}
