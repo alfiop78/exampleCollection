@@ -13,5 +13,16 @@
     } else {
         alert('No service worker support in this browser');
     }
-})();
 
+    /* window.addEventListener('beforeinstallprompt', (event) => {
+        // event.preventDefault();
+        event.userChoice.then((result) => {
+            console.log(result.outcome);
+            if (result.outcome === 'dismissed') {
+                console.log("L'app non è stata aggiunta alla Home");
+            } else {
+                console.log("L'app è stata aggiunta alla Home");
+            }
+        });
+    }); */
+})();

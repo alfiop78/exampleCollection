@@ -1,0 +1,17 @@
+.dropdown {
+    /* background-color: lightblue; */
+    transition: all 80ms;
+    display: grid;
+    grid-template-rows: 0fr;
+    margin: .5rem;
+}
+
+.dropdown.show {
+    grid-template-rows: 1fr;
+    max-height: 250px;
+}
+
+.dropdown>.dropdown-content {
+    /* overflow: hidden; */
+    overflow: auto;
+}

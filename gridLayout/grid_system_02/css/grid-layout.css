@@ -75,8 +75,8 @@ header h1 {
 }
 
 nav ul {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex; */
+  /* justify-content: space-between; */
   margin-block-start: .5rem;
   margin-block-end: .5rem;
   /* padding-inline: .5rem; */
@@ -548,10 +548,10 @@ nav ul {
       "footer  footer";
   }
 
-  nav ul {
+  /* nav ul {
     display: flex;
     justify-content: space-between;
-  }
+  } */
 
   .main-nav.show {
     grid-area: nav;

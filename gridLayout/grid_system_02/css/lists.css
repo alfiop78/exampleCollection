@@ -1,11 +1,26 @@
 li {
-  line-height: 2rem;
-  padding: 4px 8px;
-  border-radius: 4px;
+    line-height: 2rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+li.li-multiselect {
+    display: grid;
+    align-items: center;
+    grid-template: 1fr / auto 1fr auto;
+    grid-column-gap: 4px;
+}
+
+li.li-multiselect>i:last-child {
+    visibility: hidden;
+}
+
+li.li-multiselect>i.selected:last-child {
+    visibility: visible;
 }
 
 li:hover {
-  cursor: pointer;
-  background-color: gainsboro;
-  color: var(--main-bg-color);
+    cursor: pointer;
+    background-color: #e2e2e278;
+    color: var(--main-bg-color);
 }
