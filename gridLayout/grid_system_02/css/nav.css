@@ -1,0 +1,36 @@
+.nav__items {
+  display: grid;
+  grid-row-gap: 4px;
+}
+
+.nav__item {
+  display: grid;
+}
+
+.ul__nav {
+  transition: all 80ms;
+  display: grid;
+  grid-template-rows: 0fr;
+  margin: 0px;
+  margin-inline-start: .5rem;
+  padding-inline-start: .5rem;
+}
+
+.ul__nav.show {
+  grid-template-rows: 1fr;
+  max-height: 250px;
+}
+
+.ul__nav>.ul__content {
+  overflow: auto;
+}
+
+.dropdown .ul__content::-webkit-scrollbar,
+.dropdown .ul__content::-webkit-scrollbar-thumb {
+  visibility: hidden;
+}
+
+.dropdown .ul__content:hover::-webkit-scrollbar,
+.dropdown .ul__content:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}

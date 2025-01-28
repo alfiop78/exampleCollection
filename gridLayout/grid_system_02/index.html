@@ -15,7 +15,8 @@
   <link rel="stylesheet" href="css/grid-layout.css">
   <link rel="stylesheet" href="css/lists.css">
   <link rel="stylesheet" href="css/buttons.css">
-  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/dropdown.css">
+  <link rel="stylesheet" href="css/nav.css">
 </head>
 
 <body>
@@ -30,70 +31,51 @@
       <h1 class="title">Application Title</h1>
     </header>
     <nav id="main-nav" class="main-nav show">
-      <ul>
-        <div>
+      <ul class="nav__items">
+
+        <div class="nav__item">
           <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
-          <button type="button" class="btn-dropdown fg-white" data-dropdown-id="dropdown-1">
-            <i class="material-symbols-outlined">filter_alt</i>
-            <span>Dropdown multi-select</span>
+          <button type="button" class="btn fg-white with-icon" data-rel-id="nav__item-1">
+            <i class="material-symbols-outlined">dashboard</i>
+            <span>nav 1</span>
             <i class="material-symbols-outlined">arrow_drop_down</i>
           </button>
-
-          <ul class="dropdown" id="dropdown-1" multiple>
-            <div class="dropdown-content">
-              <li class="items">
+          <ul class="ul__nav" id="nav__item-1">
+            <div class="ul__content" data-parent="nav__item-1">
+              <li class="items with-icon">
+                <i class="material-symbols-outlined">filter_alt</i>
                 <span>item 1</span>
-                <i class="material-symbols-outlined">done</i>
               </li>
-              <li class="items">
-                <span>item 2</span>
-                <i class="material-symbols-outlined">done</i>
-              </li>
-              <li class="items">
-                <span>item 3</span>
-                <i class="material-symbols-outlined">done</i>
-              </li>
-              <li class="items" selected>
-                <span>item 4</span>
-                <i class="material-symbols-outlined">done</i>
-              </li>
-              <li class="items">
-                <span>item 5</span>
-                <i class="material-symbols-outlined">done</i>
-              </li>
-              <li class="items">
-                <span>item 6</span>
-                <i class="material-symbols-outlined">done</i>
-              </li>
-              <li class="items">
-                <span>item 7</span>
-                <i class="material-symbols-outlined">done</i>
-              </li>
-              <li class="items">
-                <span>item 8</span>
-                <i class="material-symbols-outlined">done</i>
-              </li>
+              <li class="items">item 2</li>
+              <li class="items">item 3</li>
+              <li class="items">item 4</li>
+              <li class="items">item 5</li>
+              <li class="items">item 2</li>
+              <li class="items">item 3</li>
+              <li class="items">item 4</li>
+              <li class="items">item 5</li>
             </div>
           </ul>
         </div>
 
-        <div>
+        <div class="nav__item">
           <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
-          <button type="button" class="btn-dropdown fg-white" data-dropdown-id="dropdown-2">
-            <span>Dropdown 2</span>
+          <button type="button" class="btn fg-white with-icon" data-rel-id="nav__item-2">
+            <i class="material-symbols-outlined">sync</i>
+            <span>nav 2</span>
             <i class="material-symbols-outlined">arrow_drop_down</i>
           </button>
-          <ul class="dropdown" id="dropdown-2">
-            <div class="dropdown-content" data-parent="dropdown-2">
+          <ul class="ul__nav" id="nav__item-2">
+            <div class="ul__content" data-parent="nav__item-2">
               <li class="items">item 1</li>
               <li class="items">item 2</li>
               <li class="items">item 3</li>
               <li class="items">item 4</li>
               <li class="items">item 5</li>
-              <li class="items">item 2</li>
-              <li class="items">item 3</li>
-              <li class="items">item 4</li>
-              <li class="items">item 5</li>
+              <li class="items">item 6</li>
+              <li class="items">item 7</li>
+              <li class="items">item 8</li>
+              <li class="items">item 9</li>
             </div>
           </ul>
         </div>
@@ -102,7 +84,7 @@
         <!-- <li><a href="#">Nav 3</a></li> -->
       </ul>
     </nav>
-    <section class="wrapper">
+    <section id="wrapper" class="wrapper">
       <h2>Sezione tasti actions</h2>
       <div class="row autofill">
         <div class="col">
@@ -122,12 +104,76 @@
         </div>
         <div class="col">
           <section>
-            action 3
+            <h4>section title</h4>
+            <div class="dropdown">
+              <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
+              <button type="button" class="btn-dropdown fg-white" data-rel-id="dropdown-3">
+                <span>Dropdown 2</span>
+                <i class="material-symbols-outlined">arrow_drop_down</i>
+              </button>
+              <ul class="ul__dropdown" id="dropdown-3">
+                <div class="ul__content" data-parent="dropdown-3">
+                  <li class="items">item 1</li>
+                  <li class="items">item 2</li>
+                  <li class="items">item 3</li>
+                  <li class="items">item 4</li>
+                  <li class="items">item 5</li>
+                  <li class="items">item 2</li>
+                  <li class="items">item 3</li>
+                  <li class="items">item 4</li>
+                  <li class="items">item 5</li>
+                </div>
+              </ul>
+            </div>
           </section>
         </div>
         <div class="col">
           <section>
-            action 4
+            <div class="dropdown">
+              <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
+              <button type="button" class="btn-dropdown fg-white" data-rel-id="dropdown-1">
+                <i class="material-symbols-outlined">filter_alt</i>
+                <span>Dropdown multi-select</span>
+                <i class="material-symbols-outlined">arrow_drop_down</i>
+              </button>
+
+              <ul class="ul__dropdown" id="dropdown-1" multiple>
+                <div class="ul__content">
+                  <li class="items">
+                    <span>item 1</span>
+                    <i class="material-symbols-outlined">done</i>
+                  </li>
+                  <li class="items">
+                    <span>item 2</span>
+                    <i class="material-symbols-outlined">done</i>
+                  </li>
+                  <li class="items">
+                    <span>item 3</span>
+                    <i class="material-symbols-outlined">done</i>
+                  </li>
+                  <li class="items" selected>
+                    <span>item 4</span>
+                    <i class="material-symbols-outlined">done</i>
+                  </li>
+                  <li class="items">
+                    <span>item 5</span>
+                    <i class="material-symbols-outlined">done</i>
+                  </li>
+                  <li class="items">
+                    <span>item 6</span>
+                    <i class="material-symbols-outlined">done</i>
+                  </li>
+                  <li class="items">
+                    <span>item 7</span>
+                    <i class="material-symbols-outlined">done</i>
+                  </li>
+                  <li class="items">
+                    <span>item 8</span>
+                    <i class="material-symbols-outlined">done</i>
+                  </li>
+                </div>
+              </ul>
+            </div>
           </section>
         </div>
         <div class="col">
