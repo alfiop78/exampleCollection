@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
   <title>GridSystem - 01</title>
+  <link rel="icon" href="/images/favicon.png" type="image/png" />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="css/material-symbols.css">
+  <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/grid-layout.css">
   <link rel="stylesheet" href="css/lists.css">
   <link rel="stylesheet" href="css/buttons.css">
@@ -21,8 +23,7 @@
 
 <body>
 
-  <div class="container">
-    <!-- <header class="main-head">The header</header> -->
+  <main class="container">
     <header class="main-head">
       <div class="nav-button">
         <a href="#" id="menu" data-reference-id="main-nav"><i class="material-symbols-outlined md-white">menu</i></a>
@@ -34,12 +35,16 @@
       <ul class="nav__items">
 
         <div class="nav__item">
-          <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
-          <button type="button" class="btn fg-white with-icon" data-rel-id="nav__item-1">
+          <a href="#" class="btn fg-white with-icon" data-rel-id="nav__item-1">
             <i class="material-symbols-outlined">dashboard</i>
             <span>nav 1</span>
             <i class="material-symbols-outlined">arrow_drop_down</i>
-          </button>
+          </a>
+          <!-- <button type="button" class="btn fg-white with-icon" data-rel-id="nav__item-1">
+            <i class="material-symbols-outlined">dashboard</i>
+            <span>nav 1</span>
+            <i class="material-symbols-outlined">arrow_drop_down</i>
+          </button> -->
           <ul class="ul__nav" id="nav__item-1">
             <div class="ul__content" data-parent="nav__item-1">
               <li class="items with-icon">
@@ -59,12 +64,16 @@
         </div>
 
         <div class="nav__item">
-          <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
-          <button type="button" class="btn fg-white with-icon" data-rel-id="nav__item-2">
+          <a href="#" class="btn fg-white with-icon" data-rel-id="nav__item-2">
+            <i class="material-symbols-outlined">dashboard</i>
+            <span>nav 2</span>
+            <i class="material-symbols-outlined">arrow_drop_down</i>
+          </a>
+          <!-- <button type="button" class="btn fg-white with-icon" data-rel-id="nav__item-2">
             <i class="material-symbols-outlined">sync</i>
             <span>nav 2</span>
             <i class="material-symbols-outlined">arrow_drop_down</i>
-          </button>
+          </button> -->
           <ul class="ul__nav" id="nav__item-2">
             <div class="ul__content" data-parent="nav__item-2">
               <li class="items">item 1</li>
@@ -79,9 +88,6 @@
             </div>
           </ul>
         </div>
-
-        <!-- <li><a href="#">Nav 2</a></li> -->
-        <!-- <li><a href="#">Nav 3</a></li> -->
       </ul>
     </nav>
     <section id="wrapper" class="wrapper">
@@ -104,7 +110,7 @@
         </div>
         <div class="col">
           <section>
-            <h4>section title</h4>
+            <h3>section title</h3>
             <div class="dropdown">
               <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
               <button type="button" class="btn-dropdown fg-white" data-rel-id="dropdown-3">
@@ -270,7 +276,7 @@
     </section>
     <aside class="side">Sidebar area</aside>
     <footer class="main-footer">The footer</footer>
-  </div>
+  </main>
   <script src="js/components.js"></script>
 
 </body>

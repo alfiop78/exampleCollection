@@ -1,21 +1,33 @@
 console.log('component');
 
 const wrapper = document.getElementById('wrapper');
-// wrapper.addEventListener('click', close, false);
-// wrapper.addEventListener('click', close, true);
+// wrapper.addEventListener('click', wrapperClick, false);
+// wrapper.addEventListener('click', wrapperClick, true);
 
-document.querySelectorAll('a.btn-dropdown').forEach(dropdown => {
-  dropdown.addEventListener('click', (e) => {
+document.querySelectorAll('a.btn').forEach(nav => {
+  nav.addEventListener('click', (e) => {
     e.preventDefault();
-    wrapper.addEventListener('click', close, true);
-    const dropdown = document.getElementById(e.currentTarget.dataset.dropdownId);
-    dropdown.classList.toggle('show');
+    // if (e.currentTarget.classList.contains('show')) e.currentTarget.classList.remove('show');
+
+    // chiudo eventuali menù già aperti, se ci sono
+    const openedNav = document.querySelector('.ul__nav.show');
+    const nav = document.getElementById(e.currentTarget.dataset.relId);
+    if (openedNav) {
+      // document.querySelector('.ul__nav.show')?.classList.toggle('show');
+      openedNav.classList.toggle('show');
+      nav.classList.toggle('show');
+      // se l'elemeneto aperto è diverso da quello cliccato
+    } else if (openedNav === e.currentTarget) {
+      openedNav.classList.remove('show');
+    } else {
+      nav.classList.toggle('show');
+    }
   })
 });
 
 document.querySelectorAll('button.btn-dropdown, button.btn').forEach(dropdown => {
   dropdown.addEventListener('click', (e) => {
-    wrapper.addEventListener('click', close, true);
+    wrapper.addEventListener('click', wrapperClick, true);
     // chiudo le dropdown eventualmente aperte
     document.querySelectorAll('.ul__dropdown.show').forEach(dropdown => dropdown.classList.toggle('show'));
     const dropdown = document.getElementById(e.currentTarget.dataset.relId);
@@ -50,7 +62,7 @@ function handleMultiSelectElement(e) {
   e.currentTarget.toggleAttribute("selected");
 }
 
-function close(e) {
+function wrapperClick(e) {
   // console.log(e);
   // console.log(e.currentTarget, this)
   // console.log(e.target)
@@ -59,6 +71,6 @@ function close(e) {
   // ul__dropdown, quindi , chiudo le dropdown se l'utente non ha cliccato su un elemento della dropdown
   if (!e.target.offsetParent.classList.contains('ul__dropdown')) {
     if (e.currentTarget === this) document.querySelectorAll('.ul__dropdown.show').forEach(dropdown => dropdown.classList.toggle('show'));
-    wrapper.removeEventListener('click', close, true);
+    wrapper.removeEventListener('click', wrapperClick, true);
   }
 }

@@ -1,3 +1,7 @@
+a {
+  text-decoration: unset;
+}
+
 .nav__items {
   display: grid;
   grid-row-gap: 4px;
@@ -8,17 +12,17 @@
 }
 
 .ul__nav {
-  transition: all 80ms;
+  transition: all 150ms;
   display: grid;
   grid-template-rows: 0fr;
   margin: 0px;
   margin-inline-start: .5rem;
   padding-inline-start: .5rem;
+  max-height: 250px;
 }
 
 .ul__nav.show {
   grid-template-rows: 1fr;
-  max-height: 250px;
 }
 
 .ul__nav>.ul__content {
