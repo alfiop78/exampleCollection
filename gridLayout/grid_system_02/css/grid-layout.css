@@ -592,7 +592,6 @@ nav ul {
   .main-nav.show {
     grid-area: nav;
     background-color: var(--main-bg-color);
-    /* padding: 1em; */
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
     border-radius: 2px;
     width: 270px;
@@ -604,14 +603,13 @@ nav ul {
     grid-area: nav;
     transition: width 250ms;
     background-color: var(--main-bg-color);
-    /* padding: 0em; */
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
     border-radius: 2px;
     width: 0px;
     z-index: 9;
     position: relative;
     display: grid;
-    grid-template-rows: 1fr auto;
+    grid-template-rows: auto 1fr auto;
   }
 
   .main-nav.show>ul {
@@ -622,8 +620,6 @@ nav ul {
   }
 
   .main-nav:not(.show)>ul {
-    /* transition: opacity 100ms; */
-    /* opacity: 0; */
     transition: left 150ms;
     position: relative;
     left: -100%;
