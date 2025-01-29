@@ -1,10 +1,26 @@
 a {
   text-decoration: unset;
+  padding: .6rem;
 }
 
+/* nav>hr {
+  border: none;
+  width: 80%;
+  height: 2px;
+  background-color: #676767;
+} */
+
+/* #main-nav>.nav__content_section {
+  overflow-y: auto;
+  position: relative;
+} */
+
 .nav__items {
-  display: grid;
-  grid-row-gap: 4px;
+  display: flex;
+  padding: 1em;
+  row-gap: 4px;
+  /* position: absolute; */
+  /* width: 100%; */
 }
 
 .nav__item {

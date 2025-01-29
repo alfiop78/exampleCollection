@@ -33,7 +33,6 @@
     </header>
     <nav id="main-nav" class="main-nav show">
       <ul class="nav__items">
-
         <div class="nav__item">
           <a href="#" class="btn fg-white with-icon" data-rel-id="nav__item-1">
             <i class="material-symbols-outlined">dashboard</i>
@@ -89,189 +88,195 @@
           </ul>
         </div>
       </ul>
+      <ul class="nav__items">
+        <a href="#" title="Settings">Settings</a>
+      </ul>
     </nav>
     <section id="wrapper" class="wrapper">
-      <h2>Sezione tasti actions</h2>
-      <div class="row autofill">
-        <div class="col">
-          <section>
-            action 1
-            <button type="button" class="btn fg-white">button 1</button>
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            action 2
-            <button type="button" class="btn btn-small fg-white">
-              <i class="material-symbols-outlined md-18">filter_alt</i>
-              <span>button icon 1</span>
-            </button>
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            <h3>section title</h3>
-            <div class="dropdown">
-              <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
-              <button type="button" class="btn-dropdown fg-white" data-rel-id="dropdown-3">
-                <span>Dropdown 2</span>
-                <i class="material-symbols-outlined">arrow_drop_down</i>
+      <section id="wrapper__content">
+        <h2>Sezione tasti actions</h2>
+        <div class="row autofill">
+          <div class="col">
+            <section>
+              action 1
+              <button type="button" class="btn fg-white">button 1</button>
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              action 2
+              <button type="button" class="btn btn-small fg-white">
+                <i class="material-symbols-outlined md-18">filter_alt</i>
+                <span>button icon 1</span>
               </button>
-              <ul class="ul__dropdown" id="dropdown-3">
-                <div class="ul__content" data-parent="dropdown-3">
-                  <li class="items">item 1</li>
-                  <li class="items">item 2</li>
-                  <li class="items">item 3</li>
-                  <li class="items">item 4</li>
-                  <li class="items">item 5</li>
-                  <li class="items">item 2</li>
-                  <li class="items">item 3</li>
-                  <li class="items">item 4</li>
-                  <li class="items">item 5</li>
-                </div>
-              </ul>
-            </div>
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            <div class="dropdown">
-              <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
-              <button type="button" class="btn-dropdown fg-white" data-rel-id="dropdown-1">
-                <i class="material-symbols-outlined">filter_alt</i>
-                <span>Dropdown multi-select</span>
-                <i class="material-symbols-outlined">arrow_drop_down</i>
-              </button>
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              <h3>section title</h3>
+              <div class="dropdown">
+                <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
+                <button type="button" class="btn-dropdown fg-white" data-rel-id="dropdown-3">
+                  <span>Dropdown 2</span>
+                  <i class="material-symbols-outlined">arrow_drop_down</i>
+                </button>
+                <ul class="ul__dropdown" id="dropdown-3">
+                  <div class="ul__content" data-parent="dropdown-3">
+                    <li class="items">item 1</li>
+                    <li class="items">item 2</li>
+                    <li class="items">item 3</li>
+                    <li class="items">item 4</li>
+                    <li class="items">item 5</li>
+                    <li class="items">item 2</li>
+                    <li class="items">item 3</li>
+                    <li class="items">item 4</li>
+                    <li class="items">item 5</li>
+                  </div>
+                </ul>
+              </div>
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              <div class="dropdown">
+                <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
+                <button type="button" class="btn-dropdown fg-white" data-rel-id="dropdown-1">
+                  <i class="material-symbols-outlined">filter_alt</i>
+                  <span>Dropdown multi-select</span>
+                  <i class="material-symbols-outlined">arrow_drop_down</i>
+                </button>
 
-              <ul class="ul__dropdown" id="dropdown-1" multiple>
-                <div class="ul__content">
-                  <li class="items">
-                    <span>item 1</span>
-                    <i class="material-symbols-outlined">done</i>
-                  </li>
-                  <li class="items">
-                    <span>item 2</span>
-                    <i class="material-symbols-outlined">done</i>
-                  </li>
-                  <li class="items">
-                    <span>item 3</span>
-                    <i class="material-symbols-outlined">done</i>
-                  </li>
-                  <li class="items" selected>
-                    <span>item 4</span>
-                    <i class="material-symbols-outlined">done</i>
-                  </li>
-                  <li class="items">
-                    <span>item 5</span>
-                    <i class="material-symbols-outlined">done</i>
-                  </li>
-                  <li class="items">
-                    <span>item 6</span>
-                    <i class="material-symbols-outlined">done</i>
-                  </li>
-                  <li class="items">
-                    <span>item 7</span>
-                    <i class="material-symbols-outlined">done</i>
-                  </li>
-                  <li class="items">
-                    <span>item 8</span>
-                    <i class="material-symbols-outlined">done</i>
-                  </li>
-                </div>
-              </ul>
-            </div>
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            action 5
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            action 6
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            action 7
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            action 8
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            action 9
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            action 10
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            action 11
-          </section>
-        </div>
-        <div class="col">
-          <section>
-            action 12
-          </section>
-        </div>
-      </div>
-
-      <h2>Data table</h2>
-
-      <div class="row">
-        <div class="col col-12">
-
-          <table>
-            <caption>
-              Front-end web developer course 2021
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Person</th>
-                <th scope="col">Most interest in</th>
-                <th scope="col">Age</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Chris</th>
-                <td>HTML tables</td>
-                <td>22</td>
-              </tr>
-              <tr>
-                <th scope="row">Dennis</th>
-                <td>Web accessibility</td>
-                <td>45</td>
-              </tr>
-              <tr>
-                <th scope="row">Sarah</th>
-                <td>JavaScript frameworks</td>
-                <td>29</td>
-              </tr>
-              <tr>
-                <th scope="row">Karen</th>
-                <td>Web performance</td>
-                <td>36</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th scope="row" colspan="2">Average age</th>
-                <td>33</td>
-              </tr>
-            </tfoot>
-          </table>
+                <ul class="ul__dropdown" id="dropdown-1" multiple>
+                  <div class="ul__content">
+                    <li class="items">
+                      <span>item 1</span>
+                      <i class="material-symbols-outlined">done</i>
+                    </li>
+                    <li class="items">
+                      <span>item 2</span>
+                      <i class="material-symbols-outlined">done</i>
+                    </li>
+                    <li class="items">
+                      <span>item 3</span>
+                      <i class="material-symbols-outlined">done</i>
+                    </li>
+                    <li class="items" selected>
+                      <span>item 4</span>
+                      <i class="material-symbols-outlined">done</i>
+                    </li>
+                    <li class="items">
+                      <span>item 5</span>
+                      <i class="material-symbols-outlined">done</i>
+                    </li>
+                    <li class="items">
+                      <span>item 6</span>
+                      <i class="material-symbols-outlined">done</i>
+                    </li>
+                    <li class="items">
+                      <span>item 7</span>
+                      <i class="material-symbols-outlined">done</i>
+                    </li>
+                    <li class="items">
+                      <span>item 8</span>
+                      <i class="material-symbols-outlined">done</i>
+                    </li>
+                  </div>
+                </ul>
+              </div>
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              action 5
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              action 6
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              action 7
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              action 8
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              action 9
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              action 10
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              action 11
+            </section>
+          </div>
+          <div class="col">
+            <section>
+              action 12
+            </section>
+          </div>
         </div>
 
-      </div>
+        <h2>Data table</h2>
+
+        <div class="row">
+          <div class="col col-12">
+
+            <table>
+              <caption>
+                Front-end web developer course 2021
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Person</th>
+                  <th scope="col">Most interest in</th>
+                  <th scope="col">Age</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Chris</th>
+                  <td>HTML tables</td>
+                  <td>22</td>
+                </tr>
+                <tr>
+                  <th scope="row">Dennis</th>
+                  <td>Web accessibility</td>
+                  <td>45</td>
+                </tr>
+                <tr>
+                  <th scope="row">Sarah</th>
+                  <td>JavaScript frameworks</td>
+                  <td>29</td>
+                </tr>
+                <tr>
+                  <th scope="row">Karen</th>
+                  <td>Web performance</td>
+                  <td>36</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th scope="row" colspan="2">Average age</th>
+                  <td>33</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
+        </div>
+
+      </section>
 
     </section>
     <aside class="side">Sidebar area</aside>

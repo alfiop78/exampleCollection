@@ -90,13 +90,24 @@ nav ul {
 .wrapper {
   grid-area: wrapper;
   background-color: white;
-  padding: 1em;
   box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
   border-radius: 2px;
   /* display: grid; */
   /* grid-template-columns: repeat(12, [col-start] 1fr); */
   gap: 1em;
   z-index: 10;
+  position: relative;
+}
+
+#wrapper__content {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  height: 100%;
+  padding: 1em;
+  overflow-y: auto;
 }
 
 .item1 {
@@ -490,12 +501,12 @@ nav ul {
 .main-nav.show {
   grid-area: nav;
   background-color: var(--main-bg-color);
-  padding: 1em;
+  /* padding: 1em; */
   box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
   border-radius: 2px;
   position: absolute;
   height: 100%;
-  padding-top: 74px;
+  /* padding-top: 74px; */
   width: 270px;
 }
 
@@ -555,7 +566,7 @@ nav ul {
   .main-nav.show {
     grid-area: nav;
     background-color: var(--main-bg-color);
-    padding: 1em;
+    /* padding: 1em; */
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
     border-radius: 2px;
     position: relative;
@@ -581,37 +592,42 @@ nav ul {
   .main-nav.show {
     grid-area: nav;
     background-color: var(--main-bg-color);
-    padding: 1em;
+    /* padding: 1em; */
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
     border-radius: 2px;
     width: 270px;
-    transition: width 150ms, padding 150ms;
+    transition: width 250ms;
     z-index: 11;
   }
 
   .main-nav {
     grid-area: nav;
-    transition: width 150ms, padding 150ms;
-    transition-delay: 50ms;
+    transition: width 250ms;
     background-color: var(--main-bg-color);
-    padding: 0em;
+    /* padding: 0em; */
     box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
     border-radius: 2px;
     width: 0px;
     z-index: 9;
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
   }
 
   .main-nav.show>ul {
-    transition: opacity 150ms;
-    transition-delay: 100ms;
-    opacity: 1;
+    flex-direction: column;
+    left: 0;
+    position: relative;
+    transition: left 250ms;
   }
 
   .main-nav:not(.show)>ul {
-    transition: opacity 100ms;
-    opacity: 0;
+    /* transition: opacity 100ms; */
+    /* opacity: 0; */
+    transition: left 150ms;
+    position: relative;
+    left: -100%;
   }
-
 
 }
 
