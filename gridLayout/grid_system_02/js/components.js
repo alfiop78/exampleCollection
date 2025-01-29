@@ -7,20 +7,20 @@ const wrapper = document.getElementById('wrapper');
 document.querySelectorAll('a.btn').forEach(nav => {
   nav.addEventListener('click', (e) => {
     e.preventDefault();
-    // if (e.currentTarget.classList.contains('show')) e.currentTarget.classList.remove('show');
-
-    // chiudo eventuali menù già aperti, se ci sono
-    const openedNav = document.querySelector('.ul__nav.show');
-    const nav = document.getElementById(e.currentTarget.dataset.relId);
-    if (openedNav) {
-      // document.querySelector('.ul__nav.show')?.classList.toggle('show');
-      openedNav.classList.toggle('show');
-      nav.classList.toggle('show');
-      // se l'elemeneto aperto è diverso da quello cliccato
-    } else if (openedNav === e.currentTarget) {
-      openedNav.classList.remove('show');
+    // nav da aprire/chiudere
+    const nav__item = document.getElementById(e.currentTarget.dataset.relId);
+    // nav attualmente aperto
+    const opened = document.querySelector('.ul__nav.show');
+    // chiudo eventuali altri nav attualmente aperti
+    document.querySelector('.ul__nav.show')?.classList.remove('show');
+    // se è presente un nav già aperto, verifico se è lo stesso rispetto al currentTarget.
+    if (opened) {
+      // se il nav aperto è diverso dal currentTarget effettuo il toggle, quindi apro/chiudo currentTarget 
+      // se il nav aperto è lo stesso di currentTarget è stato già chiuso (prima dell'if)
+      if (opened.id !== e.currentTarget.dataset.relId) nav__item.classList.toggle('show');
     } else {
-      nav.classList.toggle('show');
+      // non ci sono altri nav aperti, apro/chiudo currentTarget
+      nav__item.classList.toggle('show');
     }
   })
 });
