@@ -155,17 +155,18 @@ nav ul {
 }
 
 .row.autofit {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .row.autofill {
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }
 
 .row>.col {
   border: dashed thin lightgrey;
-  /* background-color: goldenrod; */
-  /* color: #494949; */
+  padding: 1rem;
+  display: grid;
+  grid-auto-flow: column;
 }
 
 .row>.col-1 {
