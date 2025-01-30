@@ -49,7 +49,13 @@ menu.addEventListener('click', toggleNav);
 
 function toggleNav(e) {
   const main_nav = document.getElementById(e.currentTarget.dataset.referenceId);
+  const main_nav_content = document.getElementById('main-nav__content');
   main_nav.classList.toggle('show');
+
+  main_nav.ontransitionend = () => {
+    main_nav_content.classList.toggle('open');
+  }
+
 }
 
 function handleSelectElement(e) {
