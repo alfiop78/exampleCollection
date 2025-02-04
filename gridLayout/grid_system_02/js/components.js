@@ -65,14 +65,41 @@ function handleSelectElement(e) {
 }
 
 function handleMultiSelectElement(e) {
-  const items__selected = document.querySelector(`.items__selected[data-id='${e.currentTarget.dataset.dropdownId}']`);
-  const small = document.createElement('small');
-  const item_selected = e.currentTarget.querySelector('span');
+  // l'elemento <span> all'interno del tasto
+  const items__selected = document.querySelector(`button[data-rel-id='${e.currentTarget.dataset.dropdownId}'] span.selected__item_area`);
+  // il primo span all'interno di button__content, qui è presente la label del tasto
+  const button__label = document.querySelector(`button[data-rel-id='${e.currentTarget.dataset.dropdownId}'] .button__label`);
   e.currentTarget.toggleAttribute("selected");
-  // aggiungo l'elemento selezionato a .items__selected con attributo data-items-id="dropdown-1"
-  small.innerText = item_selected.innerText;
-  items__selected.appendChild(small);
+  // l'elemento <li> sselezionato (corrisponde a e.currentTarget)
+  const item_selected = e.currentTarget.querySelector('span');
+  if (e.currentTarget.hasAttribute('selected')) {
+    const small = document.createElement('small');
+    // aggiungo l'elemento selezionato a .items__selected con attributo data-items-id="dropdown-1"
+    small.innerText = item_selected.innerText;
+    small.dataset.itemId = e.currentTarget.dataset.itemId;
+    items__selected.appendChild(small);
+  } else {
+    // rimuovo da .items__selected l'elemento deselezionato
+    items__selected.querySelector(`small[data-item-id='${e.currentTarget.dataset.itemId}']`).remove();
+  }
+  button__label.style.display = (items__selected.childElementCount !== 0) ? 'none' : 'initial';
 }
+
+/* function handleMultiSelectElement(e) {
+  const items__selected = document.querySelector(`.items__selected[data-id='${e.currentTarget.dataset.dropdownId}']`);
+  e.currentTarget.toggleAttribute("selected");
+  const item_selected = e.currentTarget.querySelector('span');
+  if (e.currentTarget.hasAttribute('selected')) {
+    const small = document.createElement('small');
+    // aggiungo l'elemento selezionato a .items__selected con attributo data-items-id="dropdown-1"
+    small.innerText = item_selected.innerText;
+    small.dataset.itemId = e.currentTarget.dataset.itemId;
+    items__selected.appendChild(small);
+  } else {
+    // rimuovo da .items__selected l'elemento deselezionato
+    items__selected.querySelector(`small[data-item-id='${e.currentTarget.dataset.itemId}']`).remove();
+  }
+} */
 
 function wrapperClick(e) {
   // console.log(e);

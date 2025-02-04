@@ -14,7 +14,7 @@
   background-color: white;
   color: #494949;
   width: 100%;
-  top: 48px;
+  /* top: 48px; */
   padding-inline-start: .5rem;
   max-height: 250px;
 }
