@@ -4,7 +4,7 @@
   outline: none;
   border: none;
   padding: .6rem;
-  margin: .5rem;
+  margin: .5rem 0;
   opacity: .8;
   font-size: medium;
   background-color: var(--main-bg-color);
@@ -52,6 +52,31 @@ li {
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.items__selected {
+  width: 100%;
+  display: flex;
+  flex-flow: wrap;
+  gap: 4px;
+}
+
+.items__selected>small {
+  padding: 4px 6px;
+  background-color: lightcoral;
+  color: white;
+  border-radius: 2px;
+}
+
+/* .items__selected con il dropdown chiuso */
+.items__selected:has(+ ul:not(.show)) {
+  /* display: flex; */
+
+}
+
+/* items__selected con il dropdown aperto */
+.items__selected:has(+ ul.show) {
+  /* display: none; */
 }
 
 /* buttons */

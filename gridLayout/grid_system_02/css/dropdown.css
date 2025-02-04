@@ -1,6 +1,7 @@
 .dropdown {
   position: relative;
   width: min-content;
+  margin: .5rem;
 }
 
 .dropdown>.ul__dropdown {
@@ -13,6 +14,7 @@
   background-color: white;
   color: #494949;
   width: 100%;
+  top: 48px;
   padding-inline-start: .5rem;
   max-height: 250px;
 }

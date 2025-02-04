@@ -65,7 +65,13 @@ function handleSelectElement(e) {
 }
 
 function handleMultiSelectElement(e) {
+  const items__selected = document.querySelector(`.items__selected[data-id='${e.currentTarget.dataset.dropdownId}']`);
+  const small = document.createElement('small');
+  const item_selected = e.currentTarget.querySelector('span');
   e.currentTarget.toggleAttribute("selected");
+  // aggiungo l'elemento selezionato a .items__selected con attributo data-items-id="dropdown-1"
+  small.innerText = item_selected.innerText;
+  items__selected.appendChild(small);
 }
 
 function wrapperClick(e) {
