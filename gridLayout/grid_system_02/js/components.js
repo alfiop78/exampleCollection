@@ -1,4 +1,6 @@
 console.log('component');
+// templates
+const tmpl__badge_selected_item = document.getElementById('tmpl__badge_selected_item');
 
 const wrapper = document.getElementById('wrapper');
 // wrapper.addEventListener('click', wrapperClick, false);
@@ -40,7 +42,7 @@ document.querySelectorAll('.ul__dropdown:not([multiple]) .items').forEach(li => 
   li.addEventListener('click', handleSelectElement);
 });
 
-// elementi all'interno della dropdown multiple
+// eventi sugli elementi all'interno di una dropdown multiple
 document.querySelectorAll('.ul__dropdown[multiple] .items').forEach(li => {
   li.addEventListener('click', handleMultiSelectElement);
 });
@@ -56,25 +58,45 @@ function toggleNav(e) {
   main_nav.ontransitionend = () => {
     main_nav_content.classList.toggle('open');
   }
-
 }
 
+// selezione di un elemento di una dropdown (non multiple)
 function handleSelectElement(e) {
   // visualizzo l'items selezionato nello span del <button> relativo
-  const button = document.querySelector(`button[data-dropdown-id='${e.currentTarget.parentElement.dataset.parent}']`);
-  button.dataset.value = e.currentTarget.innerText;
+  // const button = document.querySelector(`button[data-rel-id='${e.currentTarget.offsetParent.id}']`);
+  const items__selected = document.querySelector(`button[data-rel-id='${e.currentTarget.offsetParent.id}'] span.selected__item_area`);
+  // elimino eventuali selezioni precedenti prima di selezionare questa (e.currentTarget)
+  e.currentTarget.offsetParent.querySelector('li[selected]')?.removeAttribute('selected');
+  e.currentTarget.toggleAttribute("selected");
+  // button.dataset.value = e.currentTarget.innerText;
+  if (e.currentTarget.hasAttribute('selected')) {
+    // elimino un eventuale item già selezionato in precedenza
+    items__selected.querySelector('small[data-item-id]')?.remove();
+    const tmpl = tmpl__badge_selected_item.content.cloneNode(true);
+    const small = tmpl.querySelector('small');
+    // aggiungo l'elemento selezionato a .items__selected con attributo data-items-id="dropdown-1"
+    small.innerText = e.currentTarget.innerText;
+    small.dataset.itemId = e.currentTarget.dataset.itemId;
+    items__selected.appendChild(small);
+  } else {
+    // rimuovo da .items__selected l'elemento deselezionato
+    items__selected.querySelector(`small[data-item-id='${e.currentTarget.dataset.itemId}']`).remove();
+  }
+  e.currentTarget.offsetParent.classList.remove('show');
 }
 
 function handleMultiSelectElement(e) {
   // l'elemento <span> all'interno del tasto
-  const items__selected = document.querySelector(`button[data-rel-id='${e.currentTarget.dataset.dropdownId}'] span.selected__item_area`);
-  // il primo span all'interno di button__content, qui è presente la label del tasto
-  const button__label = document.querySelector(`button[data-rel-id='${e.currentTarget.dataset.dropdownId}'] .button__label`);
+  // NOTE: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+  // Utilizzo offsetParent per ottenere l'elemento antenato di e.currentTarget, in questo caso la <ul>
+  // ha position: absolute, quindi viene restituita la <ul> quando si clicca sulla <li>
+  const items__selected = document.querySelector(`button[data-rel-id='${e.currentTarget.offsetParent.id}'] span.selected__item_area`);
   e.currentTarget.toggleAttribute("selected");
   // l'elemento <li> sselezionato (corrisponde a e.currentTarget)
   const item_selected = e.currentTarget.querySelector('span');
   if (e.currentTarget.hasAttribute('selected')) {
-    const small = document.createElement('small');
+    const tmpl = tmpl__badge_selected_item.content.cloneNode(true);
+    const small = tmpl.querySelector('small');
     // aggiungo l'elemento selezionato a .items__selected con attributo data-items-id="dropdown-1"
     small.innerText = item_selected.innerText;
     small.dataset.itemId = e.currentTarget.dataset.itemId;
@@ -83,24 +105,7 @@ function handleMultiSelectElement(e) {
     // rimuovo da .items__selected l'elemento deselezionato
     items__selected.querySelector(`small[data-item-id='${e.currentTarget.dataset.itemId}']`).remove();
   }
-  // button__label.style.display = (items__selected.childElementCount !== 0) ? 'none' : 'initial';
 }
-
-/* function handleMultiSelectElement(e) {
-  const items__selected = document.querySelector(`.items__selected[data-id='${e.currentTarget.dataset.dropdownId}']`);
-  e.currentTarget.toggleAttribute("selected");
-  const item_selected = e.currentTarget.querySelector('span');
-  if (e.currentTarget.hasAttribute('selected')) {
-    const small = document.createElement('small');
-    // aggiungo l'elemento selezionato a .items__selected con attributo data-items-id="dropdown-1"
-    small.innerText = item_selected.innerText;
-    small.dataset.itemId = e.currentTarget.dataset.itemId;
-    items__selected.appendChild(small);
-  } else {
-    // rimuovo da .items__selected l'elemento deselezionato
-    items__selected.querySelector(`small[data-item-id='${e.currentTarget.dataset.itemId}']`).remove();
-  }
-} */
 
 function wrapperClick(e) {
   // console.log(e);

@@ -24,6 +24,10 @@
 
 <body>
 
+    <template id="tmpl__badge_selected_item">
+      <small data-item-id></small>
+    </template>
+
   <main class="container">
     <header class="main-head">
       <div class="nav-button">
@@ -117,21 +121,23 @@
               <div class="dropdown">
                 <!-- <a href="#" class="btn-dropdown" data-dropdown-id="dropdown-1">Filter 1</a> -->
                 <button type="button" class="btn-dropdown fg-white" data-rel-id="dropdown-3">
-                  <span>Dropdown 2</span>
+                  <span class="button__content">
+                    <span class="button__label">Dropdown simple</span>
+                    <span class="selected__item_area"></span>
+                  </span>
                   <i class="material-symbols-outlined">arrow_drop_down</i>
                 </button>
-                <div class="items__selected" data-id="dropdown-3"></div>
                 <ul class="ul__dropdown" id="dropdown-3">
-                  <div class="ul__content" data-parent="dropdown-3">
-                    <li class="items" data-dropdown-id="dropdown-3">item 1</li>
-                    <li class="items" data-dropdown-id="dropdown-3">item 2</li>
-                    <li class="items" data-dropdown-id="dropdown-3">item 3</li>
-                    <li class="items" data-dropdown-id="dropdown-3">item 4</li>
-                    <li class="items" data-dropdown-id="dropdown-3">item 5</li>
-                    <li class="items" data-dropdown-id="dropdown-3">item 2</li>
-                    <li class="items" data-dropdown-id="dropdown-3">item 3</li>
-                    <li class="items" data-dropdown-id="dropdown-3">item 4</li>
-                    <li class="items" data-dropdown-id="dropdown-3">item 5</li>
+                  <div class="ul__content">
+                    <li class="items" data-item-id="item-1">item 1</li>
+                    <li class="items" data-item-id="item-2">item 2</li>
+                    <li class="items" data-item-id="item-3">item 3</li>
+                    <li class="items" data-item-id="item-4">item 4</li>
+                    <li class="items" data-item-id="item-5">item 5</li>
+                    <li class="items" data-item-id="item-6">item 6</li>
+                    <li class="items" data-item-id="item-7">item 7</li>
+                    <li class="items" data-item-id="item-8">item 8</li>
+                    <li class="items" data-item-id="item-9">item 9</li>
                   </div>
                 </ul>
               </div>
@@ -154,35 +160,35 @@
 
                 <ul class="ul__dropdown" id="dropdown-1" multiple>
                   <div class="ul__content">
-                    <li class="items" id="item-1" data-dropdown-id="dropdown-1">
+                    <li class="items" data-item-id="item-1">
                       <span>item 1</span>
                       <i class="material-symbols-outlined">done</i>
                     </li>
-                    <li class="items" data-item-id="item-2" data-dropdown-id="dropdown-1">
+                    <li class="items" data-item-id="item-2">
                       <span>item 2</span>
                       <i class="material-symbols-outlined">done</i>
                     </li>
-                    <li class="items" data-item-id="item-3" data-dropdown-id="dropdown-1">
+                    <li class="items" data-item-id="item-3">
                       <span>item 3</span>
                       <i class="material-symbols-outlined">done</i>
                     </li>
-                    <li class="items" data-item-id="item-4" data-dropdown-id="dropdown-1">
+                    <li class="items" data-item-id="item-4">
                       <span>item 4</span>
                       <i class="material-symbols-outlined">done</i>
                     </li>
-                    <li class="items" data-item-id="item-5" data-dropdown-id="dropdown-1">
+                    <li class="items" data-item-id="item-5">
                       <span>item 5</span>
                       <i class="material-symbols-outlined">done</i>
                     </li>
-                    <li class="items" data-item-id="item-6" data-dropdown-id="dropdown-1">
+                    <li class="items" data-item-id="item-6">
                       <span>item 6</span>
                       <i class="material-symbols-outlined">done</i>
                     </li>
-                    <li class="items" data-item-id="item-7" data-dropdown-id="dropdown-1">
+                    <li class="items" data-item-id="item-7">
                       <span>item 7</span>
                       <i class="material-symbols-outlined">done</i>
                     </li>
-                    <li class="items" data-item-id="item-8" data-dropdown-id="dropdown-1">
+                    <li class="items" data-item-id="item-8">
                       <span>item 8</span>
                       <i class="material-symbols-outlined">done</i>
                     </li>
