@@ -40,6 +40,7 @@ document.querySelectorAll('.ul__dropdown:not([multiple]) .items').forEach(li => 
   li.addEventListener('click', handleSelectElement);
 });
 
+// elementi all'interno della dropdown multiple
 document.querySelectorAll('.ul__dropdown[multiple] .items').forEach(li => {
   li.addEventListener('click', handleMultiSelectElement);
 });
@@ -82,7 +83,7 @@ function handleMultiSelectElement(e) {
     // rimuovo da .items__selected l'elemento deselezionato
     items__selected.querySelector(`small[data-item-id='${e.currentTarget.dataset.itemId}']`).remove();
   }
-  button__label.style.display = (items__selected.childElementCount !== 0) ? 'none' : 'initial';
+  // button__label.style.display = (items__selected.childElementCount !== 0) ? 'none' : 'initial';
 }
 
 /* function handleMultiSelectElement(e) {
