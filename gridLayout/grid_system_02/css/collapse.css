@@ -1,0 +1,31 @@
+.collapse__element {
+    position: relative;
+}
+
+.collapse__element .collapse__title {
+    padding: 1rem;
+    background-color: whitesmoke;
+}
+
+.collapse__content {
+    display: grid;
+    position: relative;
+    transition: all 150ms;
+    grid-template-rows: 0fr;
+    margin: 0 4px;
+    background-color: gainsboro;
+    color: #494949;
+    padding: 0 1rem;
+}
+
+.collapse__content>div {
+    overflow: hidden;
+}
+
+.collapse__title.show + .collapse__content {
+    grid-template-rows: 1fr;
+}
+
+.collapse__title.show + .collapse__content>div {
+    display: grid;
+}
