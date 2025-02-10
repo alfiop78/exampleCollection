@@ -28,7 +28,7 @@
   text-wrap-mode: nowrap;
   gap: 4px;
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(3, auto);
 }
 
 .btn-dropdown .selected__item_area>small {

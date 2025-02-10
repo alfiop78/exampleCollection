@@ -1,7 +1,7 @@
 .dropdown {
   position: relative;
   width: min-content;
-  margin: .5rem;
+  /* margin: .5rem; */
 }
 
 .dropdown>.ul__dropdown {
