@@ -166,7 +166,8 @@ nav ul {
     border: dashed thin lightgrey;
     padding: 1rem;
     display: grid;
-    grid-auto-flow: column;
+    /* grid-auto-flow: column; */
+    grid-gap: 1rem;
 }
 
 .row>.col-1 {
@@ -189,9 +190,14 @@ nav ul {
     grid-column: span 5;
 }
 
+.row>.col-s-12 {
+    grid-column: 1 / -1 ! important;
+}
+
 .row>.col-6 {
     grid-column: span 6;
 }
+
 
 .row>.col-7 {
     grid-column: span 7;
@@ -642,6 +648,11 @@ nav ul {
         transition: left 250ms;
         left: -300px;
     }
+
+    .row>.col-m-12 {
+        grid-column: 1 / -1 ! important;
+    }
+
 }
 
 @media (min-width: 700px) {
@@ -701,6 +712,14 @@ nav ul {
         position: relative;
         transition: left 250ms;
         left: -300px;
+    }
+
+    .row>.col-l-6 {
+        grid-column: span 6 ! important;
+    }
+
+    .row>.col-l-12 {
+        grid-column: 1 / -1 ! important;
     }
 
 }
