@@ -99,16 +99,17 @@ h2 {
 aside {
     background-color: var(--main-bg-color);
     grid-area: side;
-    /* padding: 1.5rem; */
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
 }
 
 article {
     grid-area: content;
 }
 
-.personal-info {
+/* .personal-info {
     margin: 2em auto;
-}
+} */
 
 .personal-info-content {
     margin: 2rem auto;
@@ -170,8 +171,13 @@ article {
     display: block;
 }
 
-.t {
-    width: 5px;
-    height: 5px;
+.aside-footer {
     background-color: var(--main-fg-primary-color);
+    padding: 4.5rem 2rem 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 50% 30%;
+    border-top-right-radius: 50% 30%;
+    box-shadow: 1px 2px 4px gray;
 }
