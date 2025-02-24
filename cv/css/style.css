@@ -29,11 +29,14 @@
 
 .material-symbols-outlined.md-48 {
     font-size: 48px;
+    color: var(--main-fg-primary-color);
 }
 
 body {
-    font-family: "Mulish", monospace;
+    /* font-family: "Mulish", monospace; */
+    font-family: "PT Sans", monospace;
     color: var(--main-fg-secondary-color);
+    font-size: 1.15rem;
 }
 
 h2 {
@@ -52,7 +55,7 @@ main {
 }
 
 .profile-content {
-    padding: 1.5em;
+    padding: .5em 1.5em;
     line-height: 1.7rem;
 }
 
@@ -81,24 +84,66 @@ aside {
 
 .personal-info-content {
     margin: 2rem auto;
+    /* padding: 24px; */
     width: 90%;
     display: flex;
     align-items: center;
     column-gap: 1em;
 }
 
-.content {
-    background-color: var(--main-bg-color);
+.personal-info-content.skills {
+    justify-content: space-between;
 }
 
-.job {
+.skill {
+    display: flex;
+    column-gap: .5rem;
+}
+
+.rank {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #80808096;
+}
+
+.rank.fill {
+    background-color: var(--main-fg-primary-color);
+}
+
+/* .content {
+    background-color: var(--main-bg-color);
+} */
+
+.job,
+.training {
     display: grid;
-    grid-template-columns: 1fr auto auto;
-    grid-column-gap: 1.5rem;
+    grid-template-columns: 1fr auto auto auto;
+    grid-column-gap: .5rem;
     align-items: center;
 }
 
 .job .title {
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    /* padding-bottom: .5em; */
+    margin-bottom: .5em;
+}
+
+.date-from,
+.date-to {
+    color: var(--main-fg-primary-color);
+    font-weight: bold;
+}
+
+.company,
+.organization {
+    color: var(--main-fg-primary-color);
+    display: block;
+}
+
+.t {
+    width: 5px;
+    height: 5px;
+    background-color: var(--main-fg-primary-color);
 }
