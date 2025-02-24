@@ -47,12 +47,35 @@ h2 {
     padding-bottom: 1.5rem;
 }
 
-main {
+/* main {
     padding: .5em;
     display: grid;
     grid-template-columns: auto 1fr;
+    grid-template-areas: "side content";
     grid-column-gap: 1em;
+} */
+@media screen and (min-width: 300px) {
+    main {
+        padding: .5em;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "side"
+            "content";
+        grid-column-gap: 1em;
+    }
 }
+
+@media screen and (min-width: 800px) {
+    main {
+        padding: .5em;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-areas: "side content";
+        grid-column-gap: 1em;
+    }
+}
+
 
 .profile-content {
     padding: .5em 1.5em;
@@ -75,7 +98,12 @@ main {
 
 aside {
     background-color: var(--main-bg-color);
+    grid-area: side;
     /* padding: 1.5rem; */
+}
+
+article {
+    grid-area: content;
 }
 
 .personal-info {
