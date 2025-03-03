@@ -2,4 +2,5 @@
 /serviceWorker/node_modules
 /serviceWorker/package*
 /vendor
+/cv/fpdf186
 npm-debug.log
