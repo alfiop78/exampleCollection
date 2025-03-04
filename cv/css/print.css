@@ -17,11 +17,12 @@ aside {
 }
 
 .name {
-    /* background-color: var(--main-fg-primary-color) !important; */
+    background-color: var(--main-fg-primary-color) !important;
     /* print-color-adjust: exact!important; */
-    color: var(--main-fg-primary-color);
-    padding: unset;
-    margin: 1rem auto;
+    /* color: var(--main-fg-primary-color); */
+    /* padding: unset; */
+    padding: 4.5rem 2rem 2rem 1.5rem;
+    /* margin: 1rem auto; */
     /* margin: .5em auto; */
     display: flex;
     align-items: left;
