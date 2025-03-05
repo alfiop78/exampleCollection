@@ -38,16 +38,20 @@ aside {
 
 .personal-info-content {
     margin: 1rem auto;
-    /* padding: 24px; */
     width: 95%;
     display: flex;
     align-items: center;
     column-gap: .5em;
 }
 
+.skill {
+    display: flex;
+    column-gap: 4px;
+}
+
 .rank {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background-color: #80808096;
 }
@@ -64,11 +68,19 @@ aside {
 h2 {
     color: var(--main-fg-primary-color)!important;
     font-weight: 400;
-    margin: 1em;
+    margin: .5em;
     border-bottom: solid thin lightgray;
-    padding-bottom: 1rem;
+    padding-bottom: .5rem;
+}
+
+.job > .title {
+    margin-top: unset;
 }
 
 .aside-footer {
     display: none;
+}
+
+#page-break {
+    break-before: page;
 }
