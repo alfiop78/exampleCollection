@@ -27,7 +27,7 @@ document.querySelectorAll('a.btn').forEach(nav => {
 	})
 });
 
-document.querySelectorAll('button.btn-dropdown, button.btn').forEach(dropdown => {
+document.querySelectorAll('button.btn-dropdown').forEach(dropdown => {
 	dropdown.addEventListener('click', (e) => {
 		wrapper.addEventListener('click', wrapperClick, true);
 		// chiudo le dropdown eventualmente aperte
