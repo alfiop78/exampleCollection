@@ -1,0 +1,79 @@
+a {
+	text-decoration: unset;
+	padding: .6rem;
+}
+
+/* nav>hr {
+  border: none;
+  width: 80%;
+  height: 2px;
+  background-color: #676767;
+} */
+
+/* #main-nav>.nav__content_section {
+  overflow-y: auto;
+  position: relative;
+} */
+
+.nav__items {
+	display: flex;
+	/* padding: 1em; */
+	row-gap: 4px;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+.nav__item {
+	display: grid;
+}
+
+.main-nav.show #nav__content {
+	position: relative;
+	overflow-y: auto;
+}
+
+.main-nav:not(.show) #nav__content {
+	position: relative;
+	overflow-y: auto;
+	width: calc(24px + 1em);
+	overflow-x: hidden;
+}
+
+/* tasti all'interno del nav__content*/
+.main-nav:not(.show)>#main-nav__content .btn {
+	width: calc(24px + 1em);
+}
+
+.main-nav:not(.show)>#main-nav__content .btn>span {
+	width: 0;
+}
+
+.ul__nav {
+	transition: all 150ms;
+	display: grid;
+	grid-template-rows: 0fr;
+	margin: 0px;
+	margin-inline-start: .5rem;
+	padding-inline-start: .5rem;
+	max-height: 250px;
+}
+
+.ul__nav.show {
+	grid-template-rows: 1fr;
+}
+
+.ul__nav>.ul__content {
+	overflow: auto;
+}
+
+.dropdown .ul__content::-webkit-scrollbar,
+.dropdown .ul__content::-webkit-scrollbar-thumb {
+	visibility: hidden;
+}
+
+.dropdown .ul__content:hover::-webkit-scrollbar,
+.dropdown .ul__content:hover::-webkit-scrollbar-thumb {
+	visibility: visible;
+}
