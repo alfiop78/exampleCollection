@@ -20,7 +20,7 @@
     position: relative;
 }
 
-#main-nav ul.nav__items>.nav__item>.btn >span {
+#main-nav ul.nav__items>.nav__item>.btn>span {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -28,7 +28,8 @@
 
 }
 
-.btn-dropdown>span {
+.btn-dropdown>span,
+.btn>span {
     text-wrap-mode: nowrap;
 }
 

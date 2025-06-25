@@ -37,6 +37,14 @@ a {
 .main-nav.show .nav__content {
     position: relative;
     overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-flow: column;
+}
+
+/* border-bottom tranne l'ultimo elemento */
+.main-nav .nav__content:not(:last-child) {
+    border-bottom: solid thin #494949;
 }
 
 /* .main-nav:not(.show) #nav__content,
