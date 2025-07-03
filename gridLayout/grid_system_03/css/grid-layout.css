@@ -229,6 +229,10 @@ nav ul {
     grid-column: 2 / -1;
 }
 
+.row>.col-start-2.col-1 {
+    grid-column: 2 / span 1;
+}
+
 .row>.col-start-2.col-2 {
     grid-column: 2 / span 2;
 }
@@ -272,6 +276,10 @@ nav ul {
     grid-column: 3 / -1;
 }
 
+.row>.col-start-3.col-1 {
+    grid-column: 3 / span 1;
+}
+
 .row>.col-start-3.col-2 {
     grid-column: 3 / span 2;
 }
@@ -311,6 +319,10 @@ nav ul {
     grid-column: 4 / -1;
 }
 
+.row>.col-start-4.col-1 {
+    grid-column: 4 / span 1;
+}
+
 .row>.col-start-4.col-2 {
     grid-column: 4 / span 2;
 }
@@ -346,6 +358,10 @@ nav ul {
     grid-column: 5 / -1;
 }
 
+.row>.col-start-5.col-1 {
+    grid-column: 5 / span 1;
+}
+
 .row>.col-start-5.col-2 {
     grid-column: 5 / span 2;
 }
@@ -377,6 +393,10 @@ nav ul {
     grid-column: 6 / -1;
 }
 
+.row>.col-start-6.col-1 {
+    grid-column: 6 / span 1;
+}
+
 .row>.col-start-6.col-2 {
     grid-column: 6 / span 2;
 }
@@ -404,6 +424,10 @@ nav ul {
     grid-column: 7 / -1;
 }
 
+.row>.col-start-7.col-1 {
+    grid-column: 7 / span 1;
+}
+
 .row>.col-start-7.col-2 {
     grid-column: 7 / span 2;
 }
@@ -427,6 +451,10 @@ nav ul {
     grid-column: 8 / -1;
 }
 
+.row>.col-start-8.col-1 {
+    grid-column: 8 / span 1;
+}
+
 .row>.col-start-8.col-2 {
     grid-column: 8 / span 2;
 }
@@ -446,6 +474,10 @@ nav ul {
     grid-column: 9 / -1;
 }
 
+.row>.col-start-9.col-1 {
+    grid-column: 9 / span 1;
+}
+
 .row>.col-start-9.col-2 {
     grid-column: 9 / span 2;
 }
@@ -459,6 +491,10 @@ nav ul {
 /* col-start-10 */
 .row>.col-start-10 {
     grid-column: 10 / -1;
+}
+
+.row>.col-start-10.col-1 {
+    grid-column: 10 / span 1;
 }
 
 .row>.col-start-10.col-2 {
