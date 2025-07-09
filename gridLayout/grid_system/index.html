@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-	<title>GridSystem - 02</title>
+	<title>GridSystem - 04</title>
 	<link rel="icon" href="/images/favicon.png" type="image/png" />
 	<link rel="stylesheet"
 		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -18,7 +18,6 @@
 	<link rel="stylesheet" href="css/lists.css">
 	<link rel="stylesheet" href="css/buttons.css">
 	<link rel="stylesheet" href="css/dropdown.css">
-	<link rel="stylesheet" href="css/nav.css">
 	<link rel="stylesheet" href="css/input.css">
 	<link rel="stylesheet" href="css/collapse.css">
 </head>
@@ -40,13 +39,18 @@
 		</header>
 		<nav id="main-nav" class="main-nav show">
 			<section id="main-nav__content">
-				<section id="account">
-					<i class="material-symbols-outlined">person</i>
-					<p>username</p>
-					<span>e-mail</span>
+				<section class="nav__content">
+					<a href="#" class="btn fg-white" title="settings">
+						<i class="material-symbols-outlined">person</i>
+						<span>username</span>
+					</a>
+					<a href="#" class="btn fg-white" title="settings">
+						<i class="material-symbols-outlined">email</i>
+						<span>e-mail</span>
+					</a>
 				</section>
-				<section id="nav__content">
-					<ul class="nav__items">
+				<section class="nav__content">
+					<ul id="nav__items">
 						<div class="nav__item">
 							<a href="#" class="btn fg-white" data-rel-id="nav__item-1">
 								<i class="material-symbols-outlined">dashboard</i>
@@ -138,11 +142,14 @@
 								</div>
 							</ul>
 						</div>
-
 					</ul>
 				</section>
-				<section id="settings">
-					<a href="#" title="settings">Settings</a>
+				<section class="nav__content">
+					<!-- <a href="#" title="settings">Settings</a> -->
+					<a href="#" class="btn fg-white" title="settings">
+						<i class="material-symbols-outlined">settings</i>
+						<span>Settings</span>
+					</a>
 				</section>
 			</section>
 		</nav>
@@ -415,6 +422,26 @@
 							</section>
 						</form>
 					</div>
+				</div>
+				<div class="row">
+					<div class="col col-12">
+						<h2>Left to right text</h2>
+						<pre>ellipsis</pre>
+						<p class="overflow-ellipsis">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+						</p>
+						<span class="overflow-ellipsis">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+						</span>
+						<div class="btn__actions center">
+							<button type="button" class="btn btn-small fg-white">
+								<i class="material-symbols-outlined md-18">filter_alt</i>
+								<span class="btn__text">button icon 1</span>
+							</button>
+						</div>
+
+					</div>
+
 				</div>
 
 				<h2>Collapsible elements</h2>
