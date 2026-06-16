@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Excel file</title>
+    <!-- <link href="css/style.css" rel="stylesheet"> -->
+</head>
+
+<body>
+    <a href="#" id="btn-excel">ESTRAZIONE EXCEL</a>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        const btnExcel = document.getElementById('btn-excel');
+        console.log(btnExcel);
+
+        function createXML() {
+            const zip = new JSZip();
+            const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/><Override PartName="/xl/theme/theme1.xml" ContentType="application/vnd.openxmlformats-officedocument.theme+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/><Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/></Types>`;
+            zip.file("[Content_Types].xml", contentTypes);
+
+            // creazione cartella _rels
+            var rels = zip.folder("_rels");
+
+            const _rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+            // creazione file nascosto .rels.xml nella cartella _rels
+            rels.file(".rels", _rels);
+
+            // creazione cartella xl
+            var xl = zip.folder("xl");
+
+            // creazione cartella _rels all'interno di xl
+            var xl_rels = xl.folder("_rels");
+            // creazione file /xl/_rels/workbook.xml.rels
+            const workbook_rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="theme/theme1.xml"/><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/><Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/></Relationships>`;
+            xl_rels.file("workbook.xml.rels", workbook_rels);
+
+            // creazione file xl/styles.xml
+            const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac x16r2 xr" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac" xmlns:x16r2="http://schemas.microsoft.com/office/spreadsheetml/2015/02/main" xmlns:xr="http://schemas.microsoft.com/office/spreadsheetml/2014/revision"><numFmts count="1"><numFmt numFmtId="43" formatCode="_-* #,##0.00_-;\-* #,##0.00_-;_-* &quot;-&quot;??_-;_-@_-"/></numFmts><fonts count="6"><font><sz val="11"/><color theme="1"/><name val="Aptos Narrow"/><family val="2"/><scheme val="minor"/></font><font><sz val="11"/><color rgb="FF000000"/><name val="Aptos Narrow"/><family val="2"/><scheme val="minor"/></font><font><b/><sz val="11"/><color theme="1"/><name val="Aptos Narrow"/><family val="2"/><scheme val="minor"/></font><font><b/><sz val="11"/><color theme="1"/><name val="Calibri"/></font><font><b/><sz val="12"/><color theme="1"/><name val="Calibri"/></font><font><b/><sz val="14"/><color theme="1"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor theme="3" tint="0.749992370372631"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="10"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="43" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment horizontal="center"/></xf><xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyFont="1" applyAlignment="1"><alignment horizontal="center"/></xf><xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="5" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="10" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normale" xfId="0" builtinId="0"/></cellStyles><dxfs count="0"/><tableStyles count="0" defaultTableStyle="TableStyleMedium2" defaultPivotStyle="PivotStyleMedium9"/><extLst><ext uri="{EB79DEF2-80B8-43e5-95BD-54CBDDF9020C}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"><x14:slicerStyles defaultSlicerStyle="SlicerStyleLight1"/></ext><ext uri="{9260A510-F301-46a8-8635-F512D64BE5F5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"><x15:timelineStyles defaultTimelineStyle="TimeSlicerStyleLight1"/></ext></extLst></styleSheet>`;
+            xl.file("styles.xml", styles);
+
+            // creazione file xl/workbook.xml
+            const workbook = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x15 xr xr6 xr10 xr2" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main" xmlns:xr="http://schemas.microsoft.com/office/spreadsheetml/2014/revision" xmlns:xr6="http://schemas.microsoft.com/office/spreadsheetml/2016/revision6" xmlns:xr10="http://schemas.microsoft.com/office/spreadsheetml/2016/revision10" xmlns:xr2="http://schemas.microsoft.com/office/spreadsheetml/2015/revision2"><fileVersion appName="xl" lastEdited="7" lowestEdited="4" rupBuild="30210"/><workbookPr/><xr:revisionPtr revIDLastSave="0" documentId="8_{BCDE3ED3-D610-4DA6-87F8-B1159338A8A2}" xr6:coauthVersionLast="47" xr6:coauthVersionMax="47" xr10:uidLastSave="{00000000-0000-0000-0000-000000000000}"/><bookViews><workbookView xWindow="240" yWindow="105" windowWidth="14805" windowHeight="8010" xr2:uid="{00000000-000D-0000-FFFF-FFFF00000000}"/></bookViews><sheets><sheet name="Foglio1" sheetId="1" r:id="rId1"/></sheets><calcPr calcId="191028"/><extLst><ext uri="{140A7094-0E35-4892-8432-C4D2E57EDEB5}" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main"><x15:workbookPr chartTrackingRefBase="1"/></ext><ext uri="{B58B0392-4F1F-4190-BB64-5DF3571DCE5F}" xmlns:xcalcf="http://schemas.microsoft.com/office/spreadsheetml/2018/calcfeatures"><xcalcf:calcFeatures><xcalcf:feature name="microsoft.com:RD"/><xcalcf:feature name="microsoft.com:Single"/><xcalcf:feature name="microsoft.com:FV"/><xcalcf:feature name="microsoft.com:CNMTM"/><xcalcf:feature name="microsoft.com:LET_WF"/><xcalcf:feature name="microsoft.com:LAMBDA_WF"/><xcalcf:feature name="microsoft.com:ARRAYTEXT_WF"/></xcalcf:calcFeatures></ext><ext uri="{D14903EA-33C4-47F7-8F05-3474C54BE107}" xmlns:xlwcv="http://schemas.microsoft.com/office/spreadsheetml/2024/workbookCompatibilityVersion"><xlwcv:version setVersion="2"/></ext></extLst></workbook>`;
+            xl.file("workbook.xml", workbook);
+
+            // creazione file /xl/sharedString.xml
+            const sharedStrings = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="19" uniqueCount="15"><si><t>ANNO : TOTAL</t></si><si><t>TRIMESTRE : TOTAL</t></si><si><t>MESE : TOTAL</t></si><si><t>SEDE : TOTAL</t></si><si><t>MARCA : TOTAL</t></si><si><t>FATTURATO E NUMERI</t></si><si><t>COSTI</t></si><si><t>MARGINE</t></si><si><t>JAGUAR</t></si><si><t>LAND ROVER</t></si><si><t>TOTALE</t></si><si><t>Fatturato Totale Service</t></si><si><t>Fatturato toale officina</t></si><si><t>numero</t></si><si><t>test numero</t></si></sst>`;
+            xl.file("sharedStrings.xml", sharedStrings);
+
+            // creazione cartella xl/worksheets
+            var worksheets = xl.folder("worksheets");
+            // all'interno è presente il file sheet1.xml
+            const sheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x14ac xr xr2 xr3" xmlns:x14ac="http://schemas.microsoft.com/office/spreadsheetml/2009/9/ac" xmlns:xr="http://schemas.microsoft.com/office/spreadsheetml/2014/revision" xmlns:xr2="http://schemas.microsoft.com/office/spreadsheetml/2015/revision2" xmlns:xr3="http://schemas.microsoft.com/office/spreadsheetml/2016/revision3" xr:uid="{00000000-0001-0000-0000-000000000000}"><dimension ref="A1:H7"/><sheetViews><sheetView tabSelected="1" workbookViewId="0"><selection activeCell="A8" sqref="A8"/></sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols><col min="1" max="1" width="21" bestFit="1" customWidth="1"/><col min="2" max="2" width="13.140625" bestFit="1" customWidth="1"/><col min="3" max="3" width="17.28515625" bestFit="1" customWidth="1"/><col min="4" max="4" width="12.42578125" bestFit="1" customWidth="1"/><col min="5" max="5" width="12.28515625" bestFit="1" customWidth="1"/><col min="6" max="6" width="14" bestFit="1" customWidth="1"/><col min="8" max="8" width="9.5703125" bestFit="1" customWidth="1"/></cols><sheetData><row r="1" spans="1:8" ht="18.75"><c r="B1" s="8" t="s"><v>0</v></c><c r="C1" s="8" t="s"><v>1</v></c><c r="D1" s="8" t="s"><v>2</v></c><c r="E1" s="8" t="s"><v>3</v></c><c r="F1" s="8" t="s"><v>4</v></c></row><row r="2" spans="1:8" ht="15.75"><c r="B2" s="6" t="s"><v>5</v></c><c r="C2" s="6"/><c r="D2" s="6"/><c r="E2" s="6" t="s"><v>6</v></c><c r="F2" s="6"/><c r="G2" s="6"/><c r="H2" s="7" t="s"><v>7</v></c></row><row r="3" spans="1:8"><c r="B3" s="5" t="s"><v>8</v></c><c r="C3" s="5" t="s"><v>9</v></c><c r="D3" s="5" t="s"><v>10</v></c><c r="E3" s="5" t="s"><v>8</v></c><c r="F3" s="5" t="s"><v>9</v></c><c r="G3" s="5" t="s"><v>10</v></c><c r="H3" s="2" t="s"><v>7</v></c></row><row r="4" spans="1:8"><c r="A4" s="1" t="s"><v>11</v></c><c r="B4" s="4"><v>1445683.3</v></c><c r="H4" s="9"><v>0.1023</v></c></row><row r="5" spans="1:8"><c r="A5" s="3" t="s"><v>12</v></c><c r="B5" s="4"><v>1242408.52</v></c><c r="H5" s="9"><v>0.65229999999999999</v></c></row><row r="6" spans="1:8"><c r="A6" t="s"><v>13</v></c><c r="B6"><v>345</v></c></row><row r="7" spans="1:8"><c r="A7" t="s"><v>14</v></c><c r="B7"><v>7.54</v></c></row></sheetData><mergeCells count="2"><mergeCell ref="B2:D2"/><mergeCell ref="E2:G2"/></mergeCells><pageMargins left="0.7" right="0.7" top="0.75" bottom="0.75" header="0.3" footer="0.3"/></worksheet>`;
+            worksheets.file("sheet1.xml", sheet);
+
+            return zip;
+        }
+
+        const zip = createXML();
+        zip.generateAsync({
+            type: 'blob'
+        }).then(function (content) {
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false,
+                timeZone: 'Europe/Rome'
+            };
+            const datetime_export = new Intl.DateTimeFormat('it-IT', options).format(new Date());
+            let dt = new Intl.DateTimeFormat('it-IT', options).formatToParts(new Date());
+            const datetime = `${dt[0].value}_${dt[2].value}_${dt[4].value}__${dt[6].value}${dt[8].value}${dt[10].value}`;
+            btnExcel.download = `estrazione_excel_${datetime}.xlsx`;
+            btnExcel.href = URL.createObjectURL(content);
+        });
+
+    </script>
+</body>
+
+</html>
