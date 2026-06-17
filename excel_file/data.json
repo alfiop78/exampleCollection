@@ -1,7 +1,7 @@
 [
     {
         "sort": "0",
-        "style": "5",
+        "style": "1",
         "format": "4",
         "name": "Fatturato Totale Service",
         "id": "tot_service",
@@ -16,7 +16,7 @@
     },
     {
         "sort": "1",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Fatturato totale Officina",
         "id": "tot_officina",
@@ -31,7 +31,7 @@
     },
     {
         "sort": "2",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Fatturato Totale Officina - Retail",
         "id": "tot_off_retail",
@@ -46,7 +46,7 @@
     },
     {
         "sort": "3",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Fatturato Totale Officina - Garanzia",
         "id": "tot_off_garanzia",
@@ -61,7 +61,7 @@
     },
     {
         "sort": "4",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Fatturato Totale Officina - Interni",
         "id": "tot_off_interni",
@@ -76,7 +76,7 @@
     },
     {
         "sort": "5",
-        "style": "5",
+        "style": "2",
         "format": "4",
         "name": "Fatturato totale Magazzino",
         "id": "tot_magazzino",
@@ -91,7 +91,7 @@
     },
     {
         "sort": "6",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Fatturato medio giornaliero",
         "id": "fatt_medio_gg",
@@ -106,7 +106,7 @@
     },
     {
         "sort": "7",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "SPV",
         "id": "spv",
@@ -121,7 +121,7 @@
     },
     {
         "sort": "8",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Ingressi medi giornalieri",
         "id": "ingressi_medi",
@@ -136,8 +136,8 @@
     },
     {
         "sort": "9",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Veicoli completati",
         "id": "veicoli_completati",
         "f_ja": "7467",
@@ -151,8 +151,8 @@
     },
     {
         "sort": "10",
-        "style": "1",
-        "format": "8",
+        "style": "2",
+        "format": "0",
         "name": "Lavorazioni ripetute",
         "id": "lavorazioni_ripetute",
         "f_ja": "21",
@@ -166,8 +166,8 @@
     },
     {
         "sort": "11",
-        "style": "1",
-        "format": "8",
+        "style": "2",
+        "format": "0",
         "name": "Nuovi Clienti",
         "id": "nuovi_clienti",
         "f_ja": "146",
@@ -181,7 +181,7 @@
     },
     {
         "sort": "12",
-        "style": "5",
+        "style": "1",
         "format": "7",
         "name": "ACCETTAZIONE",
         "id": "accettazione",
@@ -196,8 +196,8 @@
     },
     {
         "sort": "13",
-        "style": "1",
-        "format": "8",
+        "style": "2",
+        "format": "0",
         "name": "Preventivi Officina",
         "id": "prev_off",
         "f_ja": "1915",
@@ -211,8 +211,8 @@
     },
     {
         "sort": "14",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Preventivi Officina : CAVESTRO FABIO",
         "id": "prev_acc_x_81854",
         "f_ja": "1031",
@@ -226,8 +226,8 @@
     },
     {
         "sort": "14",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Preventivi Officina : FULVIO LISSONI",
         "id": "prev_acc_x_77868",
         "f_ja": "10",
@@ -241,8 +241,8 @@
     },
     {
         "sort": "14",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Preventivi Officina : RAFFAELE MAZZA",
         "id": "prev_acc_x_81855",
         "f_ja": "786",
@@ -256,8 +256,8 @@
     },
     {
         "sort": "14",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Preventivi Officina : ZOTTI GIANCARLO",
         "id": "prev_acc_x_77869",
         "f_ja": "88",
@@ -271,8 +271,8 @@
     },
     {
         "sort": "15",
-        "style": "1",
-        "format": "8",
+        "style": "2",
+        "format": "0",
         "name": "Preventivi diventati commessa",
         "id": "prev_ribaltati",
         "f_ja": "1716",
@@ -286,8 +286,8 @@
     },
     {
         "sort": "16",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Prev. diventati Commesse : CAVESTRO FABIO",
         "id": "prev_acc_commessa_x_81854",
         "f_ja": "927",
@@ -301,8 +301,8 @@
     },
     {
         "sort": "16",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Prev. diventati Commesse : FULVIO LISSONI",
         "id": "prev_acc_commessa_x_77868",
         "f_ja": "4",
@@ -316,8 +316,8 @@
     },
     {
         "sort": "16",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Prev. diventati Commesse : RAFFAELE MAZZA",
         "id": "prev_acc_commessa_x_81855",
         "f_ja": "733",
@@ -331,8 +331,8 @@
     },
     {
         "sort": "16",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Prev. diventati Commesse : ZOTTI GIANCARLO",
         "id": "prev_acc_commessa_x_77869",
         "f_ja": "52",
@@ -346,7 +346,7 @@
     },
     {
         "sort": "17",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Vendita accettatori Totali",
         "id": "vend_acc_tot",
@@ -361,7 +361,7 @@
     },
     {
         "sort": "18",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita Accettatore - CAVESTRO FABIO",
         "id": "vend_acc_x_81854",
@@ -376,7 +376,7 @@
     },
     {
         "sort": "18",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita Accettatore - FULVIO LISSONI",
         "id": "vend_acc_x_77868",
@@ -391,7 +391,7 @@
     },
     {
         "sort": "18",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita Accettatore - RAFFAELE MAZZA",
         "id": "vend_acc_x_81855",
@@ -406,7 +406,7 @@
     },
     {
         "sort": "18",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita Accettatore - ZOTTI GIANCARLO",
         "id": "vend_acc_x_77869",
@@ -421,7 +421,7 @@
     },
     {
         "sort": "19",
-        "style": "5",
+        "style": "1",
         "format": "7",
         "name": "MANODOPERA VENDUTA",
         "id": "man_venduta",
@@ -436,7 +436,7 @@
     },
     {
         "sort": "20",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Manodopera Clienti - Ore Vendute",
         "id": "man_cli_ore",
@@ -451,8 +451,8 @@
     },
     {
         "sort": "21",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Manodopera Clienti - ODL",
         "id": "man_cli_odl",
         "f_ja": "4092",
@@ -466,7 +466,7 @@
     },
     {
         "sort": "22",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Manodopera Clienti - Fatturato",
         "id": "man_cli_fatt",
@@ -481,7 +481,7 @@
     },
     {
         "sort": "23",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Manodopera Lavori interni - Ore Vendute",
         "id": "man_int_ore",
@@ -496,8 +496,8 @@
     },
     {
         "sort": "24",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Manodopera Lavori interni - ODL",
         "id": "man_int_odl",
         "f_ja": "906",
@@ -511,7 +511,7 @@
     },
     {
         "sort": "25",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Manodopera Lavori interni - Fatturato",
         "id": "man_int_fatt",
@@ -526,7 +526,7 @@
     },
     {
         "sort": "26",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Manodopera Garanzie - Ore Vendute",
         "id": "man_gar_ore",
@@ -541,8 +541,8 @@
     },
     {
         "sort": "27",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Manodopera Garanzie - ODL",
         "id": "man_gar_odl",
         "f_ja": "1534",
@@ -556,7 +556,7 @@
     },
     {
         "sort": "28",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Manodopera Garanzie - Fatturato",
         "id": "man_gar_fatt",
@@ -571,7 +571,7 @@
     },
     {
         "sort": "29",
-        "style": "5",
+        "style": "1",
         "format": "7",
         "name": "MANODOPERA LAVORATA",
         "id": "man_lavorata",
@@ -586,7 +586,7 @@
     },
     {
         "sort": "30",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Ore Contrattuali",
         "id": "ore_contrattuali",
@@ -601,7 +601,7 @@
     },
     {
         "sort": "31",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Ore Presenza",
         "id": "ore_presenza",
@@ -616,7 +616,7 @@
     },
     {
         "sort": "32",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Ore Lavorate (Aperte/Chiuse)",
         "id": "ore_lav_aperte_chiuse",
@@ -631,8 +631,8 @@
     },
     {
         "sort": "33",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "ODL improduttivi",
         "id": "odl_improduttivi",
         "f_ja": "0",
@@ -646,7 +646,7 @@
     },
     {
         "sort": "34",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "ORE improduttive",
         "id": "ore_improduttive",
@@ -661,7 +661,7 @@
     },
     {
         "sort": "35",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Ore Lavorate Totali",
         "id": "ore_lav_tot",
@@ -676,7 +676,7 @@
     },
     {
         "sort": "36",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "- Ore Lavorate - Clienti",
         "id": "ore_lav_clienti",
@@ -691,7 +691,7 @@
     },
     {
         "sort": "37",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "- Ore Lavorate - Interni",
         "id": "ore_lav_interni",
@@ -706,7 +706,7 @@
     },
     {
         "sort": "38",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "- Ore Lavorate - Garanzia",
         "id": "ore_lav_gar",
@@ -721,8 +721,8 @@
     },
     {
         "sort": "39",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Totale passaggi officina",
         "id": "tot_passaggi_off",
         "f_ja": "7467",
@@ -736,7 +736,7 @@
     },
     {
         "sort": "40",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Tempo medio giacenza veicoli - Retail",
         "id": "giacenza_retail",
@@ -751,7 +751,7 @@
     },
     {
         "sort": "41",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Tempo medio giacenza veicoli - Garanzia",
         "id": "giacenza_garanzia",
@@ -766,7 +766,7 @@
     },
     {
         "sort": "42",
-        "style": "5",
+        "style": "1",
         "format": "7",
         "name": "RICAMBI",
         "id": "ricambi",
@@ -781,7 +781,7 @@
     },
     {
         "sort": "43",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Totale Fatturato Ricambi",
         "id": "tot_fatturato_ricambi",
@@ -796,7 +796,7 @@
     },
     {
         "sort": "44",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Vendita al Banco Totale",
         "id": "vend_banco_tot",
@@ -811,7 +811,7 @@
     },
     {
         "sort": "45",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita al Banco",
         "id": "vend_banco",
@@ -826,7 +826,7 @@
     },
     {
         "sort": "46",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita Consorzi DOC",
         "id": "vend_DOC",
@@ -841,7 +841,7 @@
     },
     {
         "sort": "47",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita Consorzi MIRO",
         "id": "vend_MIRO",
@@ -856,7 +856,7 @@
     },
     {
         "sort": "48",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Vendita Ricambi Officina Totale",
         "id": "vend_ric_officina_tot",
@@ -871,7 +871,7 @@
     },
     {
         "sort": "49",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita Ricambi a Officina - Clienti",
         "id": "vend_ricambi_off_clienti",
@@ -886,7 +886,7 @@
     },
     {
         "sort": "50",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita Ricambi a Officina - Interni",
         "id": "vend_ricambi_off_interni",
@@ -901,7 +901,7 @@
     },
     {
         "sort": "51",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vendita Ricambi a Officina - Garanzia",
         "id": "vend_ricambi_off_garanzia",
@@ -916,7 +916,7 @@
     },
     {
         "sort": "52",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Indice di rotazione magazzino",
         "id": "indice_rotazione",
@@ -931,7 +931,7 @@
     },
     {
         "sort": "53",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Indice di rotazione magazzino | Alta movimentazione",
         "id": "indice_rotazione_alta",
@@ -946,7 +946,7 @@
     },
     {
         "sort": "54",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Indice di rotazione magazzino | Bassa movimentazione",
         "id": "indice_rotazione_bassa",
@@ -961,7 +961,7 @@
     },
     {
         "sort": "55",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Stock minore 12 mesi",
         "id": "min12",
@@ -976,7 +976,7 @@
     },
     {
         "sort": "56",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Stock 12-24 mesi",
         "id": "12_24",
@@ -991,7 +991,7 @@
     },
     {
         "sort": "57",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Stock maggiore 24 mesi",
         "id": "magg24",
@@ -1006,7 +1006,7 @@
     },
     {
         "sort": "58",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Quantita min. 12 mesi",
         "id": "qty_min_12",
@@ -1021,7 +1021,7 @@
     },
     {
         "sort": "59",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Quantita 12-24 mesi",
         "id": "qty_12_24",
@@ -1036,7 +1036,7 @@
     },
     {
         "sort": "60",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Quantita maggiore 24 mesi",
         "id": "qty_magg_24",
@@ -1051,7 +1051,7 @@
     },
     {
         "sort": "61",
-        "style": "5",
+        "style": "1",
         "format": "7",
         "name": "RICAMBI VENDUTI ALTA MOVIMENTAZIONE",
         "id": "ric_alta_mov",
@@ -1066,8 +1066,8 @@
     },
     {
         "sort": "62",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Batterie Avviamento",
         "id": "qta_batt_avv",
         "f_ja": "1",
@@ -1081,7 +1081,7 @@
     },
     {
         "sort": "63",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Batterie Avviamento",
         "id": "ric_batt_avv",
@@ -1096,8 +1096,8 @@
     },
     {
         "sort": "64",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Batterie telecomandi",
         "id": "qta_batt_tel",
         "f_ja": "483",
@@ -1111,7 +1111,7 @@
     },
     {
         "sort": "65",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Batterie telecomandi",
         "id": "ric_batt_tel",
@@ -1126,7 +1126,7 @@
     },
     {
         "sort": "66",
-        "style": "5",
+        "style": "1",
         "format": "7",
         "name": "OLIO, LUBRIFICANTI E PNEUMATICI",
         "id": "olio_lubr_pneum",
@@ -1141,7 +1141,7 @@
     },
     {
         "sort": "67",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Olio e lubrificanti",
         "id": "olio_lubr",
@@ -1156,7 +1156,7 @@
     },
     {
         "sort": "68",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "- Olio",
         "id": "olio",
@@ -1171,7 +1171,7 @@
     },
     {
         "sort": "69",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "-- Retail",
         "id": "olio_retail",
@@ -1186,7 +1186,7 @@
     },
     {
         "sort": "70",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "-- Interni",
         "id": "olio_interni",
@@ -1201,7 +1201,7 @@
     },
     {
         "sort": "71",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "-- Garanzia",
         "id": "olio_garanzia",
@@ -1216,7 +1216,7 @@
     },
     {
         "sort": "72",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "- AdBlue",
         "id": "adblue",
@@ -1231,7 +1231,7 @@
     },
     {
         "sort": "73",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "-- Interni",
         "id": "adblue_interni",
@@ -1246,7 +1246,7 @@
     },
     {
         "sort": "73",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "-- Retail",
         "id": "adblue_retail",
@@ -1261,7 +1261,7 @@
     },
     {
         "sort": "74",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "-- Garanzia",
         "id": "adblue_garanzia",
@@ -1276,7 +1276,7 @@
     },
     {
         "sort": "75",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Antigelo",
         "id": "ric_antigelo",
@@ -1291,7 +1291,7 @@
     },
     {
         "sort": "76",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "-- Retail",
         "id": "ric_antigelo_retail",
@@ -1306,7 +1306,7 @@
     },
     {
         "sort": "77",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "-- Interni",
         "id": "ric_antigelo_interni",
@@ -1321,7 +1321,7 @@
     },
     {
         "sort": "78",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "-- Garanzia",
         "id": "ric_antigelo_garanzia",
@@ -1336,7 +1336,7 @@
     },
     {
         "sort": "79",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Pneumatici Totale",
         "id": "pneumatici_tot",
@@ -1351,7 +1351,7 @@
     },
     {
         "sort": "80",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "- Pneumatici Retail",
         "id": "pneumatici_retail",
@@ -1366,7 +1366,7 @@
     },
     {
         "sort": "81",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "- Pneumatici Interni",
         "id": "pneumatici_interni",
@@ -1381,7 +1381,7 @@
     },
     {
         "sort": "82",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "- Pneumatici Garanzia",
         "id": "pneumatici_garanzia",
@@ -1396,7 +1396,7 @@
     },
     {
         "sort": "83",
-        "style": "5",
+        "style": "1",
         "format": "7",
         "name": "",
         "id": "olio_other",
@@ -1411,8 +1411,8 @@
     },
     {
         "sort": "84",
-        "style": "1",
-        "format": "8",
+        "style": "2",
+        "format": "0",
         "name": "Olio Totale N.",
         "id": "olio_tot_n",
         "f_ja": "4007.13",
@@ -1426,8 +1426,8 @@
     },
     {
         "sort": "85",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Olio Retail N.",
         "id": "olio_retail_n",
         "f_ja": "3452",
@@ -1441,8 +1441,8 @@
     },
     {
         "sort": "86",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Olio Interni N.",
         "id": "olio_interni_n",
         "f_ja": "368",
@@ -1456,8 +1456,8 @@
     },
     {
         "sort": "87",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Olio Garanzia N.",
         "id": "olio_garanzia_n",
         "f_ja": "187",
@@ -1471,8 +1471,8 @@
     },
     {
         "sort": "88",
-        "style": "1",
-        "format": "8",
+        "style": "2",
+        "format": "0",
         "name": "AdBlue Tot. N.",
         "id": "adblue_tot_n",
         "f_ja": "1509.5",
@@ -1486,8 +1486,8 @@
     },
     {
         "sort": "89",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "AdBlue Retail N.",
         "id": "adblue_retail_n",
         "f_ja": "1101.5",
@@ -1501,8 +1501,8 @@
     },
     {
         "sort": "90",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "AdBlue Interni N.",
         "id": "adblue_interni_n",
         "f_ja": "289",
@@ -1516,8 +1516,8 @@
     },
     {
         "sort": "91",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "AdBlue Garanzia N.",
         "id": "adblue_garanzia_n",
         "f_ja": "119",
@@ -1531,8 +1531,8 @@
     },
     {
         "sort": "92",
-        "style": "1",
-        "format": "8",
+        "style": "2",
+        "format": "0",
         "name": "Antigelo Tot.",
         "id": "qta_antigelo",
         "f_ja": "205",
@@ -1546,8 +1546,8 @@
     },
     {
         "sort": "93",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Antigelo Retail N.",
         "id": "antigelo_retail_n",
         "f_ja": "176",
@@ -1561,8 +1561,8 @@
     },
     {
         "sort": "94",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Antigelo Interni N.",
         "id": "antigelo_interni_n",
         "f_ja": "10",
@@ -1576,8 +1576,8 @@
     },
     {
         "sort": "95",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "Antigelo Garanzia N.",
         "id": "antigelo_garanzia_n",
         "f_ja": "19",
@@ -1591,8 +1591,8 @@
     },
     {
         "sort": "96",
-        "style": "1",
-        "format": "8",
+        "style": "2",
+        "format": "0",
         "name": "Pneumatici Totale N.",
         "id": "pneumatici_tot_n",
         "f_ja": "141",
@@ -1606,8 +1606,8 @@
     },
     {
         "sort": "97",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "- Pneumatici Retail N.",
         "id": "pneumatici_retail_n",
         "f_ja": "71",
@@ -1621,8 +1621,8 @@
     },
     {
         "sort": "98",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "- Pneumatici Interni N.",
         "id": "pneumatici_interni_n",
         "f_ja": "70",
@@ -1636,8 +1636,8 @@
     },
     {
         "sort": "99",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "- Pneumatici Garanzia N.",
         "id": "pneumatici_garanzia_n",
         "f_ja": "0",
@@ -1651,7 +1651,7 @@
     },
     {
         "sort": "100",
-        "style": "5",
+        "style": "1",
         "format": "7",
         "name": "LAVORAZIONI",
         "id": "lavorazioni",
@@ -1666,7 +1666,7 @@
     },
     {
         "sort": "101",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Lavorazioni esterne",
         "id": "lavorazioni_esterne",
@@ -1681,7 +1681,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "ALTRE LAVORAZIONI ESTERNE",
         "id": "tipologia_36179",
@@ -1696,7 +1696,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "CARROZZERIA",
         "id": "tipologia_37608",
@@ -1711,7 +1711,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "CARROZZERIA SINISTRI",
         "id": "tipologia_37669",
@@ -1726,7 +1726,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "COLLAUDO",
         "id": "tipologia_37673",
@@ -1741,7 +1741,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "LAV EST  DI DEPOSITO",
         "id": "tipologia_38086",
@@ -1756,7 +1756,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "LAV ESTERNE CONVERGENZA",
         "id": "tipologia_37604",
@@ -1771,7 +1771,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "LAV ESTERNE GOMMISTA",
         "id": "tipologia_37605",
@@ -1786,7 +1786,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "LAV ESTERNE LAVAGGIO",
         "id": "tipologia_37609",
@@ -1801,7 +1801,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "LAV ESTERNE PRESA E RICONSEGNA",
         "id": "tipologia_37606",
@@ -1816,7 +1816,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "LAVORI ESTERNI",
         "id": "tipologia_21393",
@@ -1831,7 +1831,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Lavaggi",
         "id": "tipologia_21394",
@@ -1846,7 +1846,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Lavaggio PLUS",
         "id": "tipologia_40465",
@@ -1861,7 +1861,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "REVISIONE MINISTERIALE",
         "id": "tipologia_37610",
@@ -1876,7 +1876,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "SPESE TRASPORTO",
         "id": "tipologia_37806",
@@ -1891,7 +1891,7 @@
     },
     {
         "sort": "102",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "VETRERIA",
         "id": "tipologia_37607",
@@ -1906,7 +1906,7 @@
     },
     {
         "sort": "103",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Lavorazioni interne",
         "id": "lavorazioni_interne",
@@ -1921,7 +1921,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Carrozzeria",
         "id": "tipologia_21680",
@@ -1936,7 +1936,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Collaudi",
         "id": "tipologia_35766",
@@ -1951,7 +1951,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Convergenza",
         "id": "tipologia_21530",
@@ -1966,7 +1966,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Courtesy Car",
         "id": "tipologia_21392",
@@ -1981,7 +1981,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Deposito Pneumatici",
         "id": "tipologia_21823",
@@ -1996,7 +1996,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Igienizzazzione abitacolo",
         "id": "tipologia_22101",
@@ -2011,7 +2011,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Presa/Riconsegna Vettura",
         "id": "tipologia_23217",
@@ -2026,7 +2026,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Revisione Ministeriale",
         "id": "tipologia_21683",
@@ -2041,7 +2041,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Rifornimento Carburante",
         "id": "tipologia_22208",
@@ -2056,7 +2056,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Sostituzione Gomme",
         "id": "tipologia_21681",
@@ -2071,7 +2071,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Spese di Trasporto",
         "id": "tipologia_22660",
@@ -2086,7 +2086,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Tappezzeria Interni",
         "id": "tipologia_36270",
@@ -2101,7 +2101,7 @@
     },
     {
         "sort": "104",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "Vetreria",
         "id": "tipologia_33179",
@@ -2116,8 +2116,8 @@
     },
     {
         "sort": "105",
-        "style": "1",
-        "format": "8",
+        "style": "2",
+        "format": "0",
         "name": "Numero passaggi NLT",
         "id": "n_passaggi_nlt",
         "f_ja": "146",
@@ -2131,8 +2131,8 @@
     },
     {
         "sort": "106",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "ARVAL SERVICE LEASE ITALI",
         "id": "n_passaggi_nlt_id_22189949",
         "f_ja": "43",
@@ -2146,8 +2146,8 @@
     },
     {
         "sort": "106",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "LEASEPLAN ITALIA SPA",
         "id": "n_passaggi_nlt_id_22189033",
         "f_ja": "11",
@@ -2161,8 +2161,8 @@
     },
     {
         "sort": "106",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "LEASYS SPA",
         "id": "n_passaggi_nlt_id_26351517",
         "f_ja": "32",
@@ -2176,8 +2176,8 @@
     },
     {
         "sort": "106",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "MERCURY SPA",
         "id": "n_passaggi_nlt_id_22186640",
         "f_ja": "33",
@@ -2191,8 +2191,8 @@
     },
     {
         "sort": "106",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "SINTESI AUTOMOTIVE SRL",
         "id": "n_passaggi_nlt_id_22192894",
         "f_ja": "27",
@@ -2206,8 +2206,8 @@
     },
     {
         "sort": "106",
-        "style": "2",
-        "format": "8",
+        "style": "0",
+        "format": "0",
         "name": "VILLAGE RENT SRL",
         "id": "n_passaggi_nlt_id_22187765",
         "f_ja": "0",
@@ -2221,7 +2221,7 @@
     },
     {
         "sort": "107",
-        "style": "1",
+        "style": "2",
         "format": "4",
         "name": "Fatturato NLT",
         "id": "fatturato_nlt",
@@ -2236,7 +2236,7 @@
     },
     {
         "sort": "108",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "ARVAL SERVICE LEASE ITALI",
         "id": "fatturato_nlt_id_22189949",
@@ -2251,7 +2251,7 @@
     },
     {
         "sort": "108",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "LEASEPLAN ITALIA SPA",
         "id": "fatturato_nlt_id_22189033",
@@ -2266,7 +2266,7 @@
     },
     {
         "sort": "108",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "LEASYS SPA",
         "id": "fatturato_nlt_id_26351517",
@@ -2281,7 +2281,7 @@
     },
     {
         "sort": "108",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "MERCURY SPA",
         "id": "fatturato_nlt_id_22186640",
@@ -2296,7 +2296,7 @@
     },
     {
         "sort": "108",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "SINTESI AUTOMOTIVE SRL",
         "id": "fatturato_nlt_id_22192894",
@@ -2311,7 +2311,7 @@
     },
     {
         "sort": "108",
-        "style": "2",
+        "style": "0",
         "format": "4",
         "name": "VILLAGE RENT SRL",
         "id": "fatturato_nlt_id_22187765",
