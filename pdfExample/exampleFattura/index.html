@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Pulsante di stampa (visibile solo a video) -->
+    <button class="no-print" onclick="window.print()">Stampa / Salva PDF Fattura</button>
+
+    <!-- Contenitore Principale della Fattura -->
+    <div class="invoice-container">
+
+        <!-- Sfruttiamo una tabella invisibile come struttura portante per la stampa multi-pagina -->
+        <table class="print-layout-table">
+
+            <!-- 1. INTESTAZIONE (Ripetuta in cima se ci fossero molte pagine) -->
+            <thead>
+                <tr>
+                    <td>
+                        <div class="invoice-header">
+                            <div class="logo-area">
+                                <!-- Puoi sostituire il testo con un tag <img src="logo.png"> -->
+                                <div class="logo-placeholder">🚗 Autoofficina Centrale</div>
+                                <p>Via Roma 100, Milano<br>P.IVA: 01234567890</p>
+                            </div>
+                            <div class="document-details">
+                                <h1>FATTURA</h1>
+                                <p><strong>Numero:</strong> 2026/452</p>
+                                <p><strong>Data:</strong> 22/06/2026</p>
+                                <p><strong>Km Veicolo:</strong> 45.000 km</p>
+                            </div>
+                        </div>
+
+                        <div class="client-details">
+                            <strong>Dati Cliente:</strong><br>
+                            Sig. Giovanni Rossi<br>
+                            Dacia Sandero - Targata: AB123CD
+                        </div>
+                    </td>
+                </tr>
+            </thead>
+
+            <!-- 2. CORPO DELLA FATTURA (La griglia/fincatura con i dati del tagliando) -->
+            <tbody>
+                <tr>
+                    <td>
+                        <table class="fincatura-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10%;">Codice</th>
+                                    <th style="width: 50%;">Descrizione Operazione / Ricambio</th>
+                                    <th style="width: 10%; text-align: center;">Q.tà</th>
+                                    <th style="width: 15%; text-align: right;">Prezzo Unit.</th>
+                                    <th style="width: 15%; text-align: right;">Totale</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>MAN-01</td>
+                                    <td>Manodopera qualificato - Tagliando periodico dei 45.000 km</td>
+                                    <td class="text-center">1.5</td>
+                                    <td class="text-right">50.00 €</td>
+                                    <td class="text-right">75.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>OL-5W30</td>
+                                    <td>Olio Motore completamente sintetico 5W30 (Litri)</td>
+                                    <td class="text-center">4</td>
+                                    <td class="text-right">18.50 €</td>
+                                    <td class="text-right">74.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-OL</td>
+                                    <td>Filtro Olio originale di primo impianto</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">15.00 €</td>
+                                    <td class="text-right">15.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-AB</td>
+                                    <td>Filtro Abitacolo a carboni attivi anti-polline</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">22.00 €</td>
+                                    <td class="text-right">22.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>LIQ-LV</td>
+                                    <td>Liquido lavacristalli concentrato stagionale</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">4.50 €</td>
+                                    <td class="text-right">4.50 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-OL</td>
+                                    <td>Filtro Olio originale di primo impianto</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">15.00 €</td>
+                                    <td class="text-right">15.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-AB</td>
+                                    <td>Filtro Abitacolo a carboni attivi anti-polline</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">22.00 €</td>
+                                    <td class="text-right">22.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>LIQ-LV</td>
+                                    <td>Liquido lavacristalli concentrato stagionale</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">4.50 €</td>
+                                    <td class="text-right">4.50 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-OL</td>
+                                    <td>Filtro Olio originale di primo impianto</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">15.00 €</td>
+                                    <td class="text-right">15.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-AB</td>
+                                    <td>Filtro Abitacolo a carboni attivi anti-polline</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">22.00 €</td>
+                                    <td class="text-right">22.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>LIQ-LV</td>
+                                    <td>Liquido lavacristalli concentrato stagionale</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">4.50 €</td>
+                                    <td class="text-right">4.50 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-OL</td>
+                                    <td>Filtro Olio originale di primo impianto</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">15.00 €</td>
+                                    <td class="text-right">15.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-AB</td>
+                                    <td>Filtro Abitacolo a carboni attivi anti-polline</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">22.00 €</td>
+                                    <td class="text-right">22.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>LIQ-LV</td>
+                                    <td>Liquido lavacristalli concentrato stagionale</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">4.50 €</td>
+                                    <td class="text-right">4.50 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-OL</td>
+                                    <td>Filtro Olio originale di primo impianto</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">15.00 €</td>
+                                    <td class="text-right">15.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-AB</td>
+                                    <td>Filtro Abitacolo a carboni attivi anti-polline</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">22.00 €</td>
+                                    <td class="text-right">22.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>LIQ-LV</td>
+                                    <td>Liquido lavacristalli concentrato stagionale</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">4.50 €</td>
+                                    <td class="text-right">4.50 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-OL</td>
+                                    <td>Filtro Olio originale di primo impianto</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">15.00 €</td>
+                                    <td class="text-right">15.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>FIL-AB</td>
+                                    <td>Filtro Abitacolo a carboni attivi anti-polline</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">22.00 €</td>
+                                    <td class="text-right">22.00 €</td>
+                                </tr>
+                                <tr>
+                                    <td>LIQ-LV</td>
+                                    <td>Liquido lavacristalli concentrato stagionale</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">4.50 €</td>
+                                    <td class="text-right">4.50 €</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Blocco dei Totali posizionato subito dopo la fincatura -->
+                        <div class="invoice-summary">
+                            <table class="summary-table">
+                                <tr>
+                                    <td>Totale Imponibile:</td>
+                                    <td class="text-right">190.50 €</td>
+                                </tr>
+                                <tr>
+                                    <td>IVA (22%):</td>
+                                    <td class="text-right">41.91 €</td>
+                                </tr>
+                                <tr class="final-row">
+                                    <td><strong>TOTALE FATTURA:</strong></td>
+                                    <td class="text-right"><strong>232.41 €</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+
+            <!-- 3. PIÈ DI PAGINA FISSO (Appare SEMPRE in fondo a ciascun foglio) -->
+            <tfoot>
+                <tr>
+                    <td>
+                        <div class="invoice-footer">
+                            <p>Coordinate Bancarie per il pagamento: <strong>IT 99 C 12345 12345 000000123456</strong>
+                            </p>
+                            <p>Grazie per aver scelto la nostra officina. Garanzia sui ricambi originali: 24 mesi.</p>
+                            <div class="page-number-placeholder">Fattura emessa da sistema gestionale integrato.</div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+
+        </table>
+    </div>
+
+</body>
+
+</html>

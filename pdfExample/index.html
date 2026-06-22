@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Questo pulsante serve solo a schermo, non verrà stampato -->
+    <button class="no-print" onclick="window.print()">Salva / Stampa CV</button>
+
+    <!-- Il documento vero e proprio -->
+    <div class="cv-page">
+        <aside class="sidebar">
+            <div class="profile-img"></div>
+            <h2>Mario Rossi</h2>
+            <p class="subtitle">Frontend Developer</p>
+            <div class="section">
+                <h3>Contatti</h3>
+                <p>📧 email@esempio.com</p>
+                <p>📞 +39 333 1234567</p>
+                <p>📍 Milano, Italia</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section>
+                <h2>Esperienza Professionale</h2>
+                <div class="job">
+                    <h4>Senior Developer @ TechCorp</h4>
+                    <span class="date">2024 - Presente</span>
+                    <p>Sviluppo di applicazioni web scalabili in React e TypeScript.</p>
+                </div>
+            </section>
+            <section>
+                <h2>Educazione</h2>
+                <div class="job">
+                    <h4>Laurea in Informatica</h4>
+                    <span class="data">Università degli Studi - 2021</span>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

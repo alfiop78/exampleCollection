@@ -1,0 +1,172 @@
+/* Stili base per lo schermo */
+body {
+    background-color: #f0f2f5;
+    font-family: 'Helvetica', Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Stilizziamo unicamente il pulsante di stampa */
+button {
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 50px auto;
+    display: block;
+}
+
+/* .no-print { */
+/*     padding: 10px 20px; */
+/*     background-color: #007bff; */
+/*     color: white; */
+/*     border: none; */
+/*     border-radius: 4px; */
+/*     cursor: pointer; */
+/*     margin-bottom: 20px; */
+/*     font-size: 16px; */
+/* } */
+
+/* Struttura del foglio a schermo (simula un A4) */
+.cv-page {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    display: flex;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar {
+    width: 30%;
+    background-color: #2c3e50;
+    color: white;
+    padding: 30px 20px;
+}
+
+.main-content {
+    width: 70%;
+    padding: 40px 30px;
+}
+
+.main-content h2 {
+    color: #2c3e50;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 5px;
+}
+
+.date {
+    font-size: 13px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* ==========================================
+   1. STILI PER LO SCHERMO (Web normale)
+   ========================================== */
+
+/* Nascondiamo completamente il CV dalla vista sul sito */
+.cv-page {
+    /* display: none; */
+}
+
+/* Stilizziamo unicamente il pulsante di stampa */
+button {
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 50px auto;
+    display: block;
+}
+
+
+/* ==========================================
+   2. STILI PER LA STAMPA (@media print)
+   ========================================== */
+@media print {
+
+    /* Azzera e resetta il body per evitare che spinga il CV alla pagina successiva */
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 210mm;
+        height: 297mm;
+        background: #ffffff !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Imposta le dimensioni della pagina fisica a zero margini */
+    @page {
+        size: A4 portrait;
+        margin: 0 !important;
+        /* Rimuove le intestazioni/piè di pagina del browser */
+    }
+
+    /* Nasconde il pulsante e QUALSIASI altro elemento presente sul sito */
+    button,
+    nav,
+    footer,
+    header,
+    .no-print {
+        display: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 0 !important;
+    }
+
+    /* MOSTRA IL CV solo in fase di stampa, bloccandolo ad una sola pagina */
+    .cv-page {
+        display: flex !important;
+        /* Sovrascrive il 'display: none' dello schermo */
+        width: 210mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
+        box-shadow: none !important;
+        overflow: hidden;
+        /* Taglia l'eventuale testo in eccesso per non sforare nella seconda pagina */
+        page-break-inside: avoid !important;
+        page-break-after: avoid !important;
+        page-break-before: avoid !important;
+    }
+
+    /* Struttura interna del CV per la stampa */
+    .sidebar {
+        width: 30%;
+        background-color: #2c3e50 !important;
+        /* Forza il colore di sfondo della colonna */
+        color: white !important;
+        padding: 30px 20px;
+    }
+
+    .main-content {
+        width: 70%;
+        padding: 40px 30px;
+        background-color: #ffffff !important;
+    }
+}
+
+/* Gestione Multi-pagina: Se il CV è lungo e vuoi evitare che una riga di testo venga tagliata a 
+ * metà tra la pagina 1 e la pagina 2, aggiungi questa regola ai blocchi di testo 
+ * importanti (come i paragrafi o le singole esperienze lavorative):
+ * */
+
+/* .job { */
+/*   page-break-inside: avoid; /* Impedisce la rottura del blocco a metà pagina */
+/* } */
+
+/* Forzare una nuova pagina: Se vuoi che una determinata sezione inizi tassativamente su una nuova pagina, usa
+ * .seconda-pagina {
+  page-break-before: always;
+}
+ * */

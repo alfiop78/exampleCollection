@@ -1,0 +1,186 @@
+/* ===================================================
+   1. STILI PER LA VISUALIZZAZIONE A VIDEO (Schermo)
+   =================================================== */
+body {
+    background-color: #f3f4f6;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+.no-print {
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 12px 24px;
+    background-color: #e67e22;
+    /* Arancione stile automotive */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenitore foglio A4 finto sullo schermo */
+.invoice-container {
+    background-color: #ffffff;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 20mm 15mm;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Tabella di layout principale invisibile */
+.print-layout-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Intestazione della fattura */
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #333;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.logo-placeholder {
+    font-size: 24px;
+    font-weight: bold;
+    color: #d35400;
+    margin-bottom: 5px;
+}
+
+.document-details h1 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+.client-details {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 30px;
+    border-radius: 4px;
+}
+
+/* LA FINCATURA: Lo stile della griglia chiusa a righe tipica delle fatture */
+.fincatura-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.fincatura-table th {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #2c3e50;
+}
+
+.fincatura-table td {
+    padding: 10px;
+    font-size: 13px;
+    border: 1px solid #bdc3c7;
+    /* Fincatura laterale e interna */
+}
+
+/* Riempimento del riquadro dei totali */
+.invoice-summary {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.summary-table {
+    width: 40%;
+    border-collapse: collapse;
+}
+
+.summary-table td {
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.summary-table .final-row td {
+    border-top: 2px solid #333;
+    padding-top: 10px;
+    font-size: 16px;
+}
+
+/* Piè di pagina fisso */
+.invoice-footer {
+    border-top: 1px dashed #7f8c8d;
+    padding-top: 15px;
+    margin-top: 30px;
+    font-size: 11px;
+    color: #7f8c8d;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Classi di utilità di allineamento */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+
+/* ===================================================
+   2. REGOLE STRETTAMENTE RISERVATE ALLA STAMPA (PDF)
+   =================================================== */
+@media print {
+    body {
+        background: none !important;
+        padding: 0;
+        margin: 0;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    @page {
+        size: A4 portrait;
+        margin: 20mm 15mm 20mm 15mm !important;
+        /* Margini fisici della pagina stampata */
+    }
+
+    .invoice-container {
+        width: 100% !important;
+        min-height: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
+    /* FORZATURA STRUTTURALE PER IL PIÈ DI PAGINA MULTI-PAGINA */
+    .print-layout-table tfoot {
+        display: table-footer-group;
+        /* Forza il browser a incollare questo blocco in fondo a ogni pagina */
+    }
+
+    .print-layout-table thead {
+        display: table-header-group;
+        /* Ripete l'intestazione principale se la fattura ha troppe righe */
+    }
+
+    /* Impedisce alle singole righe di spaccarsi a metà foglio */
+    .fincatura-table tr {
+        page-break-inside: avoid !important;
+    }
+}
